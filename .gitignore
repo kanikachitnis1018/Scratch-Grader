@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Node
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Scratch raw JSON dumps
+scratch_raw_json/
+*.sb3
+
+# Logs
+*.log
