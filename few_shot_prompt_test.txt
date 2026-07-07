@@ -1,0 +1,16 @@
+Example 1:
+Features: sprite_count=54, block_count=1203, variable_count=13, list_count=5, uses_loops=True, uses_conditionals=True, uses_variables=True, uses_event_handling=True, uses_cloning=True, uses_collision=True, uses_animation=True, uses_sound=True, uses_ui_feedback=True, uses_lists=True, uses_math=True, uses_messaging=True, uses_algorithms=True, uses_nesting=True, uses_integration=True
+Grades: problem_decomposition=4, sequencing=5, loops=5, conditionals=5, variables=4, event_handling=2, debugging=0, procedures=3, coordinates=3, cloning=3, collision=1, animation=1, sound=5, ui_feedback=3, lists=4, math=2, messaging=2, algorithms=4, nesting=4, integration=0
+
+Example 2:
+Features: sprite_count=18, block_count=697, variable_count=30, list_count=0, uses_loops=True, uses_conditionals=True, uses_variables=True, uses_event_handling=True, uses_cloning=True, uses_collision=True, uses_animation=True, uses_sound=True, uses_ui_feedback=True, uses_lists=False, uses_math=True, uses_messaging=True, uses_algorithms=True, uses_nesting=True, uses_integration=True
+Grades: problem_decomposition=3, sequencing=4, loops=5, conditionals=5, variables=5, event_handling=3, debugging=0, procedures=4, coordinates=4, cloning=4, collision=5, animation=1, sound=4, ui_feedback=3, lists=1, math=4, messaging=2, algorithms=3, nesting=4, integration=0
+
+Example 3:
+Features: sprite_count=40, block_count=21236, variable_count=1542, list_count=2, uses_loops=True, uses_conditionals=True, uses_variables=True, uses_event_handling=True, uses_cloning=True, uses_collision=True, uses_animation=True, uses_sound=True, uses_ui_feedback=True, uses_lists=True, uses_math=True, uses_messaging=True, uses_algorithms=True, uses_nesting=True, uses_integration=True
+Grades: problem_decomposition=5, sequencing=5, loops=5, conditionals=5, variables=5, event_handling=3, debugging=0, procedures=3, coordinates=3, cloning=3, collision=1, animation=5, sound=2, ui_feedback=2, lists=5, math=3, messaging=2, algorithms=3, nesting=4, integration=0
+
+Now grade this new project:
+Features: sprite_count=11, block_count=3344, variable_count=38, list_count=8, uses_loops=True, uses_conditionals=True, uses_variables=True, uses_event_handling=True, uses_cloning=True, uses_collision=True, uses_animation=True, uses_sound=True, uses_ui_feedback=True, uses_lists=True, uses_math=True, uses_messaging=True, uses_algorithms=True, uses_nesting=True, uses_integration=True
+
+Return only the grades as a JSON object with the same rubric keys.
