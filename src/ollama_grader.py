@@ -6,9 +6,14 @@ from typing import Any, Dict, List
 
 import requests
 
-from grader import extract_project_features
-from few_shot_prompt import build_few_shot_prompt
-from scratch_loader import fetch_project_json
+try:
+    from .grader import extract_project_features
+    from .few_shot_prompt import build_few_shot_prompt
+    from .scratch_loader import fetch_project_json
+except ImportError:  # pragma: no cover - supports running the file directly
+    from grader import extract_project_features
+    from few_shot_prompt import build_few_shot_prompt
+    from scratch_loader import fetch_project_json
 
 
 def extract_project_id_from_url(url: str) -> int:

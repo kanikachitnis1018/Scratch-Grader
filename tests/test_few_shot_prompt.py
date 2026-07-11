@@ -106,7 +106,7 @@ class FewShotPromptTests(unittest.TestCase):
         self.assertIn("Features:", prompt)
         self.assertIn("Grades:", prompt)
         self.assertIn("Now grade this new project:", prompt)
-        self.assertIn("sprite_count=8", prompt)
+        self.assertIn("sprite_count: 8", prompt)
 
 
 if __name__ == "__main__":
