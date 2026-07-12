@@ -8,11 +8,11 @@ import requests
 
 try:
     from .grader import extract_project_features
-    from .few_shot_prompt import build_few_shot_prompt
+    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought
     from .scratch_loader import fetch_project_json
 except ImportError:  # pragma: no cover - supports running the file directly
     from grader import extract_project_features
-    from few_shot_prompt import build_few_shot_prompt
+    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought
     from scratch_loader import fetch_project_json
 
 
@@ -31,10 +31,11 @@ def get_project_features_from_url(url: str) -> Dict[str, Any]:
     return extract_project_features(project_json)
 
 
-def build_prompt_for_url(url: str, records: List[Dict[str, Any]], num_examples: int = 3) -> str:
+def build_prompt_for_url(url: str, records: List[Dict[str, Any]], num_examples: int = 3, prompt_style: str = "few_shot") -> str:
     features = get_project_features_from_url(url)
     prompt_records = records[:max(1, min(num_examples, len(records) - 1))] + [{"id": None, "features": features, "grades": {}}]
-    return build_few_shot_prompt(prompt_records, num_examples=num_examples)
+    builder = build_prompt_chain_of_thought if prompt_style == "chain_of_thought" else build_few_shot_prompt
+    return builder(prompt_records, num_examples=num_examples)
 
 
 def query_ollama(prompt: str, model: str = "llama3:latest") -> str:
@@ -47,6 +48,33 @@ def query_ollama(prompt: str, model: str = "llama3:latest") -> str:
     response.raise_for_status()
     payload_json = response.json()
     return payload_json.get("response", "")
+
+
+def parse_grades_from_response(text: str) -> Dict[str, int]:
+    if not text:
+        return {}
+
+    for pattern in [
+        re.compile(r"```(?:json)?\s*([\s\S]*?)\s*```", re.IGNORECASE),
+        re.compile(r"\{[\s\S]*\}", re.IGNORECASE),
+    ]:
+        for match in pattern.finditer(text):
+            candidate = match.group(1).strip() if match.lastindex else match.group(0).strip()
+            if not candidate.startswith("{"):
+                continue
+            try:
+                parsed = json.loads(candidate)
+                if isinstance(parsed, dict):
+                    return {key: int(value) for key, value in parsed.items() if isinstance(value, (int, float))}
+            except json.JSONDecodeError:
+                continue
+
+    return {}
+
+
+def grade_prompt_with_ollama(prompt: str, model: str = "llama3:latest") -> Dict[str, int]:
+    response_text = query_ollama(prompt, model=model)
+    return parse_grades_from_response(response_text)
 
 
 def save_predictions(predictions: Dict[str, Any], output_path: str) -> None:

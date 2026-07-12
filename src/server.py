@@ -58,6 +58,7 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         url = payload.get("url")
+        prompt_style = payload.get("prompt_style", "few_shot")
         if not url:
             self.send_response(400)
             self.send_header("Content-Type", "application/json")
@@ -66,7 +67,7 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         output_path = Path(__file__).resolve().parent.parent / "few_shot_prompt.txt"
-        prompt = write_prompt_for_url(url, output_path=output_path)
+        prompt = write_prompt_for_url(url, output_path=output_path, prompt_style=prompt_style)
         ollama_response = query_ollama(prompt)
 
         grades = None

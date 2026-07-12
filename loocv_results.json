@@ -1,0 +1,28 @@
+{
+  "num_samples": 72,
+  "num_dimensions": 20,
+  "mae_by_dimension": {
+    "problem_decomposition": 1.0972222222222223,
+    "sequencing": 1.7777777777777777,
+    "loops": 1.5,
+    "conditionals": 1.1805555555555556,
+    "variables": 0.9583333333333334,
+    "event_handling": 0.8333333333333334,
+    "debugging": 0.0,
+    "procedures": 0.7361111111111112,
+    "coordinates": 0.5833333333333334,
+    "cloning": 0.2222222222222222,
+    "collision": 1.4027777777777777,
+    "animation": 1.4166666666666667,
+    "sound": 1.8055555555555556,
+    "ui_feedback": 0.8611111111111112,
+    "lists": 1.1666666666666667,
+    "math": 1.1111111111111112,
+    "messaging": 0.6666666666666666,
+    "algorithms": 0.8888888888888888,
+    "nesting": 2.125,
+    "integration": 0.0
+  },
+  "exact_match_percent": 35.0,
+  "cohens_kappa": 0.1963471190871136
+}
