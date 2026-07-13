@@ -28,7 +28,7 @@ class PromptGenerationTests(unittest.TestCase):
 
             self.assertIn("Now grade this new project:", prompt)
             self.assertNotIn("old prompt", output_path.read_text(encoding="utf-8"))
-            self.assertIn("sprite_count=5", output_path.read_text(encoding="utf-8"))
+            self.assertIn("sprite_count: 5", output_path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

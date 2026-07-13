@@ -71,11 +71,62 @@ def _exact_match_percent(actual: Dict[str, int], predicted: Dict[str, int]) -> f
     return (matches / len(DEFAULT_RUBRIC_DIMENSIONS)) * 100.0
 
 
+def _precision_per_class(actual: List[int], predicted: List[int]) -> Dict[int, float]:
+    """Compute precision for each class (0-5)."""
+    precision_by_class = {}
+    for score_class in range(0, 6):
+        tp = sum(1 for a, p in zip(actual, predicted) if p == score_class and a == p)
+        fp = sum(1 for a, p in zip(actual, predicted) if p == score_class and a != p)
+        precision_by_class[score_class] = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+    return precision_by_class
+
+
+def _recall_per_class(actual: List[int], predicted: List[int]) -> Dict[int, float]:
+    """Compute recall for each class (0-5)."""
+    recall_by_class = {}
+    for score_class in range(0, 6):
+        tp = sum(1 for a, p in zip(actual, predicted) if a == score_class and a == p)
+        fn = sum(1 for a, p in zip(actual, predicted) if a == score_class and a != p)
+        recall_by_class[score_class] = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+    return recall_by_class
+
+
+def _f1_score_per_class(precision_by_class: Dict[int, float], recall_by_class: Dict[int, float]) -> Dict[int, float]:
+    """Compute F1-score for each class (0-5)."""
+    f1_by_class = {}
+    for score_class in range(0, 6):
+        p = precision_by_class.get(score_class, 0.0)
+        r = recall_by_class.get(score_class, 0.0)
+        if (p + r) > 0:
+            f1_by_class[score_class] = 2 * (p * r) / (p + r)
+        else:
+            f1_by_class[score_class] = 0.0
+    return f1_by_class
+
+
+def _validate_and_clamp_predictions(predicted: Dict[str, int]) -> Dict[str, int]:
+    """Ensure all predicted values are valid integers in range 0-5.
+    
+    If a value is missing, out of range, or invalid, it's clamped to 0-5.
+    """
+    valid_predicted = {}
+    for dimension in DEFAULT_RUBRIC_DIMENSIONS:
+        value = predicted.get(dimension, 0)  # Default to 0 if missing
+        try:
+            int_value = int(value)
+            # Clamp to valid range 0-5
+            valid_predicted[dimension] = max(0, min(5, int_value))
+        except (ValueError, TypeError):
+            valid_predicted[dimension] = 0  # Default to 0 if conversion fails
+    return valid_predicted
+
+
 def run_loocv(
     records: List[Dict[str, Any]],
     model_fn: Callable[[str], Dict[str, int]],
     num_examples: int = 3,
     prompt_builder: Callable = None,
+    debug: bool = False,
 ) -> Dict[str, Any]:
     if prompt_builder is None:
         prompt_builder = build_few_shot_prompt
@@ -88,8 +139,18 @@ def run_loocv(
         train_records = records[:idx] + records[idx + 1 :]
         example_records = train_records[:min(num_examples, len(train_records))]
         prompt = prompt_builder(example_records + [test_record], num_examples=min(num_examples, len(train_records)))
-        predicted = model_fn(prompt)
+        predicted_raw = model_fn(prompt)
+        predicted = _validate_and_clamp_predictions(predicted_raw)
         actual = test_record.get("grades", {})
+
+        if debug and idx == 0:
+            print(f"\n[DEBUG] Sample 1 actual grades: {actual}", flush=True)
+            print(f"[DEBUG] Sample 1 predicted (raw): {predicted_raw}", flush=True)
+            print(f"[DEBUG] Sample 1 predicted (clamped): {predicted}", flush=True)
+            actual_values = [int(actual.get(dimension, 0)) for dimension in DEFAULT_RUBRIC_DIMENSIONS]
+            pred_values = [int(predicted.get(dimension, 0)) for dimension in DEFAULT_RUBRIC_DIMENSIONS]
+            print(f"[DEBUG] Actual value range: {min(actual_values)}-{max(actual_values)}", flush=True)
+            print(f"[DEBUG] Predicted value range: {min(pred_values)}-{max(pred_values)}", flush=True)
 
         sample_results.append({
             "test_id": test_record.get("id"),
@@ -112,12 +173,26 @@ def run_loocv(
         all_actual.extend(actual_values)
         all_predicted.extend(predicted_values)
 
+    precision_by_class = _precision_per_class(all_actual, all_predicted)
+    recall_by_class = _recall_per_class(all_actual, all_predicted)
+    f1_by_class = _f1_score_per_class(precision_by_class, recall_by_class)
+
+    macro_precision = sum(precision_by_class.values()) / len(precision_by_class) if precision_by_class else 0.0
+    macro_recall = sum(recall_by_class.values()) / len(recall_by_class) if recall_by_class else 0.0
+    macro_f1 = sum(f1_by_class.values()) / len(f1_by_class) if f1_by_class else 0.0
+
     summary = {
         "num_samples": len(records),
         "num_dimensions": len(DEFAULT_RUBRIC_DIMENSIONS),
         "mae_by_dimension": mae_by_dimension,
-        "exact_match_percent": sum(result["exact_match_percent"] for result in sample_results) / len(sample_results),
+        "accuracy": sum(result["exact_match_percent"] for result in sample_results) / len(sample_results),
         "cohens_kappa": _cohens_kappa(all_actual, all_predicted),
+        "precision_by_class": precision_by_class,
+        "recall_by_class": recall_by_class,
+        "f1_by_class": f1_by_class,
+        "macro_precision": macro_precision,
+        "macro_recall": macro_recall,
+        "macro_f1": macro_f1,
     }
 
     return {

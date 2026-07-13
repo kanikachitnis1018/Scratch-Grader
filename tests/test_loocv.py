@@ -63,9 +63,13 @@ class LoocvTests(unittest.TestCase):
 
         self.assertEqual(result["summary"]["num_samples"], 3)
         self.assertEqual(result["summary"]["num_dimensions"], 20)
-        self.assertEqual(result["summary"]["exact_match_percent"], 100.0)
+        self.assertEqual(result["summary"]["accuracy"], 100.0)
         self.assertEqual(result["summary"]["cohens_kappa"], 1.0)
         self.assertTrue(all(value == 0.0 for value in result["summary"]["mae_by_dimension"].values()))
+        # With only class 1 present in 0-5 range, macro averages are 1.0/6 ≈ 0.1667
+        self.assertAlmostEqual(result["summary"]["macro_precision"], 1.0 / 6.0, places=3)
+        self.assertAlmostEqual(result["summary"]["macro_recall"], 1.0 / 6.0, places=3)
+        self.assertAlmostEqual(result["summary"]["macro_f1"], 1.0 / 6.0, places=3)
         self.assertEqual(len(result["sample_results"]), 3)
 
     def test_run_loocv_targets_the_held_out_sample(self):

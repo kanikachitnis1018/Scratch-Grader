@@ -8,11 +8,11 @@ import requests
 
 try:
     from .grader import extract_project_features
-    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought
+    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
     from .scratch_loader import fetch_project_json
 except ImportError:  # pragma: no cover - supports running the file directly
     from grader import extract_project_features
-    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought
+    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
     from scratch_loader import fetch_project_json
 
 
@@ -34,7 +34,14 @@ def get_project_features_from_url(url: str) -> Dict[str, Any]:
 def build_prompt_for_url(url: str, records: List[Dict[str, Any]], num_examples: int = 3, prompt_style: str = "few_shot") -> str:
     features = get_project_features_from_url(url)
     prompt_records = records[:max(1, min(num_examples, len(records) - 1))] + [{"id": None, "features": features, "grades": {}}]
-    builder = build_prompt_chain_of_thought if prompt_style == "chain_of_thought" else build_few_shot_prompt
+    if prompt_style == "chain_of_thought":
+        builder = build_prompt_chain_of_thought
+    elif prompt_style == "rubric_reference":
+        builder = build_prompt_rubric_reference
+    elif prompt_style == "hybrid":
+        builder = build_prompt_hybrid
+    else:
+        builder = build_few_shot_prompt
     return builder(prompt_records, num_examples=num_examples)
 
 

@@ -9,11 +9,11 @@ sys.path.append(str(Path(__file__).resolve().parent))
 try:
     from .loocv import run_loocv
     from .ollama_grader import grade_prompt_with_ollama
-    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought
+    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
 except ImportError:  # pragma: no cover - supports running the file directly
     from loocv import run_loocv
     from ollama_grader import grade_prompt_with_ollama
-    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought
+    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
 
 
 def load_records(path: str) -> list[Dict[str, Any]]:
@@ -27,18 +27,28 @@ def main() -> None:
     limit = int(os.getenv("LOOCV_LIMIT", "0") or 0)
     model_name = os.getenv("LOOCV_MODEL", "llama3:latest")
     prompt_style = os.getenv("LOOCV_PROMPT", "few_shot")
+    debug = os.getenv("LOOCV_DEBUG", "").lower() in ("1", "true", "yes")
 
     records = load_records(dataset_path)
     if limit > 0:
         records = records[:limit]
 
-    prompt_builder = build_prompt_chain_of_thought if prompt_style == "chain_of_thought" else build_few_shot_prompt
+    if prompt_style == "chain_of_thought":
+        prompt_builder = build_prompt_chain_of_thought
+    elif prompt_style == "rubric_reference":
+        prompt_builder = build_prompt_rubric_reference
+    elif prompt_style == "hybrid":
+        prompt_builder = build_prompt_hybrid
+    else:
+        prompt_builder = build_few_shot_prompt
     print(f"Using prompt style: {prompt_style}", flush=True)
+    if debug:
+        print(f"Debug mode enabled", flush=True)
 
     def model_fn(prompt: str) -> Dict[str, int]:
         return grade_prompt_with_ollama(prompt, model=model_name)
 
-    result = run_loocv(records, model_fn=model_fn, prompt_builder=prompt_builder)
+    result = run_loocv(records, model_fn=model_fn, prompt_builder=prompt_builder, debug=debug)
     print(json.dumps(result["summary"], indent=2))
 
     output_path = os.getenv("LOOCV_OUTPUT", "")

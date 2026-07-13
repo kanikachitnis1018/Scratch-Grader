@@ -216,6 +216,264 @@ def build_prompt_chain_of_thought(records: List[Dict[str, Any]], num_examples: i
     return "\n\n".join(blocks)
 
 
+RUBRIC_GUIDE = {
+    "problem_decomposition": {
+        "code": "TRUNK-01",
+        "description": "1: No subproblems identified. 2: Incomplete/disorganized parts. 3: Clear parts described in plain language. 4: Prioritizes and maps dependencies. 5: Hierarchical, top-down planning.",
+    },
+    "sequencing": {
+        "code": "TRUNK-02",
+        "description": "1: Random/wrong order. 2: One critical step misordered. 3: Entire sequence logical and correct. 4: Efficient, avoids unnecessary steps. 5: Optimal, adaptable ordering.",
+    },
+    "loops": {
+        "code": "TRUNK-03",
+        "description": "1: Duplicates blocks instead of looping. 2: Wrong counts or infinite loops. 3: Proper repeat/repeat-until loops. 4: Chooses optimal loop types. 5: Handles edge cases; nests correctly.",
+    },
+    "conditionals": {
+        "code": "TRUNK-04",
+        "description": "1: No conditional blocks used. 2: Simple if; struggles with else/logic. 3: Correct if/else branches. 4: Uses AND/OR; handles edge cases. 5: Elegant logic, no redundancy.",
+    },
+    "variables": {
+        "code": "TRUNK-05",
+        "description": "1: All values hardcoded. 2: Uninitialized or poorly named variables. 3: Updates variables properly on events. 4: Dynamic state tracking and resets. 5: Coherent system of interdependent states.",
+    },
+    "event_handling": {
+        "code": "TRUNK-06",
+        "description": "1: Only uses green flag. 2: Misses keys or duplicates handlers. 3: Multi-event responses on correct sprites. 4: Clear, independent event architecture. 5: Coordinated flows; no timing conflicts.",
+    },
+    "debugging": {
+        "code": "TRUNK-07",
+        "description": "1: Random changes; no visible strategy. 2: Finds simple bugs; misses logic errors. 3: Displays variables, isolates code. 4: Fixes subtle logic/edge cases. 5: Methodical testing; documents via comments.",
+    },
+    "procedures": {
+        "code": "TRUNK-08",
+        "description": "1: No custom blocks ('My Blocks'). 2: Custom blocks lack parameters/consistency. 3: Parameterized, reusable custom block. 4: Library of blocks reducing duplication. 5: Elegant abstraction with default values.",
+    },
+    "coordinates": {
+        "code": "TRUNK-09",
+        "description": "1: Drag-and-drop placement only. 2: Fixed, hardcoded coordinate blocks. 3: Moves sprites absolutely and incrementally. 4: Math-based boundaries and tracking. 5: Grids or advanced movement trajectories.",
+    },
+    "cloning": {
+        "code": "TRUNK-10",
+        "description": "1: Manual sprite duplication only. 2: Clones lack independent behavior or deletion. 3: Creates and deletes clones correctly. 4: Manages lifecycles and clone limits. 5: Complex systems (waves, particles).",
+    },
+    "collision": {
+        "code": "TRUNK-11",
+        "description": "1: No interaction detection. 2: Out-of-loop checks cause missed frames. 3: Reliable sprite/edge collision events. 4: Checks sprite, edge, and color types. 5: Accounts for size, timing, and multi-outcomes.",
+    },
+    "animation": {
+        "code": "TRUNK-12",
+        "description": "1: Static sprites. 2: Poor timing or gameplay interference. 3: Smooth costume loops with wait blocks. 4: Linked to events (move, hit). 5: State-driven systems (idle, walk, jump).",
+    },
+    "sound": {
+        "code": "TRUNK-13",
+        "description": "1: No audio blocks. 2: Bad timing or overlapping tracks. 3: Event-triggered, contextual audio. 4: Manages music vs. sound effects correctly. 5: Layered, balanced audio system.",
+    },
+    "ui_feedback": {
+        "code": "TRUNK-14",
+        "description": "1: Missing score/lives/timer. 2: Cluttered, overlapping, or broken counters. 3: Real-time updates of main stats. 4: Includes start, end, and feedback screens. 5: Polished text, audio, and visual states.",
+    },
+    "lists": {
+        "code": "TRUNK-15",
+        "description": "1: Uses single variables instead of a list. 2: Hardcoded indices; no loop traversal. 3: Basic operations (add, delete, item-of). 4: Loops dynamically search/modify items. 5: Formats inventory or high-score systems.",
+    },
+    "math": {
+        "code": "TRUNK-16",
+        "description": "1: Hardcoded numbers only. 2: Simple math errors or order confusion. 3: Calculates dynamic speed, offsets, scores. 4: Fluent mod, rounding, mult, div. 5: Physics or scaling models.",
+    },
+    "messaging": {
+        "code": "TRUNK-17",
+        "description": "1: One sprite controls all; no broadcasts. 2: Single generic message for everything. 3: Named broadcasts with clear intent. 4: Descriptive, easy-to-trace architecture. 5: Protocol with no race conditions.",
+    },
+    "algorithms": {
+        "code": "TRUNK-18",
+        "description": "1: Ad-hoc logic; works by coincidence. 2: Fails on edge cases or scale. 3: Step-by-step logic works for all inputs. 4: Efficient approach chosen with reason. 5: Optimized, documented design tradeoffs.",
+    },
+    "nesting": {
+        "code": "TRUNK-19",
+        "description": "1: Flat code; no nested loops/conditionals. 2: Incorrect block scope nesting. 3: Functional nested loops or conditions. 4: Deliberate, clearly structured layers. 5: Builds state machines/complex systems.",
+    },
+    "integration": {
+        "code": "TRUNK-20",
+        "description": "1: Isolated parts; non-functional project. 2: Features present but disconnected/broken. 3: Fully playable game (systems meet baseline). 4: Polished, seamless gameplay flow. 5: Flawless mastery of all systems combined.",
+    },
+}
+
+
+def _format_rubric_guide() -> str:
+    """Format the complete rubric guide for inclusion in the prompt."""
+    lines = ["SCORING GUIDE - Rubric Dimensions (1=Novice to 5=Expert):\n"]
+    for dimension, info in RUBRIC_GUIDE.items():
+        lines.append(f"{info['code']}: {dimension.upper()}")
+        lines.append(f"{info['description']}\n")
+    return "\n".join(lines)
+
+
+RUBRIC_SUMMARY = {
+    "problem_decomposition": "1=no decomposition | 2=partial/incomplete | 3=clear manageable parts | 4=systematic with dependencies | 5=hierarchical top-down",
+    "sequencing": "1=random/incorrect | 2=mostly correct with one misorder | 3=correct logical flow | 4=efficient deliberate | 5=optimal adaptable",
+    "loops": "1=duplicates code | 2=simple repeat misused | 3=correct repeat-until | 4=appropriate type combined | 5=optimized nested with edge cases",
+    "conditionals": "1=no conditionals | 2=basic if only | 3=correct if/else | 4=multiple AND/OR | 5=elegant multi-branch",
+    "variables": "1=none | 2=declared misused | 3=correct storage updates | 4=multiple descriptive with reset | 5=coherent multi-state",
+    "event_handling": "1=green flag only | 2=one or two events missed | 3=correct multi-event | 4=independent event architecture | 5=coordinated no conflicts",
+    "debugging": "1=random changes | 2=finds obvious bugs | 3=systematic isolation | 4=subtle logic errors | 5=methodical testing documented",
+    "procedures": "1=no custom blocks | 2=blocks lack parameters | 3=parameterized reusable | 4=library reducing duplication | 5=elegant abstraction",
+    "coordinates": "1=drag-drop only | 2=fixed hardcoded | 3=absolute incremental | 4=math-based boundaries | 5=grids advanced trajectories",
+    "cloning": "1=manual duplication | 2=clones lack behavior | 3=creates deletes correctly | 4=manages lifecycles | 5=complex systems waves",
+    "collision": "1=no detection | 2=out-of-loop checks | 3=reliable sprite/edge | 4=sprite edge color | 5=size timing outcomes",
+    "animation": "1=static sprites | 2=poor timing | 3=smooth costume loops | 4=linked to events | 5=state-driven idle/walk/jump",
+    "sound": "1=no audio | 2=bad timing overlapping | 3=event-triggered contextual | 4=manages music vs effects | 5=layered balanced",
+    "ui_feedback": "1=missing score/lives | 2=cluttered overlapping | 3=real-time main stats | 4=start end screens | 5=polished combined states",
+    "lists": "1=uses single variables | 2=hardcoded indices | 3=add delete item-of | 4=dynamic search/modify loops | 5=inventory high-score formats",
+    "math": "1=hardcoded only | 2=simple errors | 3=dynamic speed offsets scores | 4=fluent mod rounding mult div | 5=physics scaling models",
+    "messaging": "1=one sprite all control | 2=single generic message | 3=named broadcasts | 4=descriptive architecture | 5=protocol no race",
+    "algorithms": "1=ad-hoc coincidence | 2=fails edge cases | 3=step-by-step all inputs | 4=efficient reasoned | 5=optimized documented",
+    "nesting": "1=flat no nesting | 2=incorrect scope | 3=functional nested | 4=deliberate structured | 5=state machines complex",
+    "integration": "1=isolated non-functional | 2=features broken disconnected | 3=fully playable baseline | 4=polished seamless | 5=flawless mastery",
+}
+
+SELECTIVE_COT_DIMENSIONS = {"variables", "math", "lists", "sound", "collision"}
+
+
+def _format_rubric_summary() -> str:
+    """Format compact rubric summaries for all 20 dimensions."""
+    lines = ["RUBRIC SUMMARY (Levels 1–5):\n"]
+    for dimension, summary in RUBRIC_SUMMARY.items():
+        lines.append(f"• {dimension}: {summary}")
+    return "\n".join(lines)
+
+
+def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, Any]) -> str:
+    """Generate chain-of-thought reasoning ONLY for feature-driven dimensions."""
+    steps = []
+    
+    sprite_count = features.get("sprite_count", 0)
+    block_count = features.get("block_count", 0)
+    variable_count = features.get("variable_count", 0)
+    list_count = features.get("list_count", 0)
+
+    if "variables" in SELECTIVE_COT_DIMENSIONS:
+        var_reasoning = (
+            f"variables ({grades.get('variables', '?')}): "
+            f"{variable_count} variable(s) defined. "
+        )
+        if variable_count > 0:
+            var_reasoning += "Variables are present and likely used for state tracking. " if features.get("uses_variables") else "Variables declared but usage unclear. "
+            var_reasoning += "Score reflects proper initialization, updates on events, and reset logic."
+        else:
+            var_reasoning += "No variables → level 1."
+        steps.append(f"  - {var_reasoning}")
+
+    if "math" in SELECTIVE_COT_DIMENSIONS:
+        math_reasoning = f"math ({grades.get('math', '?')}): "
+        if features.get("uses_math"):
+            math_reasoning += "Math operators detected. Score based on complexity (simple arithmetic→3, division/modulo→4, physics models→5)."
+        else:
+            math_reasoning += "No math operators → level 1 (hardcoded only)."
+        steps.append(f"  - {math_reasoning}")
+
+    if "lists" in SELECTIVE_COT_DIMENSIONS:
+        lists_reasoning = f"lists ({grades.get('lists', '?')}): "
+        if list_count > 0:
+            lists_reasoning += f"{list_count} list(s) present. Score based on: hardcoded indices→2, add/delete operations→3, dynamic loops→4, inventory systems→5."
+        else:
+            lists_reasoning += "No lists defined → level 1 (single variables)."
+        steps.append(f"  - {lists_reasoning}")
+
+    if "sound" in SELECTIVE_COT_DIMENSIONS:
+        sound_reasoning = f"sound ({grades.get('sound', '?')}): "
+        if features.get("uses_sound"):
+            sound_reasoning += "Sound blocks detected. Score based on timing, context (event-triggered→3), music vs effects separation→4, layering→5."
+        else:
+            sound_reasoning += "No audio blocks → level 1."
+        steps.append(f"  - {sound_reasoning}")
+
+    if "collision" in SELECTIVE_COT_DIMENSIONS:
+        collision_reasoning = f"collision ({grades.get('collision', '?')}): "
+        if features.get("uses_collision"):
+            collision_reasoning += "Collision blocks detected. Score based on: out-of-loop→2, reliable in loops→3, sprite/edge/color checks→4, size/timing accounting→5."
+        else:
+            collision_reasoning += "No collision detection → level 1."
+        steps.append(f"  - {collision_reasoning}")
+
+    return "\n".join(steps)
+
+
+def build_prompt_hybrid(records: List[Dict[str, Any]], num_examples: int = 3) -> str:
+    """Build hybrid prompt: rubric summaries + few-shot examples + selective COT reasoning.
+    
+    Combines:
+    1. Compact rubric summaries (all 20 dimensions, levels 1–5)
+    2. Few-shot examples (unchanged)
+    3. Selective chain-of-thought reasoning (only for variables, math, lists, sound, collision)
+    4. Test sample with reasoning
+    """
+    if not records:
+        raise ValueError("records must not be empty")
+
+    examples = records[:max(1, min(num_examples, len(records) - 1))]
+    target = records[min(len(records) - 1, num_examples)] if len(records) > num_examples else records[-1]
+
+    blocks = [_format_rubric_summary()]
+
+    for index, record in enumerate(examples, start=1):
+        block = "\n".join([
+            f"Example {index}:",
+            "Features:",
+            _format_features(record["features"]),
+            "Grades:",
+            _format_grades(record["grades"]),
+        ])
+        blocks.append(block)
+
+    reasoning = _generate_selective_reasoning(target["features"], target.get("grades", {}))
+    target_block = "\n".join([
+        "Now grade this new project:",
+        "Features:",
+        _format_features(target["features"]),
+        "Reasoning (for feature-driven dimensions):",
+        reasoning,
+    ])
+    blocks.append(target_block)
+    blocks.append("Output ONLY the final grades as a JSON object with all 20 dimensions (integers 0–5). Do NOT include reasoning in the JSON.")
+    return "\n\n".join(blocks)
+
+
+def build_prompt_rubric_reference(records: List[Dict[str, Any]], num_examples: int = 3) -> str:
+    """Build a few-shot prompt with full rubric reference guide.
+
+    This variant includes the complete scoring guide at the beginning, allowing
+    the model to reference exact rubric definitions and level descriptions while
+    grading the target project.
+    """
+    if not records:
+        raise ValueError("records must not be empty")
+
+    examples = records[:max(1, min(num_examples, len(records) - 1))]
+    target = records[min(len(records) - 1, num_examples)] if len(records) > num_examples else records[-1]
+
+    blocks = [_format_rubric_guide()]
+
+    for index, record in enumerate(examples, start=1):
+        block = "\n".join([
+            f"Example {index}:",
+            "Features:",
+            _format_features(record["features"]),
+            "Grades:",
+            _format_grades(record["grades"]),
+        ])
+        blocks.append(block)
+
+    target_block = "\n".join([
+        "Now grade this new project using the rubric guide above:",
+        "Features:",
+        _format_features(target["features"]),
+    ])
+    blocks.append(target_block)
+    blocks.append("Return only the grades as a JSON object with the same rubric keys, referring to the scoring guide for each dimension.")
+    return "\n\n".join(blocks)
+
+
 def save_prompt_to_file(records: List[Dict[str, Any]], output_path: str, num_examples: int = 3) -> str:
     prompt = build_few_shot_prompt(records, num_examples=num_examples)
     with open(output_path, "w", encoding="utf-8") as handle:
