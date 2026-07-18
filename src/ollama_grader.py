@@ -8,11 +8,11 @@ import requests
 
 try:
     from .grader import extract_project_features
-    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
+    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid, build_prompt_question_based
     from .scratch_loader import fetch_project_json
 except ImportError:  # pragma: no cover - supports running the file directly
     from grader import extract_project_features
-    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
+    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid, build_prompt_question_based
     from scratch_loader import fetch_project_json
 
 
@@ -40,6 +40,8 @@ def build_prompt_for_url(url: str, records: List[Dict[str, Any]], num_examples: 
         builder = build_prompt_rubric_reference
     elif prompt_style == "hybrid":
         builder = build_prompt_hybrid
+    elif prompt_style == "question_based":
+        builder = build_prompt_question_based
     else:
         builder = build_few_shot_prompt
     return builder(prompt_records, num_examples=num_examples)

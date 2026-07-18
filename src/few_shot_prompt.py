@@ -299,6 +299,168 @@ RUBRIC_GUIDE = {
     },
 }
 
+QUESTION_GUIDE = {
+    "problem_decomposition": [
+        "Does the project show any explicit subproblems or separated components?",
+        "Are subproblems described or commented anywhere?",
+        "Are boundaries between parts clear?",
+        "Are dependencies between parts explicitly shown?",
+        "Is there a hierarchical structure (main -> subproblems)?",
+        "Are subproblems named or documented?",
+    ],
+    "sequencing": [
+        "Are steps placed in a logical order?",
+        "Does any misordered block break intended behavior?",
+        "Is there a clear start-to-finish flow?",
+        "Are unnecessary steps avoided?",
+        "Is the ordering optimized or deliberately chosen?",
+    ],
+    "loops": [
+        "Are loops used instead of duplicated blocks?",
+        "Are repeat counts correct?",
+        "Are termination conditions correct?",
+        "Are loops nested?",
+        "Are loop types chosen appropriately (repeat vs repeat-until)?",
+        "Are edge cases handled (0 iterations, 1 iteration)?",
+    ],
+    "conditionals": [
+        "Are if/else blocks used?",
+        "Are boolean conditions correct?",
+        "Are compound conditions (AND/OR) used?",
+        "Are redundant checks avoided?",
+        "Are multi-branch states handled?",
+        "Is conditional logic clean and non-duplicated?",
+    ],
+    "variables": [
+        "Are variables used at all?",
+        "Are variables initialized correctly?",
+        "Are variable names descriptive?",
+        "Are multiple game states tracked?",
+        "Are variables updated in response to events?",
+        "Is there a coherent variable system?",
+    ],
+    "event_handling": [
+        "Are events beyond green flag used?",
+        "Are multiple event types handled (key, click, broadcast)?",
+        "Are handlers attached to correct sprites?",
+        "Are event names descriptive?",
+        "Do sprites react independently?",
+        "Are event conflicts avoided?",
+    ],
+    "debugging": [
+        "Are debugging comments present?",
+        "Are variable values displayed for debugging?",
+        "Is code isolated for testing?",
+        "Are edge cases tested?",
+        "Are subtle logic bugs addressed?",
+        "Are fixes documented?",
+    ],
+    "procedures": [
+        "Are custom blocks used?",
+        "Do custom blocks have parameters?",
+        "Are custom blocks reused?",
+        "Do custom blocks reduce duplication?",
+        "Are block names descriptive?",
+        "Are complex behaviors abstracted?",
+    ],
+    "coordinates": [
+        "Are x/y blocks used?",
+        "Are positions updated dynamically?",
+        "Are incremental movements used (change x/y)?",
+        "Are boundaries checked?",
+        "Are positions calculated mathematically?",
+        "Are coordinate systems (grids, trajectories) designed?",
+    ],
+    "cloning": [
+        "Are clones created?",
+        "Do clones behave differently from originals?",
+        "Are clones deleted when no longer needed?",
+        "Are clone-specific variables initialized?",
+        "Is clone quantity controlled?",
+        "Are complex clone systems used (waves, particles)?",
+    ],
+    "collision": [
+        "Are touching blocks used?",
+        "Is collision checked inside loops?",
+        "Are multiple collision types handled?",
+        "Are collisions reliable every frame?",
+        "Are collision outcomes distinct?",
+        "Are timing/size issues handled?",
+    ],
+    "animation": [
+        "Are costume changes used?",
+        "Is animation timing correct?",
+        "Do animations loop smoothly?",
+        "Are animations tied to game events?",
+        "Are multiple animation states used?",
+        "Are transitions between states smooth?",
+    ],
+    "sound": [
+        "Are sounds used?",
+        "Are sounds triggered by events?",
+        "Is timing correct (no overlap)?",
+        "Is background music separated from SFX?",
+        "Are start-sound vs play-until-done used correctly?",
+        "Is there a layered sound system?",
+    ],
+    "ui_feedback": [
+        "Is score/lives/timer shown?",
+        "Does UI update in real time?",
+        "Is UI clear and readable?",
+        "Are start/end screens present?",
+        "Are feedback messages used?",
+        "Is UI polished and consistent?",
+    ],
+    "lists": [
+        "Are lists used?",
+        "Are list items accessed dynamically?",
+        "Are list operations used (add/delete/item-of)?",
+        "Are lists processed with loops?",
+        "Are lists updated during gameplay?",
+        "Are list-based systems designed (inventory, high scores)?",
+    ],
+    "math": [
+        "Are arithmetic operators used?",
+        "Are dynamic values computed?",
+        "Are advanced operators used (multiply/divide/modulo)?",
+        "Are operators chosen correctly?",
+        "Are mathematical models used (scaling, physics)?",
+        "Are random distributions or formulas used?",
+    ],
+    "messaging": [
+        "Are broadcasts used?",
+        "Are messages distinctly named?",
+        "Do sprites respond correctly?",
+        "Are multi-sprite interactions coordinated?",
+        "Is messaging architecture clear?",
+        "Are circular dependencies avoided?",
+    ],
+    "algorithms": [
+        "Is there a step-by-step strategy?",
+        "Does the algorithm work for all expected inputs?",
+        "Are edge cases handled?",
+        "Is efficiency considered?",
+        "Are alternative approaches evaluated?",
+        "Are algorithms documented?",
+    ],
+    "nesting": [
+        "Are loops nested?",
+        "Are conditionals nested?",
+        "Is nesting correct (no scope errors)?",
+        "Does nesting serve a clear purpose?",
+        "Are nested structures documented?",
+        "Are nested systems used (state machines, patterns)?",
+    ],
+    "integration": [
+        "Do major systems (movement, collision, scoring, UI) work together?",
+        "Is the project fully playable?",
+        "Are features consistent across sprites?",
+        "Are skills integrated smoothly?",
+        "Is the project polished?",
+        "Does the whole system demonstrate mastery?",
+    ],
+}
+
 
 def _format_rubric_guide() -> str:
     """Format the complete rubric guide for inclusion in the prompt."""
@@ -306,6 +468,18 @@ def _format_rubric_guide() -> str:
     for dimension, info in RUBRIC_GUIDE.items():
         lines.append(f"{info['code']}: {dimension.upper()}")
         lines.append(f"{info['description']}\n")
+    return "\n".join(lines)
+
+
+def _format_question_guide() -> str:
+    """Format the question-based rubric guide for inclusion in the prompt."""
+    lines = ["QUESTION GUIDE (Levels 1-5):\n"]
+    for index, (dimension, questions) in enumerate(QUESTION_GUIDE.items(), start=1):
+        lines.append(f"{index}. {dimension.replace('_', ' ').title()}")
+        for question in questions:
+            lines.append(f"- {question}")
+        lines.append("")
+    lines.append("Score mapping: 1 = no skill, 2 = partial skill, 3 = correct skill, 4 = efficient skill, 5 = expert skill.")
     return "\n".join(lines)
 
 
@@ -471,6 +645,36 @@ def build_prompt_rubric_reference(records: List[Dict[str, Any]], num_examples: i
     ])
     blocks.append(target_block)
     blocks.append("Return only the grades as a JSON object with the same rubric keys, referring to the scoring guide for each dimension.")
+    return "\n\n".join(blocks)
+
+
+def build_prompt_question_based(records: List[Dict[str, Any]], num_examples: int = 3) -> str:
+    """Build a few-shot prompt using the question set instead of the rubric guide."""
+    if not records:
+        raise ValueError("records must not be empty")
+
+    examples = records[:max(1, min(num_examples, len(records) - 1))]
+    target = records[min(len(records) - 1, num_examples)] if len(records) > num_examples else records[-1]
+
+    blocks = [_format_question_guide()]
+
+    for index, record in enumerate(examples, start=1):
+        block = "\n".join([
+            f"Example {index}:",
+            "Features:",
+            _format_features(record["features"]),
+            "Grades:",
+            _format_grades(record["grades"]),
+        ])
+        blocks.append(block)
+
+    target_block = "\n".join([
+        "Now grade this new project using the question guide above:",
+        "Features:",
+        _format_features(target["features"]),
+    ])
+    blocks.append(target_block)
+    blocks.append("Return only the grades as a JSON object with the same rubric keys, using the question guide and the score mapping above.")
     return "\n\n".join(blocks)
 
 

@@ -52,6 +52,7 @@ Optional environment variables used by the code:
 - `LOOCV_LIMIT` to cap the number of samples processed
 - `LOOCV_NUM_EXAMPLES` to control few-shot example count
 - `LOOCV_PROMPT` to choose `few_shot`, `chain_of_thought`, `rubric_reference`, or `hybrid`
+- `LOOCV_PROMPT` to choose `few_shot`, `chain_of_thought`, `rubric_reference`, `hybrid`, or `question_based`
 - `LOOCV_BALANCED` to enable balanced example selection
 - `LOOCV_DEBUG` to print extra diagnostics
 - `LOOCV_OUTPUT` to save LOOCV summary JSON
@@ -69,6 +70,8 @@ Generate a prompt for a Scratch project URL:
 ```bash
 python src/generate_prompt_from_test_json.py
 ```
+
+To use the question-based rubric variant, set `LOOCV_PROMPT=question_based` or pass `prompt_style="question_based"` to the prompt-generation helpers.
 
 Run leave-one-out evaluation:
 

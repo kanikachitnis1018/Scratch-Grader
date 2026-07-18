@@ -9,12 +9,12 @@ sys.path.append(str(Path(__file__).resolve().parent))
 try:
     from .loocv import run_loocv
     from .ollama_grader import grade_prompt_with_ollama
-    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
+    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid, build_prompt_question_based
     from .balanced_selection import select_balanced_examples
 except ImportError:  # pragma: no cover - supports running the file directly
     from loocv import run_loocv
     from ollama_grader import grade_prompt_with_ollama
-    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
+    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid, build_prompt_question_based
     from balanced_selection import select_balanced_examples
 
 
@@ -47,6 +47,8 @@ def main() -> None:
         prompt_builder = build_prompt_rubric_reference
     elif prompt_style == "hybrid":
         prompt_builder = build_prompt_hybrid
+    elif prompt_style == "question_based":
+        prompt_builder = build_prompt_question_based
     else:
         prompt_builder = build_few_shot_prompt
     print(f"Using prompt style: {prompt_style}", flush=True)

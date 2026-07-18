@@ -1,16 +1,315 @@
+QUESTION GUIDE (Levels 1-5):
+
+1. Problem Decomposition
+- Does the project show any explicit subproblems or separated components?
+- Are subproblems described or commented anywhere?
+- Are boundaries between parts clear?
+- Are dependencies between parts explicitly shown?
+- Is there a hierarchical structure (main -> subproblems)?
+- Are subproblems named or documented?
+
+2. Sequencing
+- Are steps placed in a logical order?
+- Does any misordered block break intended behavior?
+- Is there a clear start-to-finish flow?
+- Are unnecessary steps avoided?
+- Is the ordering optimized or deliberately chosen?
+
+3. Loops
+- Are loops used instead of duplicated blocks?
+- Are repeat counts correct?
+- Are termination conditions correct?
+- Are loops nested?
+- Are loop types chosen appropriately (repeat vs repeat-until)?
+- Are edge cases handled (0 iterations, 1 iteration)?
+
+4. Conditionals
+- Are if/else blocks used?
+- Are boolean conditions correct?
+- Are compound conditions (AND/OR) used?
+- Are redundant checks avoided?
+- Are multi-branch states handled?
+- Is conditional logic clean and non-duplicated?
+
+5. Variables
+- Are variables used at all?
+- Are variables initialized correctly?
+- Are variable names descriptive?
+- Are multiple game states tracked?
+- Are variables updated in response to events?
+- Is there a coherent variable system?
+
+6. Event Handling
+- Are events beyond green flag used?
+- Are multiple event types handled (key, click, broadcast)?
+- Are handlers attached to correct sprites?
+- Are event names descriptive?
+- Do sprites react independently?
+- Are event conflicts avoided?
+
+7. Debugging
+- Are debugging comments present?
+- Are variable values displayed for debugging?
+- Is code isolated for testing?
+- Are edge cases tested?
+- Are subtle logic bugs addressed?
+- Are fixes documented?
+
+8. Procedures
+- Are custom blocks used?
+- Do custom blocks have parameters?
+- Are custom blocks reused?
+- Do custom blocks reduce duplication?
+- Are block names descriptive?
+- Are complex behaviors abstracted?
+
+9. Coordinates
+- Are x/y blocks used?
+- Are positions updated dynamically?
+- Are incremental movements used (change x/y)?
+- Are boundaries checked?
+- Are positions calculated mathematically?
+- Are coordinate systems (grids, trajectories) designed?
+
+10. Cloning
+- Are clones created?
+- Do clones behave differently from originals?
+- Are clones deleted when no longer needed?
+- Are clone-specific variables initialized?
+- Is clone quantity controlled?
+- Are complex clone systems used (waves, particles)?
+
+11. Collision
+- Are touching blocks used?
+- Is collision checked inside loops?
+- Are multiple collision types handled?
+- Are collisions reliable every frame?
+- Are collision outcomes distinct?
+- Are timing/size issues handled?
+
+12. Animation
+- Are costume changes used?
+- Is animation timing correct?
+- Do animations loop smoothly?
+- Are animations tied to game events?
+- Are multiple animation states used?
+- Are transitions between states smooth?
+
+13. Sound
+- Are sounds used?
+- Are sounds triggered by events?
+- Is timing correct (no overlap)?
+- Is background music separated from SFX?
+- Are start-sound vs play-until-done used correctly?
+- Is there a layered sound system?
+
+14. Ui Feedback
+- Is score/lives/timer shown?
+- Does UI update in real time?
+- Is UI clear and readable?
+- Are start/end screens present?
+- Are feedback messages used?
+- Is UI polished and consistent?
+
+15. Lists
+- Are lists used?
+- Are list items accessed dynamically?
+- Are list operations used (add/delete/item-of)?
+- Are lists processed with loops?
+- Are lists updated during gameplay?
+- Are list-based systems designed (inventory, high scores)?
+
+16. Math
+- Are arithmetic operators used?
+- Are dynamic values computed?
+- Are advanced operators used (multiply/divide/modulo)?
+- Are operators chosen correctly?
+- Are mathematical models used (scaling, physics)?
+- Are random distributions or formulas used?
+
+17. Messaging
+- Are broadcasts used?
+- Are messages distinctly named?
+- Do sprites respond correctly?
+- Are multi-sprite interactions coordinated?
+- Is messaging architecture clear?
+- Are circular dependencies avoided?
+
+18. Algorithms
+- Is there a step-by-step strategy?
+- Does the algorithm work for all expected inputs?
+- Are edge cases handled?
+- Is efficiency considered?
+- Are alternative approaches evaluated?
+- Are algorithms documented?
+
+19. Nesting
+- Are loops nested?
+- Are conditionals nested?
+- Is nesting correct (no scope errors)?
+- Does nesting serve a clear purpose?
+- Are nested structures documented?
+- Are nested systems used (state machines, patterns)?
+
+20. Integration
+- Do major systems (movement, collision, scoring, UI) work together?
+- Is the project fully playable?
+- Are features consistent across sprites?
+- Are skills integrated smoothly?
+- Is the project polished?
+- Does the whole system demonstrate mastery?
+
+Score mapping: 1 = no skill, 2 = partial skill, 3 = correct skill, 4 = efficient skill, 5 = expert skill.
+
 Example 1:
-Features: sprite_count=54, block_count=1203, variable_count=13, list_count=5, uses_loops=True, uses_conditionals=True, uses_variables=True, uses_event_handling=True, uses_cloning=True, uses_collision=True, uses_animation=True, uses_sound=True, uses_ui_feedback=True, uses_lists=True, uses_math=True, uses_messaging=True, uses_algorithms=True, uses_nesting=True, uses_integration=True
-Grades: problem_decomposition=4, sequencing=5, loops=5, conditionals=5, variables=4, event_handling=2, debugging=0, procedures=3, coordinates=3, cloning=3, collision=1, animation=1, sound=5, ui_feedback=3, lists=4, math=2, messaging=2, algorithms=4, nesting=4, integration=0
+Features:
+  sprite_count: 54
+  block_count: 1203
+  variable_count: 13
+  list_count: 5
+  uses_loops: True
+  uses_conditionals: True
+  uses_variables: True
+  uses_event_handling: True
+  uses_cloning: True
+  uses_collision: True
+  uses_animation: True
+  uses_sound: True
+  uses_ui_feedback: True
+  uses_lists: True
+  uses_math: True
+  uses_messaging: True
+  uses_algorithms: True
+  uses_nesting: True
+  uses_integration: True
+Grades:
+  problem_decomposition: 4
+  sequencing: 5
+  loops: 5
+  conditionals: 5
+  variables: 4
+  event_handling: 2
+  debugging: 0
+  procedures: 3
+  coordinates: 3
+  cloning: 3
+  collision: 1
+  animation: 1
+  sound: 5
+  ui_feedback: 3
+  lists: 4
+  math: 2
+  messaging: 2
+  algorithms: 4
+  nesting: 4
+  integration: 0
 
 Example 2:
-Features: sprite_count=18, block_count=697, variable_count=30, list_count=0, uses_loops=True, uses_conditionals=True, uses_variables=True, uses_event_handling=True, uses_cloning=True, uses_collision=True, uses_animation=True, uses_sound=True, uses_ui_feedback=True, uses_lists=False, uses_math=True, uses_messaging=True, uses_algorithms=True, uses_nesting=True, uses_integration=True
-Grades: problem_decomposition=3, sequencing=4, loops=5, conditionals=5, variables=5, event_handling=3, debugging=0, procedures=4, coordinates=4, cloning=4, collision=5, animation=1, sound=4, ui_feedback=3, lists=1, math=4, messaging=2, algorithms=3, nesting=4, integration=0
+Features:
+  sprite_count: 18
+  block_count: 697
+  variable_count: 30
+  list_count: 0
+  uses_loops: True
+  uses_conditionals: True
+  uses_variables: True
+  uses_event_handling: True
+  uses_cloning: True
+  uses_collision: True
+  uses_animation: True
+  uses_sound: True
+  uses_ui_feedback: True
+  uses_lists: False
+  uses_math: True
+  uses_messaging: True
+  uses_algorithms: True
+  uses_nesting: True
+  uses_integration: True
+Grades:
+  problem_decomposition: 3
+  sequencing: 4
+  loops: 5
+  conditionals: 5
+  variables: 5
+  event_handling: 3
+  debugging: 0
+  procedures: 4
+  coordinates: 4
+  cloning: 4
+  collision: 5
+  animation: 1
+  sound: 4
+  ui_feedback: 3
+  lists: 1
+  math: 4
+  messaging: 2
+  algorithms: 3
+  nesting: 4
+  integration: 0
 
 Example 3:
-Features: sprite_count=40, block_count=21236, variable_count=1542, list_count=2, uses_loops=True, uses_conditionals=True, uses_variables=True, uses_event_handling=True, uses_cloning=True, uses_collision=True, uses_animation=True, uses_sound=True, uses_ui_feedback=True, uses_lists=True, uses_math=True, uses_messaging=True, uses_algorithms=True, uses_nesting=True, uses_integration=True
-Grades: problem_decomposition=5, sequencing=5, loops=5, conditionals=5, variables=5, event_handling=3, debugging=0, procedures=3, coordinates=3, cloning=3, collision=1, animation=5, sound=2, ui_feedback=2, lists=5, math=3, messaging=2, algorithms=3, nesting=4, integration=0
+Features:
+  sprite_count: 40
+  block_count: 21236
+  variable_count: 1542
+  list_count: 2
+  uses_loops: True
+  uses_conditionals: True
+  uses_variables: True
+  uses_event_handling: True
+  uses_cloning: True
+  uses_collision: True
+  uses_animation: True
+  uses_sound: True
+  uses_ui_feedback: True
+  uses_lists: True
+  uses_math: True
+  uses_messaging: True
+  uses_algorithms: True
+  uses_nesting: True
+  uses_integration: True
+Grades:
+  problem_decomposition: 5
+  sequencing: 5
+  loops: 5
+  conditionals: 5
+  variables: 5
+  event_handling: 3
+  debugging: 0
+  procedures: 3
+  coordinates: 3
+  cloning: 3
+  collision: 1
+  animation: 5
+  sound: 2
+  ui_feedback: 2
+  lists: 5
+  math: 3
+  messaging: 2
+  algorithms: 3
+  nesting: 4
+  integration: 0
 
-Now grade this new project:
-Features: sprite_count=11, block_count=3344, variable_count=38, list_count=8, uses_loops=True, uses_conditionals=True, uses_variables=True, uses_event_handling=True, uses_cloning=True, uses_collision=True, uses_animation=True, uses_sound=True, uses_ui_feedback=True, uses_lists=True, uses_math=True, uses_messaging=True, uses_algorithms=True, uses_nesting=True, uses_integration=True
+Now grade this new project using the question guide above:
+Features:
+  sprite_count: 11
+  block_count: 3344
+  variable_count: 38
+  list_count: 8
+  uses_loops: True
+  uses_conditionals: True
+  uses_variables: True
+  uses_event_handling: True
+  uses_cloning: True
+  uses_collision: True
+  uses_animation: True
+  uses_sound: True
+  uses_ui_feedback: True
+  uses_lists: True
+  uses_math: True
+  uses_messaging: True
+  uses_algorithms: True
+  uses_nesting: True
+  uses_integration: True
 
-Return only the grades as a JSON object with the same rubric keys.
+Return only the grades as a JSON object with the same rubric keys, using the question guide and the score mapping above.

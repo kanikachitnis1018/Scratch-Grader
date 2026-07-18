@@ -3,10 +3,10 @@ import os
 from pathlib import Path
 
 try:
-    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
+    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid, build_prompt_question_based
     from .ollama_grader import get_project_features_from_url
 except ImportError:  # pragma: no cover - supports running the file directly
-    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid
+    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid, build_prompt_question_based
     from ollama_grader import get_project_features_from_url
 
 
@@ -34,6 +34,8 @@ def write_prompt_for_url(url: str, output_path: Path | None = None, prompt_style
         builder = build_prompt_rubric_reference
     elif prompt_style == "hybrid":
         builder = build_prompt_hybrid
+    elif prompt_style == "question_based":
+        builder = build_prompt_question_based
     else:
         builder = build_few_shot_prompt
     prompt = builder(prompt_records, num_examples=3)
