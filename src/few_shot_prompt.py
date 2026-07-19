@@ -506,7 +506,18 @@ RUBRIC_SUMMARY = {
     "integration": "1=isolated non-functional | 2=features broken disconnected | 3=fully playable baseline | 4=polished seamless | 5=flawless mastery",
 }
 
-SELECTIVE_COT_DIMENSIONS = {"variables", "math", "lists", "sound", "collision"}
+SELECTIVE_COT_DIMENSIONS = {
+    "variables",
+    "math",
+    "lists",
+    "sound",
+    "collision",
+    "event_handling",
+    "messaging",
+    "procedures",
+    "nesting",
+    "ui_feedback",
+}
 
 
 def _format_rubric_summary() -> str:
@@ -570,6 +581,46 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
             collision_reasoning += "No collision detection → level 1."
         steps.append(f"  - {collision_reasoning}")
 
+    if "event_handling" in SELECTIVE_COT_DIMENSIONS:
+        event_reasoning = f"event_handling ({grades.get('event_handling', '?')}): "
+        if features.get("uses_event_handling"):
+            event_reasoning += "Event blocks detected. Score should reflect whether the project goes beyond green flag, coordinates multiple triggers, and assigns events across sprites rather than centralising all control."
+        else:
+            event_reasoning += "No event blocks beyond basic startup evidence → low score unless other trigger evidence exists."
+        steps.append(f"  - {event_reasoning}")
+
+    if "messaging" in SELECTIVE_COT_DIMENSIONS:
+        messaging_reasoning = f"messaging ({grades.get('messaging', '?')}): "
+        if features.get("uses_messaging"):
+            messaging_reasoning += "Broadcast blocks detected. Score based on whether messages seem distinct, support sprite coordination, and avoid a single generic broadcast for all state changes."
+        else:
+            messaging_reasoning += "No broadcast blocks → level 1."
+        steps.append(f"  - {messaging_reasoning}")
+
+    if "procedures" in SELECTIVE_COT_DIMENSIONS:
+        procedures_reasoning = f"procedures ({grades.get('procedures', '?')}): "
+        if features.get("uses_algorithms") and features.get("block_count", 0) >= 30:
+            procedures_reasoning += "Larger projects should only score highly here if custom reusable blocks are truly present and reduce duplication; project size alone should not inflate the score."
+        else:
+            procedures_reasoning += "Only score above the baseline when there is clear evidence of custom reusable abstractions."
+        steps.append(f"  - {procedures_reasoning}")
+
+    if "nesting" in SELECTIVE_COT_DIMENSIONS:
+        nesting_reasoning = f"nesting ({grades.get('nesting', '?')}): "
+        if features.get("uses_nesting"):
+            nesting_reasoning += "Loops and conditionals both appear. Only assign high scores if control structures are meaningfully nested rather than merely coexisting in separate scripts."
+        else:
+            nesting_reasoning += "No evidence of nested control structures → low score."
+        steps.append(f"  - {nesting_reasoning}")
+
+    if "ui_feedback" in SELECTIVE_COT_DIMENSIONS:
+        ui_reasoning = f"ui_feedback ({grades.get('ui_feedback', '?')}): "
+        if features.get("uses_ui_feedback"):
+            ui_reasoning += "Say/think/visual feedback exists. Score should distinguish simple feedback from a maintained score/lives/timer UI and proper start/end states."
+        else:
+            ui_reasoning += "No visible UI feedback blocks → low score unless other explicit UI evidence is present."
+        steps.append(f"  - {ui_reasoning}")
+
     return "\n".join(steps)
 
 
@@ -578,8 +629,8 @@ def build_prompt_hybrid(records: List[Dict[str, Any]], num_examples: int = 3) ->
     
     Combines:
     1. Compact rubric summaries (all 20 dimensions, levels 1–5)
-    2. Few-shot examples (unchanged)
-    3. Selective chain-of-thought reasoning (only for variables, math, lists, sound, collision)
+    2. Few-shot examples chosen externally for relevance
+    3. Selective chain-of-thought reasoning for the dimensions where the model most often drifts
     4. Test sample with reasoning
     """
     if not records:

@@ -17,6 +17,7 @@ The pipeline starts with raw grading data and ends with rubric predictions:
 3. `src/ollama_grader.py` sends a prompt to a local Ollama server, parses the JSON-like response, and can save raw prediction output.
 4. `src/loocv.py` evaluates the grader in leave-one-out mode and reports metrics such as accuracy, MAE, Cohen’s kappa, precision, recall, and F1.
 5. `src/server.py` wraps prompt generation and Ollama grading in a basic HTTP server for URL-based requests.
+6. `src/evaluate_stage.py` evaluates the deterministic Stage 1 -> Stage 2 scores against the human grades already stored in `enriched_dataset.json`.
 
 The rubric logic itself lives in `src/grader.py`, which turns Scratch block JSON into a compact feature dictionary and maps spreadsheet rubric columns into rubric keys.
 
@@ -79,6 +80,12 @@ Run leave-one-out evaluation:
 python src/run_loocv.py
 ```
 
+Run evaluation for the Stage 1 -> Stage 2 pipeline:
+
+```bash
+python src/evaluate_stage.py
+```
+
 Start the HTTP server:
 
 ```bash
@@ -100,6 +107,7 @@ The scripts write a few files in the project root:
 - `few_shot_prompt.txt` from prompt-generation scripts and the HTTP server
 - `ollama_predictions.json` from `src/ollama_grader.py`
 - `loocv_results.json` or another summary file if you set `LOOCV_OUTPUT`
+- `dumps/raw_projects.json`, `dumps/atomic_features.json`, and `dumps/model_scores.json` from the Stage pipeline in `src/grader.py`
 
 ## Testing
 

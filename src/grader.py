@@ -1,4 +1,6 @@
+import json
 import re
+from pathlib import Path
 
 import pandas as pd
 
@@ -76,6 +78,173 @@ RUBRIC_LABELS = {
     "19.Nesting": "nesting",
     "20.Integration": "integration",
 }
+
+ATOMIC_QUESTION_KEYS = {
+    "problem_decomposition": [
+        "has_subproblems",
+        "has_hierarchy",
+        "comments_describe_subproblems",
+        "clear_boundaries",
+        "dependencies_explicit",
+        "subproblems_named_or_documented",
+    ],
+    "sequencing": [
+        "logical_order",
+        "misordered_block_breaks_behavior",
+        "clear_start_to_finish_flow",
+        "unnecessary_steps_avoided",
+        "optimized_order",
+    ],
+    "loops": [
+        "loops_used_instead_of_duplication",
+        "repeat_counts_correct",
+        "termination_conditions_correct",
+        "loops_nested",
+        "loop_types_appropriate",
+        "edge_cases_handled",
+    ],
+    "conditionals": [
+        "if_else_used",
+        "boolean_conditions_correct",
+        "compound_conditions_used",
+        "redundant_checks_avoided",
+        "multi_branch_states_handled",
+        "conditional_logic_clean",
+    ],
+    "variables": [
+        "variables_used",
+        "variables_initialized",
+        "variable_names_descriptive",
+        "multiple_states_tracked",
+        "variables_updated_on_events",
+        "coherent_variable_system",
+    ],
+    "event_handling": [
+        "events_beyond_green_flag",
+        "multiple_event_types_handled",
+        "handlers_attached_to_correct_sprites",
+        "event_names_descriptive",
+        "sprites_react_independently",
+        "event_conflicts_avoided",
+    ],
+    "debugging": [
+        "debugging_comments_present",
+        "variable_values_displayed_for_debugging",
+        "code_isolated_for_testing",
+        "edge_cases_tested",
+        "subtle_logic_bugs_addressed",
+        "fixes_documented",
+    ],
+    "procedures": [
+        "custom_blocks_used",
+        "custom_blocks_have_parameters",
+        "custom_blocks_reused",
+        "custom_blocks_reduce_duplication",
+        "block_names_descriptive",
+        "complex_behaviors_abstracted",
+    ],
+    "coordinates": [
+        "x_y_blocks_used",
+        "positions_updated_dynamically",
+        "incremental_movements_used",
+        "boundaries_checked",
+        "positions_calculated_mathematically",
+        "coordinate_systems_designed",
+    ],
+    "cloning": [
+        "clones_created",
+        "clones_behave_differently_from_originals",
+        "clones_deleted_when_no_longer_needed",
+        "clone_specific_variables_initialized",
+        "clone_quantity_controlled",
+        "complex_clone_systems_used",
+    ],
+    "collision": [
+        "touching_blocks_used",
+        "collision_checked_inside_loops",
+        "multiple_collision_types_handled",
+        "collisions_reliable_every_frame",
+        "collision_outcomes_distinct",
+        "timing_size_issues_handled",
+    ],
+    "animation": [
+        "costume_changes_used",
+        "animation_timing_correct",
+        "animations_loop_smoothly",
+        "animations_tied_to_game_events",
+        "multiple_animation_states_used",
+        "transitions_smooth",
+    ],
+    "sound": [
+        "sounds_used",
+        "sounds_triggered_by_events",
+        "timing_correct_no_overlap",
+        "background_music_separated_from_sfx",
+        "start_sound_vs_play_until_done_correct",
+        "layered_sound_system",
+    ],
+    "ui_feedback": [
+        "score_lives_timer_shown",
+        "ui_updates_in_real_time",
+        "ui_clear_and_readable",
+        "start_end_screens_present",
+        "feedback_messages_used",
+        "ui_polished_and_consistent",
+    ],
+    "lists": [
+        "lists_used",
+        "list_items_accessed_dynamically",
+        "list_operations_used",
+        "lists_processed_with_loops",
+        "lists_updated_during_gameplay",
+        "list_based_systems_designed",
+    ],
+    "math": [
+        "arithmetic_operators_used",
+        "dynamic_values_computed",
+        "advanced_operators_used",
+        "operators_chosen_correctly",
+        "mathematical_models_used",
+        "random_or_formula_used",
+    ],
+    "messaging": [
+        "broadcasts_used",
+        "messages_differently_named",
+        "sprites_respond_correctly",
+        "multi_sprite_interactions_coordinated",
+        "messaging_architecture_clear",
+        "circular_dependencies_avoided",
+    ],
+    "algorithms": [
+        "step_by_step_strategy",
+        "algorithm_works_for_inputs",
+        "edge_cases_handled",
+        "efficiency_considered",
+        "alternative_approaches_evaluated",
+        "algorithms_documented",
+    ],
+    "nesting": [
+        "loops_nested",
+        "conditionals_nested",
+        "nesting_correct",
+        "nesting_serves_clear_purpose",
+        "nested_structures_documented",
+        "nested_systems_used",
+    ],
+    "integration": [
+        "major_systems_work_together",
+        "project_fully_playable",
+        "features_consistent_across_sprites",
+        "skills_integrated_smoothly",
+        "project_polished",
+        "whole_system_demonstrates_mastery",
+    ],
+}
+
+DEFAULT_DUMPS_DIR = Path(__file__).resolve().parent.parent / "dumps"
+RAW_PROJECTS_FILE = "raw_projects.json"
+ATOMIC_FEATURES_FILE = "atomic_features.json"
+MODEL_SCORES_FILE = "model_scores.json"
 
 
 def extract_project_features(project_json):
@@ -184,6 +353,415 @@ def extract_project_features(project_json):
     return features
 
 
+def _collect_project_context(project_json):
+    targets = project_json.get("targets", []) if project_json else []
+    sprites = [target for target in targets if not target.get("isStage", False)]
+
+    opcodes = []
+    target_blocks = []
+    event_types = set()
+    broadcast_names = set()
+    handler_sprite_names = set()
+    conditional_count = 0
+    if_else_count = 0
+    nested_control_count = 0
+    for target in targets:
+        sprite_name = target.get("name", "")
+        blocks = target.get("blocks", {}) or {}
+        for block_id, block in blocks.items():
+            if isinstance(block, dict):
+                opcode = block.get("opcode", "")
+                opcodes.append(opcode)
+                target_blocks.append(block)
+                if opcode.startswith("event_when"):
+                    event_types.add(opcode)
+                    if sprite_name:
+                        handler_sprite_names.add(sprite_name)
+                if opcode.startswith("event_broadcast") or opcode.startswith("event_whenbroadcastreceived"):
+                    fields = block.get("fields", {}) or {}
+                    option = fields.get("BROADCAST_OPTION")
+                    if isinstance(option, list) and option:
+                        broadcast_names.add(str(option[0]))
+                if opcode.startswith("control_if"):
+                    conditional_count += 1
+                if opcode.startswith("control_if_else"):
+                    if_else_count += 1
+
+                parent_id = block.get("parent")
+                if parent_id and parent_id in blocks:
+                    parent_block = blocks.get(parent_id) or {}
+                    parent_opcode = parent_block.get("opcode", "")
+                    if parent_opcode.startswith(("control_repeat", "control_forever", "control_if", "control_if_else")) and opcode.startswith(("control_repeat", "control_forever", "control_if", "control_if_else")):
+                        nested_control_count += 1
+
+    variable_names = []
+    list_names = []
+    sprite_names = []
+    for target in targets:
+        name = target.get("name")
+        if isinstance(name, str) and name:
+            sprite_names.append(name)
+
+        for value in (target.get("variables") or {}).values():
+            if isinstance(value, list) and value:
+                variable_names.append(str(value[0]))
+        for value in (target.get("lists") or {}).values():
+            if isinstance(value, list) and value:
+                list_names.append(str(value[0]))
+
+    comments = []
+    for target in targets:
+        for comment in (target.get("comments") or {}).values():
+            if isinstance(comment, dict):
+                text = comment.get("text", "")
+                if text:
+                    comments.append(text)
+
+    return {
+        "targets": targets,
+        "sprites": sprites,
+        "blocks": target_blocks,
+        "opcodes": opcodes,
+        "variable_names": variable_names,
+        "list_names": list_names,
+        "sprite_names": sprite_names,
+        "comments": comments,
+        "event_types": event_types,
+        "broadcast_names": broadcast_names,
+        "handler_sprite_names": handler_sprite_names,
+        "conditional_count": conditional_count,
+        "if_else_count": if_else_count,
+        "nested_control_count": nested_control_count,
+    }
+
+
+def extract_atomic_features(project_json):
+    """Return nested boolean answers for the 20 rubric dimensions."""
+    context = _collect_project_context(project_json)
+    targets = context["targets"]
+    sprites = context["sprites"]
+    opcodes = context["opcodes"]
+    variable_names = context["variable_names"]
+    list_names = context["list_names"]
+    sprite_names = context["sprite_names"]
+    comments = context["comments"]
+    event_types = context["event_types"]
+    broadcast_names = context["broadcast_names"]
+    handler_sprite_names = context["handler_sprite_names"]
+    conditional_count = context["conditional_count"]
+    if_else_count = context["if_else_count"]
+    nested_control_count = context["nested_control_count"]
+
+    block_count = len(opcodes)
+    has_event = any(opcode.startswith("event_") for opcode in opcodes)
+    has_loop = any(opcode.startswith("control_repeat") or opcode.startswith("control_forever") for opcode in opcodes)
+    has_conditional = any(opcode.startswith("control_if") or opcode.startswith("control_if_else") for opcode in opcodes)
+    has_variable = any(opcode.startswith("data_") or opcode.startswith("argument_") for opcode in opcodes) or bool(variable_names)
+    has_broadcast = any(opcode.startswith("event_broadcast") or opcode.startswith("event_broadcastandwait") for opcode in opcodes)
+    has_procedure = any(opcode.startswith("procedures_") or opcode.startswith("procedures_call") for opcode in opcodes)
+    has_coordinate = any(opcode.startswith("motion_gotoxy") or opcode.startswith("motion_glidesecstoxy") for opcode in opcodes)
+    has_clone = any(opcode.startswith("control_create_clone_of") for opcode in opcodes)
+    has_collision = any(opcode.startswith("sensing_touching") or opcode.startswith("sensing_touchingobject") for opcode in opcodes)
+    has_animation = any(opcode.startswith("looks_switchcostumeto") or opcode.startswith("looks_nextcostume") for opcode in opcodes)
+    has_sound = any(opcode.startswith("sound_") for opcode in opcodes)
+    has_ui_feedback = any(opcode.startswith("looks_") and any(token in opcode for token in ["say", "think", "change", "set"]) for opcode in opcodes)
+    has_list = any(opcode.startswith("data_list") for opcode in opcodes) or bool(list_names)
+    has_math = any(token in opcode for opcode in opcodes for token in ["operator_", "math_"])
+    has_nesting = nested_control_count > 0
+    coordinate_ops = {opcode for opcode in opcodes if opcode.startswith(("motion_gotoxy", "motion_glidesecstoxy", "motion_changexby", "motion_changeyby", "motion_setx", "motion_sety"))}
+    has_integration = False
+
+    variable_names_descriptive = any(name and not name.lower().startswith(("var", "item", "list")) for name in variable_names)
+    list_names_descriptive = any(name and not name.lower().startswith(("list", "item")) for name in list_names)
+    sprite_names_descriptive = any(name and name.lower() not in {"sprite1", "sprite2", "sprite3", "stage"} for name in sprite_names)
+    compound_conditionals = any(opcode in {"operator_and", "operator_or", "operator_not"} for opcode in opcodes)
+    ui_variable_names = {"score", "scores", "lives", "life", "timer", "time", "health", "hp"}
+    has_ui_state_variable = any(name.lower() in ui_variable_names for name in variable_names)
+    has_start_end_screen_name = any(token in name.lower() for name in sprite_names for token in ["start", "end", "game over", "menu"]) if sprite_names else False
+    sends_broadcast = any(opcode.startswith("event_broadcast") for opcode in opcodes)
+    receives_broadcast = any(opcode.startswith("event_whenbroadcastreceived") for opcode in opcodes)
+    has_edge_bounce = any(opcode == "motion_ifonedgebounce" for opcode in opcodes)
+
+    atomic = {
+        "problem_decomposition": {
+            "has_subproblems": len(sprites) > 1,
+            "has_hierarchy": has_procedure or has_broadcast,
+            "comments_describe_subproblems": any("subproblem" in comment.lower() or "component" in comment.lower() for comment in comments),
+            "clear_boundaries": len(sprites) > 1 or has_procedure,
+            "dependencies_explicit": has_broadcast or has_procedure,
+            "subproblems_named_or_documented": sprite_names_descriptive,
+        },
+        "sequencing": {
+            "logical_order": block_count > 0,
+            "misordered_block_breaks_behavior": False,
+            "clear_start_to_finish_flow": has_event,
+            "unnecessary_steps_avoided": has_loop or has_conditional or has_broadcast,
+            "optimized_order": False,
+        },
+        "loops": {
+            "loops_used_instead_of_duplication": has_loop,
+            "repeat_counts_correct": False,
+            "termination_conditions_correct": False,
+            "loops_nested": has_nesting,
+            "loop_types_appropriate": False,
+            "edge_cases_handled": False,
+        },
+        "conditionals": {
+            "if_else_used": if_else_count > 0,
+            "boolean_conditions_correct": conditional_count > 0,
+            "compound_conditions_used": compound_conditionals,
+            "redundant_checks_avoided": False,
+            "multi_branch_states_handled": if_else_count > 0,
+            "conditional_logic_clean": conditional_count >= 2,
+        },
+        "variables": {
+            "variables_used": has_variable,
+            "variables_initialized": bool(variable_names),
+            "variable_names_descriptive": variable_names_descriptive,
+            "multiple_states_tracked": len(variable_names) > 1,
+            "variables_updated_on_events": has_event and has_variable,
+            "coherent_variable_system": len(variable_names) > 0 and variable_names_descriptive,
+        },
+        "event_handling": {
+            "events_beyond_green_flag": any(event_type != "event_whenflagclicked" for event_type in event_types),
+            "multiple_event_types_handled": len(event_types) >= 2,
+            "handlers_attached_to_correct_sprites": len(handler_sprite_names) >= 1,
+            "event_names_descriptive": len(broadcast_names) >= 1,
+            "sprites_react_independently": len(handler_sprite_names) >= 2,
+            "event_conflicts_avoided": False,
+        },
+        "debugging": {
+            "debugging_comments_present": any("debug" in comment.lower() for comment in comments),
+            "variable_values_displayed_for_debugging": False,
+            "code_isolated_for_testing": False,
+            "edge_cases_tested": False,
+            "subtle_logic_bugs_addressed": False,
+            "fixes_documented": any("fix" in comment.lower() for comment in comments),
+        },
+        "procedures": {
+            "custom_blocks_used": has_procedure,
+            "custom_blocks_have_parameters": False,
+            "custom_blocks_reused": False,
+            "custom_blocks_reduce_duplication": has_procedure,
+            "block_names_descriptive": has_procedure,
+            "complex_behaviors_abstracted": has_procedure,
+        },
+        "coordinates": {
+            "x_y_blocks_used": bool(coordinate_ops & {"motion_gotoxy", "motion_glidesecstoxy", "motion_setx", "motion_sety"}),
+            "positions_updated_dynamically": bool(coordinate_ops),
+            "incremental_movements_used": bool(coordinate_ops & {"motion_changexby", "motion_changeyby"}),
+            "boundaries_checked": has_edge_bounce,
+            "positions_calculated_mathematically": has_math and bool(coordinate_ops),
+            "coordinate_systems_designed": False,
+        },
+        "cloning": {
+            "clones_created": has_clone,
+            "clones_behave_differently_from_originals": False,
+            "clones_deleted_when_no_longer_needed": False,
+            "clone_specific_variables_initialized": False,
+            "clone_quantity_controlled": False,
+            "complex_clone_systems_used": False,
+        },
+        "collision": {
+            "touching_blocks_used": has_collision,
+            "collision_checked_inside_loops": has_collision and has_loop,
+            "multiple_collision_types_handled": False,
+            "collisions_reliable_every_frame": False,
+            "collision_outcomes_distinct": False,
+            "timing_size_issues_handled": False,
+        },
+        "animation": {
+            "costume_changes_used": has_animation,
+            "animation_timing_correct": False,
+            "animations_loop_smoothly": False,
+            "animations_tied_to_game_events": has_animation and has_event,
+            "multiple_animation_states_used": False,
+            "transitions_smooth": False,
+        },
+        "sound": {
+            "sounds_used": has_sound,
+            "sounds_triggered_by_events": has_sound and has_event,
+            "timing_correct_no_overlap": False,
+            "background_music_separated_from_sfx": False,
+            "start_sound_vs_play_until_done_correct": False,
+            "layered_sound_system": False,
+        },
+        "ui_feedback": {
+            "score_lives_timer_shown": has_ui_state_variable,
+            "ui_updates_in_real_time": has_ui_state_variable and has_event,
+            "ui_clear_and_readable": has_ui_feedback or has_ui_state_variable,
+            "start_end_screens_present": has_start_end_screen_name,
+            "feedback_messages_used": any(opcode.startswith(("looks_say", "looks_think")) for opcode in opcodes),
+            "ui_polished_and_consistent": False,
+        },
+        "lists": {
+            "lists_used": has_list,
+            "list_items_accessed_dynamically": False,
+            "list_operations_used": has_list,
+            "lists_processed_with_loops": has_list and has_loop,
+            "lists_updated_during_gameplay": False,
+            "list_based_systems_designed": list_names_descriptive,
+        },
+        "math": {
+            "arithmetic_operators_used": has_math,
+            "dynamic_values_computed": has_math,
+            "advanced_operators_used": False,
+            "operators_chosen_correctly": False,
+            "mathematical_models_used": False,
+            "random_or_formula_used": False,
+        },
+        "messaging": {
+            "broadcasts_used": has_broadcast,
+            "messages_differently_named": len(broadcast_names) >= 2,
+            "sprites_respond_correctly": sends_broadcast and receives_broadcast,
+            "multi_sprite_interactions_coordinated": len(sprites) > 1 and sends_broadcast and receives_broadcast,
+            "messaging_architecture_clear": len(broadcast_names) >= 2 and sends_broadcast and receives_broadcast,
+            "circular_dependencies_avoided": False,
+        },
+        "algorithms": {
+            "step_by_step_strategy": block_count > 0,
+            "algorithm_works_for_inputs": False,
+            "edge_cases_handled": False,
+            "efficiency_considered": False,
+            "alternative_approaches_evaluated": False,
+            "algorithms_documented": False,
+        },
+        "nesting": {
+            "loops_nested": nested_control_count > 0 and has_loop,
+            "conditionals_nested": nested_control_count > 0 and has_conditional,
+            "nesting_correct": nested_control_count > 0,
+            "nesting_serves_clear_purpose": nested_control_count >= 2,
+            "nested_structures_documented": False,
+            "nested_systems_used": nested_control_count >= 2,
+        },
+        "integration": {
+            "major_systems_work_together": False,
+            "project_fully_playable": False,
+            "features_consistent_across_sprites": False,
+            "skills_integrated_smoothly": False,
+            "project_polished": False,
+            "whole_system_demonstrates_mastery": False,
+        },
+    }
+
+    return atomic
+
+
+def map_scores(atomic_dict):
+    """Map atomic yes/no answers to final 1-5 scores for each dimension."""
+    scores = {}
+    for dimension, answers in atomic_dict.items():
+        if not isinstance(answers, dict) or not answers:
+            scores[dimension] = 1
+            continue
+
+        true_count = sum(1 for value in answers.values() if bool(value))
+        if dimension in {"debugging", "integration"}:
+            if true_count == 0:
+                score = 0
+            else:
+                score = min(2, true_count)
+        elif dimension == "conditionals":
+            if not answers.get("boolean_conditions_correct"):
+                score = 1
+            elif answers.get("compound_conditions_used"):
+                score = 5
+            elif answers.get("if_else_used") or answers.get("multi_branch_states_handled"):
+                score = 4
+            else:
+                score = 3
+        elif dimension == "event_handling":
+            if true_count == 0:
+                score = 1
+            elif answers.get("multiple_event_types_handled") and answers.get("sprites_react_independently"):
+                score = 4
+            elif answers.get("multiple_event_types_handled"):
+                score = 3
+            else:
+                score = 2
+        elif dimension == "messaging":
+            if not answers.get("broadcasts_used"):
+                score = 1
+            elif answers.get("messaging_architecture_clear"):
+                score = 4
+            elif answers.get("sprites_respond_correctly"):
+                score = 3
+            else:
+                score = 2
+        elif dimension == "ui_feedback":
+            if true_count == 0:
+                score = 1
+            elif answers.get("start_end_screens_present") and answers.get("score_lives_timer_shown"):
+                score = 4
+            elif true_count >= 3:
+                score = 3
+            else:
+                score = 2
+        elif dimension == "coordinates":
+            if not answers.get("positions_updated_dynamically"):
+                score = 1
+            elif answers.get("positions_calculated_mathematically") or answers.get("boundaries_checked"):
+                score = 4
+            else:
+                score = 3
+        elif dimension == "problem_decomposition":
+            if not answers.get("has_subproblems"):
+                score = 1
+            elif answers.get("has_hierarchy") and answers.get("dependencies_explicit"):
+                score = 4
+            elif answers.get("clear_boundaries"):
+                score = 3
+            else:
+                score = 2
+        elif dimension == "nesting":
+            if not answers.get("nesting_correct"):
+                score = 1
+            elif answers.get("nested_systems_used"):
+                score = 4
+            else:
+                score = 3
+        else:
+            total = len(answers)
+            if true_count == 0:
+                score = 1
+            else:
+                ratio = true_count / total
+                if ratio <= 0.20:
+                    score = 2
+                elif ratio <= 0.40:
+                    score = 3
+                elif ratio <= 0.60:
+                    score = 4
+                else:
+                    score = 5
+        scores[dimension] = score
+
+    return scores
+
+
+def _write_json(path: Path, payload):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        json.dump(payload, handle, indent=2)
+
+
+def _save_stage_outputs(raw_projects, atomic_features_by_project, model_scores_by_project, output_dir=None):
+    base_dir = Path(output_dir) if output_dir else DEFAULT_DUMPS_DIR
+    raw_path = base_dir / RAW_PROJECTS_FILE
+    atomic_path = base_dir / ATOMIC_FEATURES_FILE
+    score_path = base_dir / MODEL_SCORES_FILE
+
+    _write_json(raw_path, raw_projects)
+    _write_json(atomic_path, atomic_features_by_project)
+    _write_json(score_path, model_scores_by_project)
+
+    return {
+        "raw_projects_path": str(raw_path),
+        "atomic_features_path": str(atomic_path),
+        "model_scores_path": str(score_path),
+    }
+
+
 def _extract_project_id(row):
     url_value = row.get("URL") if hasattr(row, "get") else None
     if isinstance(url_value, str):
@@ -209,14 +787,34 @@ def _extract_labels(row):
     return labels
 
 
-def enrich_dataset(df):
+def enrich_dataset(df, output_dir=None):
     enriched = []
+    raw_projects = {}
+    atomic_features_by_project = {}
+    model_scores_by_project = {}
+
     for _, row in df.iterrows():
-        project_id = _extract_project_id(row)
-        grade = row["Reviewer"]  # or whatever column holds the human grade
+        try:
+            project_id = _extract_project_id(row)
+        except KeyError as exc:
+            print(f"Warning: skipping row without usable project id/url: {exc}")
+            continue
+
         project_json = fetch_project_json(project_id)
         if not project_json:
             continue
+
+        try:
+            atomic_features = extract_atomic_features(project_json)
+            model_scores = map_scores(atomic_features)
+        except OSError as exc:
+            print(f"Warning: could not prepare stage artifacts for project {project_id}: {exc}")
+            continue
+
+        project_key = str(project_id)
+        raw_projects[project_key] = project_json
+        atomic_features_by_project[project_key] = atomic_features
+        model_scores_by_project[project_key] = model_scores
 
         features = extract_project_features(project_json)
         labels = _extract_labels(row)
@@ -224,5 +822,21 @@ def enrich_dataset(df):
             "id": project_id,
             "grades": labels,
             "features": features,
+            "atomic_features": atomic_features,
+            "model_scores": model_scores,
         })
+
+    if enriched:
+        try:
+            stage_paths = _save_stage_outputs(
+                raw_projects,
+                atomic_features_by_project,
+                model_scores_by_project,
+                output_dir=output_dir,
+            )
+        except OSError as exc:
+            print(f"Warning: could not save debug artifacts: {exc}")
+        else:
+            for record in enriched:
+                record.update(stage_paths)
     return enriched

@@ -21,3 +21,6 @@ scratch_raw_json/
 ScoringGuide.pdf
 
 results_rr.json
+
+# Generated stage pipeline artifacts
+dumps/

@@ -4,9 +4,9 @@ from typing import Any, Callable, Dict, List
 import pandas as pd
 
 try:
-    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought
+    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_hybrid
 except ImportError:  # pragma: no cover - supports running the file directly
-    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought
+    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_hybrid
 
 
 DEFAULT_RUBRIC_DIMENSIONS = [
@@ -121,6 +121,99 @@ def _validate_and_clamp_predictions(predicted: Dict[str, int]) -> Dict[str, int]
     return valid_predicted
 
 
+def _feature_similarity_score(candidate: Dict[str, Any], target: Dict[str, Any]) -> float:
+    candidate_features = candidate.get("features", {})
+    target_features = target.get("features", {})
+
+    score = 0.0
+    numeric_keys = ["sprite_count", "block_count", "variable_count", "list_count"]
+    boolean_keys = [
+        "uses_loops",
+        "uses_conditionals",
+        "uses_variables",
+        "uses_event_handling",
+        "uses_cloning",
+        "uses_collision",
+        "uses_animation",
+        "uses_sound",
+        "uses_ui_feedback",
+        "uses_lists",
+        "uses_math",
+        "uses_messaging",
+        "uses_algorithms",
+        "uses_nesting",
+        "uses_integration",
+    ]
+
+    for key in boolean_keys:
+        if candidate_features.get(key) == target_features.get(key):
+            score += 2.0
+
+    for key in numeric_keys:
+        candidate_value = float(candidate_features.get(key, 0) or 0)
+        target_value = float(target_features.get(key, 0) or 0)
+        max_value = max(abs(candidate_value), abs(target_value), 1.0)
+        score += 1.0 - (abs(candidate_value - target_value) / max_value)
+
+    return score
+
+
+def _grade_distance_score(candidate: Dict[str, Any], selected: List[Dict[str, Any]]) -> float:
+    """Reward examples whose grade vectors differ from already selected ones."""
+    if not selected:
+        return 0.0
+
+    candidate_grades = candidate.get("grades", {})
+    if not isinstance(candidate_grades, dict) or not candidate_grades:
+        return 0.0
+
+    distances = []
+    for selected_record in selected:
+        selected_grades = selected_record.get("grades", {})
+        distance = 0.0
+        for dimension in DEFAULT_RUBRIC_DIMENSIONS:
+            candidate_value = int(candidate_grades.get(dimension, 0))
+            selected_value = int(selected_grades.get(dimension, 0))
+            distance += abs(candidate_value - selected_value)
+        distances.append(distance / len(DEFAULT_RUBRIC_DIMENSIONS))
+
+    return min(distances) if distances else 0.0
+
+
+def _select_example_records(
+    train_records: List[Dict[str, Any]],
+    test_record: Dict[str, Any],
+    num_examples: int,
+    prompt_builder: Callable,
+) -> List[Dict[str, Any]]:
+    example_count = min(num_examples, len(train_records))
+    if example_count <= 0:
+        return []
+
+    if prompt_builder is build_prompt_hybrid:
+        # Greedy MMR-style selection: keep examples similar to target while
+        # increasing grade diversity across selected examples.
+        available = list(train_records)
+        selected = []
+        while len(selected) < example_count and available:
+            best_index = 0
+            best_score = float("-inf")
+
+            for index, candidate in enumerate(available):
+                similarity = _feature_similarity_score(candidate, test_record)
+                diversity = _grade_distance_score(candidate, selected)
+                combined = (0.75 * similarity) + (0.25 * diversity)
+                if combined > best_score:
+                    best_score = combined
+                    best_index = index
+
+            selected.append(available.pop(best_index))
+
+        return selected
+
+    return train_records[:example_count]
+
+
 def run_loocv(
     records: List[Dict[str, Any]],
     model_fn: Callable[[str], Dict[str, int]],
@@ -137,7 +230,7 @@ def run_loocv(
     for idx, test_record in enumerate(records):
         print(f"LOOCV progress: {idx + 1}/{len(records)}", flush=True)
         train_records = records[:idx] + records[idx + 1 :]
-        example_records = train_records[:min(num_examples, len(train_records))]
+        example_records = _select_example_records(train_records, test_record, num_examples, prompt_builder)
         prompt = prompt_builder(example_records + [test_record], num_examples=min(num_examples, len(train_records)))
         predicted_raw = model_fn(prompt)
         predicted = _validate_and_clamp_predictions(predicted_raw)

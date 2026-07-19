@@ -1,6 +1,6 @@
 import unittest
 
-from src.few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_question_based
+from src.few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_hybrid, build_prompt_question_based
 
 
 class FewShotPromptTests(unittest.TestCase):
@@ -275,6 +275,68 @@ class FewShotPromptTests(unittest.TestCase):
         self.assertIn("Now grade this new project using the question guide above:", prompt)
         self.assertIn("sprite_count: 6", prompt)
         self.assertIn("Return only the grades as a JSON object with the same rubric keys", prompt)
+
+    def test_build_prompt_hybrid_includes_expanded_reasoning(self):
+        records = [
+            {
+                "id": 1,
+                "features": {
+                    "sprite_count": 2,
+                    "block_count": 40,
+                    "variable_count": 2,
+                    "list_count": 0,
+                    "uses_loops": True,
+                    "uses_conditionals": True,
+                    "uses_variables": True,
+                    "uses_event_handling": True,
+                    "uses_cloning": False,
+                    "uses_collision": True,
+                    "uses_animation": False,
+                    "uses_sound": False,
+                    "uses_ui_feedback": True,
+                    "uses_lists": False,
+                    "uses_math": True,
+                    "uses_messaging": True,
+                    "uses_algorithms": True,
+                    "uses_nesting": True,
+                    "uses_integration": False,
+                },
+                "grades": {"event_handling": 3, "messaging": 2, "nesting": 3, "ui_feedback": 3},
+            },
+            {
+                "id": 2,
+                "features": {
+                    "sprite_count": 3,
+                    "block_count": 55,
+                    "variable_count": 3,
+                    "list_count": 0,
+                    "uses_loops": True,
+                    "uses_conditionals": True,
+                    "uses_variables": True,
+                    "uses_event_handling": True,
+                    "uses_cloning": False,
+                    "uses_collision": True,
+                    "uses_animation": False,
+                    "uses_sound": False,
+                    "uses_ui_feedback": True,
+                    "uses_lists": False,
+                    "uses_math": True,
+                    "uses_messaging": True,
+                    "uses_algorithms": True,
+                    "uses_nesting": True,
+                    "uses_integration": False,
+                },
+                "grades": {"event_handling": 4, "messaging": 3, "nesting": 4, "ui_feedback": 3},
+            },
+        ]
+
+        prompt = build_prompt_hybrid(records, num_examples=1)
+
+        self.assertIn("Reasoning (for feature-driven dimensions):", prompt)
+        self.assertIn("event_handling", prompt)
+        self.assertIn("messaging", prompt)
+        self.assertIn("nesting", prompt)
+        self.assertIn("ui_feedback", prompt)
 
 
 if __name__ == "__main__":
