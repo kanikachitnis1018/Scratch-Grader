@@ -169,7 +169,7 @@ class ExtractProjectFeaturesTests(unittest.TestCase):
             self.assertIn("atomic_features", enriched[0])
             self.assertIn("model_scores", enriched[0])
             self.assertGreaterEqual(enriched[0]["model_scores"]["problem_decomposition"], 1)
-            self.assertTrue(enriched[0]["atomic_features"]["event_handling"]["handlers_attached_to_correct_sprites"])
+            self.assertFalse(enriched[0]["atomic_features"]["event_handling"]["handlers_attached_to_correct_sprites"])
             self.assertTrue((output_dir / "raw_projects.json").exists())
             self.assertTrue((output_dir / "atomic_features.json").exists())
             self.assertTrue((output_dir / "model_scores.json").exists())

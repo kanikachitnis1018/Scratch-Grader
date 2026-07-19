@@ -31,6 +31,19 @@ def load_records(path: str) -> List[Dict[str, Any]]:
         return json.load(handle)
 
 
+def _build_dimension_confusion_matrix(sample_results: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
+    confusion_by_dimension: Dict[str, Dict[str, int]] = {}
+    for dimension in DEFAULT_RUBRIC_DIMENSIONS:
+        matrix: Dict[str, int] = {}
+        for result in sample_results:
+            actual_value = int(result["actual"].get(dimension, 0))
+            predicted_value = int(result["predicted"].get(dimension, 0))
+            key = f"actual_{actual_value}->pred_{predicted_value}"
+            matrix[key] = matrix.get(key, 0) + 1
+        confusion_by_dimension[dimension] = matrix
+    return confusion_by_dimension
+
+
 def evaluate_stage_records(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     if not records:
         raise ValueError("records must not be empty")
@@ -82,6 +95,7 @@ def evaluate_stage_records(records: List[Dict[str, Any]]) -> Dict[str, Any]:
         "macro_precision": macro_precision,
         "macro_recall": macro_recall,
         "macro_f1": macro_f1,
+        "confusion_by_dimension": _build_dimension_confusion_matrix(sample_results),
     }
 
     return {

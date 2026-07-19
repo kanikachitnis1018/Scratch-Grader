@@ -1,5 +1,5 @@
 import json
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Tuple
 
 import pandas as pd
 
@@ -155,7 +155,142 @@ def _feature_similarity_score(candidate: Dict[str, Any], target: Dict[str, Any])
         max_value = max(abs(candidate_value), abs(target_value), 1.0)
         score += 1.0 - (abs(candidate_value - target_value) / max_value)
 
+    # Dimension-aware profiles help hybrid retrieval favor projects that are
+    # similar in the same kinds of skills, not just overall project size.
+    profile_groups = [
+        {
+            "bool": ["uses_loops", "uses_conditionals", "uses_algorithms", "uses_nesting", "uses_math"],
+            "num": ["block_count"],
+            "bool_weight": 1.8,
+            "num_weight": 1.0,
+        },
+        {
+            "bool": ["uses_event_handling", "uses_messaging", "uses_ui_feedback"],
+            "num": ["sprite_count"],
+            "bool_weight": 2.0,
+            "num_weight": 1.1,
+        },
+        {
+            "bool": ["uses_variables", "uses_lists", "uses_math"],
+            "num": ["variable_count", "list_count"],
+            "bool_weight": 1.7,
+            "num_weight": 1.0,
+        },
+    ]
+
+    for group in profile_groups:
+        for key in group["bool"]:
+            if candidate_features.get(key) == target_features.get(key):
+                score += group["bool_weight"]
+        for key in group["num"]:
+            candidate_value = float(candidate_features.get(key, 0) or 0)
+            target_value = float(target_features.get(key, 0) or 0)
+            max_value = max(abs(candidate_value), abs(target_value), 1.0)
+            score += group["num_weight"] * (1.0 - (abs(candidate_value - target_value) / max_value))
+
     return score
+
+
+def _adaptive_mmr_weights(similarities: List[float]) -> Tuple[float, float]:
+    """Set similarity/diversity weights from candidate pool shape.
+
+    - Near-duplicate pools (low variance) get more diversity weight.
+    - Noisy/sparse pools (high variance) get more similarity weight.
+    """
+    if not similarities:
+        return 0.75, 0.25
+
+    sorted_scores = sorted(similarities, reverse=True)
+    top_scores = sorted_scores[: min(8, len(sorted_scores))]
+    mean_score = sum(top_scores) / len(top_scores)
+
+    variance = sum((value - mean_score) ** 2 for value in top_scores) / len(top_scores)
+    std_dev = variance ** 0.5
+    coefficient_of_variation = std_dev / mean_score if mean_score > 0 else 0.0
+
+    # 0.12 -> near-duplicates (favor diversity), 0.35 -> noisy/sparse (favor similarity)
+    lower, upper = 0.12, 0.35
+    if coefficient_of_variation <= lower:
+        similarity_weight = 0.62
+    elif coefficient_of_variation >= upper:
+        similarity_weight = 0.84
+    else:
+        ratio = (coefficient_of_variation - lower) / (upper - lower)
+        similarity_weight = 0.62 + (0.22 * ratio)
+
+    if mean_score < 12.0:
+        similarity_weight = min(0.90, similarity_weight + 0.04)
+
+    diversity_weight = 1.0 - similarity_weight
+    return similarity_weight, diversity_weight
+
+
+def _complexity_score(features: Dict[str, Any]) -> float:
+    """Compute a coarse project complexity score from extracted features."""
+    sprite_count = float(features.get("sprite_count", 0) or 0)
+    block_count = float(features.get("block_count", 0) or 0)
+    variable_count = float(features.get("variable_count", 0) or 0)
+    list_count = float(features.get("list_count", 0) or 0)
+
+    boolean_signals = [
+        "uses_loops",
+        "uses_conditionals",
+        "uses_variables",
+        "uses_event_handling",
+        "uses_cloning",
+        "uses_collision",
+        "uses_animation",
+        "uses_sound",
+        "uses_ui_feedback",
+        "uses_lists",
+        "uses_math",
+        "uses_messaging",
+        "uses_algorithms",
+        "uses_nesting",
+        "uses_integration",
+    ]
+    enabled_count = sum(1 for key in boolean_signals if bool(features.get(key)))
+
+    return (
+        (sprite_count * 1.2)
+        + (block_count / 25.0)
+        + (variable_count * 1.5)
+        + (list_count * 2.0)
+        + (enabled_count * 2.2)
+    )
+
+
+def _complexity_band(features: Dict[str, Any]) -> int:
+    """Bucket projects into low/medium/high complexity bands."""
+    score = _complexity_score(features)
+    if score < 28.0:
+        return 0
+    if score < 52.0:
+        return 1
+    return 2
+
+
+def _filter_candidates_by_complexity(
+    train_records: List[Dict[str, Any]],
+    test_record: Dict[str, Any],
+    min_required: int,
+) -> List[Dict[str, Any]]:
+    """Prefer nearby complexity bands and widen gradually when needed."""
+    test_features = test_record.get("features", {})
+    test_band = _complexity_band(test_features)
+
+    def _band_distance(record: Dict[str, Any]) -> int:
+        return abs(_complexity_band(record.get("features", {})) - test_band)
+
+    exact_band = [record for record in train_records if _band_distance(record) == 0]
+    if len(exact_band) >= min_required:
+        return exact_band
+
+    near_band = [record for record in train_records if _band_distance(record) <= 1]
+    if len(near_band) >= min_required:
+        return near_band
+
+    return train_records
 
 
 def _grade_distance_score(candidate: Dict[str, Any], selected: List[Dict[str, Any]]) -> float:
@@ -193,8 +328,13 @@ def _select_example_records(
     if prompt_builder is build_prompt_hybrid:
         # Greedy MMR-style selection: keep examples similar to target while
         # increasing grade diversity across selected examples.
-        available = list(train_records)
+        minimum_pool = min(len(train_records), max(example_count * 2, example_count + 2))
+        complexity_filtered = _filter_candidates_by_complexity(train_records, test_record, minimum_pool)
+        available = list(complexity_filtered)
         selected = []
+        candidate_similarities = [_feature_similarity_score(candidate, test_record) for candidate in available]
+        similarity_weight, diversity_weight = _adaptive_mmr_weights(candidate_similarities)
+
         while len(selected) < example_count and available:
             best_index = 0
             best_score = float("-inf")
@@ -202,7 +342,7 @@ def _select_example_records(
             for index, candidate in enumerate(available):
                 similarity = _feature_similarity_score(candidate, test_record)
                 diversity = _grade_distance_score(candidate, selected)
-                combined = (0.75 * similarity) + (0.25 * diversity)
+                combined = (similarity_weight * similarity) + (diversity_weight * diversity)
                 if combined > best_score:
                     best_score = combined
                     best_index = index

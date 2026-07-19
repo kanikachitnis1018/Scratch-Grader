@@ -102,8 +102,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -134,11 +134,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -158,10 +158,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -182,9 +182,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -209,21 +209,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -334,9 +334,9 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
+        "custom_blocks_have_parameters": true,
         "custom_blocks_reused": false,
-        "custom_blocks_reduce_duplication": true,
+        "custom_blocks_reduce_duplication": false,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
       },
@@ -366,11 +366,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -414,9 +414,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
+        "algorithm_works_for_inputs": true,
         "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -426,7 +426,7 @@
         "nesting_correct": true,
         "nesting_serves_clear_purpose": true,
         "nested_structures_documented": false,
-        "nested_systems_used": true
+        "nested_systems_used": false
       },
       "integration": {
         "major_systems_work_together": false,
@@ -441,22 +441,22 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 2,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 3,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
-      "nesting": 4,
+      "algorithms": 3,
+      "nesting": 3,
       "integration": 0
     },
     "raw_projects_path": "/Users/kanikachitnis/Downloads/UIC/RA/MCP servers/scratch-grader/dumps/raw_projects.json",
@@ -554,7 +554,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -566,8 +566,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -598,11 +598,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -622,10 +622,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -642,13 +642,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -673,21 +673,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -798,8 +798,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -830,8 +830,8 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
         "multiple_animation_states_used": false,
         "transitions_smooth": false
@@ -878,9 +878,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -905,11 +905,11 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
@@ -919,7 +919,7 @@
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -1030,8 +1030,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -1062,11 +1062,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -1110,9 +1110,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -1137,21 +1137,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -1294,11 +1294,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -1318,10 +1318,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -1342,9 +1342,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -1369,21 +1369,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
       "procedures": 1,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -1494,8 +1494,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -1526,11 +1526,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -1550,10 +1550,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -1574,9 +1574,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -1601,21 +1601,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -1714,7 +1714,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -1726,8 +1726,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -1758,11 +1758,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -1782,10 +1782,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -1802,13 +1802,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -1833,21 +1833,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -1946,7 +1946,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -1958,8 +1958,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -1990,11 +1990,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -2014,10 +2014,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -2034,13 +2034,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -2065,21 +2065,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -2178,7 +2178,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -2190,8 +2190,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -2222,11 +2222,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -2246,10 +2246,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -2266,13 +2266,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -2297,21 +2297,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -2410,7 +2410,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -2422,8 +2422,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -2454,11 +2454,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -2498,13 +2498,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -2529,21 +2529,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 1,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -2654,8 +2654,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -2686,11 +2686,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -2710,10 +2710,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -2734,9 +2734,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -2761,21 +2761,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -2886,8 +2886,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -2918,11 +2918,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -2966,9 +2966,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -2993,21 +2993,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -3106,7 +3106,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -3118,8 +3118,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -3150,11 +3150,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -3174,10 +3174,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -3194,13 +3194,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -3225,21 +3225,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 1,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -3350,8 +3350,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -3382,11 +3382,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -3406,10 +3406,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -3430,9 +3430,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -3457,21 +3457,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -3582,8 +3582,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -3614,11 +3614,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -3638,10 +3638,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -3662,9 +3662,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -3689,21 +3689,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -3802,7 +3802,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -3814,8 +3814,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -3846,11 +3846,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -3870,10 +3870,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -3890,13 +3890,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -3921,21 +3921,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -4034,7 +4034,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -4046,8 +4046,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -4078,11 +4078,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -4102,10 +4102,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -4122,13 +4122,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -4153,21 +4153,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -4278,8 +4278,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -4310,11 +4310,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -4358,9 +4358,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -4385,21 +4385,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -4498,7 +4498,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -4510,8 +4510,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -4542,11 +4542,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -4566,10 +4566,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -4586,13 +4586,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -4617,21 +4617,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -4742,8 +4742,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -4774,11 +4774,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -4815,16 +4815,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -4849,21 +4849,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 1,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -4974,9 +4974,9 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
+        "custom_blocks_have_parameters": true,
         "custom_blocks_reused": false,
-        "custom_blocks_reduce_duplication": true,
+        "custom_blocks_reduce_duplication": false,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
       },
@@ -5006,11 +5006,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -5047,16 +5047,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -5081,21 +5081,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 3,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 1,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -5206,8 +5206,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -5238,11 +5238,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -5262,10 +5262,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -5286,9 +5286,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -5313,21 +5313,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -5470,11 +5470,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -5518,9 +5518,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -5545,21 +5545,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
       "procedures": 1,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 2,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -5702,11 +5702,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -5743,16 +5743,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -5777,21 +5777,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
       "procedures": 1,
       "coordinates": 4,
       "cloning": 2,
       "collision": 1,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 1,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -5890,7 +5890,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -5902,8 +5902,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -5934,11 +5934,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -5978,13 +5978,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -6009,21 +6009,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 1,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -6134,8 +6134,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -6166,11 +6166,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -6190,10 +6190,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -6214,9 +6214,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -6241,21 +6241,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
       "messaging": 1,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -6366,8 +6366,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -6398,11 +6398,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -6422,10 +6422,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -6439,16 +6439,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -6473,21 +6473,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 1,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -6586,7 +6586,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -6598,8 +6598,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -6630,11 +6630,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -6654,10 +6654,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -6674,13 +6674,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -6705,21 +6705,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -6830,8 +6830,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -6862,11 +6862,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -6910,9 +6910,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -6937,21 +6937,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 1,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -7062,9 +7062,9 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
+        "custom_blocks_have_parameters": true,
         "custom_blocks_reused": false,
-        "custom_blocks_reduce_duplication": true,
+        "custom_blocks_reduce_duplication": false,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
       },
@@ -7094,11 +7094,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -7118,10 +7118,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -7135,16 +7135,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -7169,21 +7169,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 3,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -7294,8 +7294,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -7326,11 +7326,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -7350,10 +7350,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -7374,9 +7374,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -7401,21 +7401,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -7514,7 +7514,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -7526,8 +7526,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -7558,11 +7558,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -7582,10 +7582,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -7602,13 +7602,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -7633,21 +7633,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -7758,8 +7758,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -7790,11 +7790,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -7814,10 +7814,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -7838,9 +7838,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -7865,21 +7865,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -7990,8 +7990,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -8022,11 +8022,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -8046,10 +8046,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -8070,9 +8070,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -8097,21 +8097,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 1,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -8222,8 +8222,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -8254,11 +8254,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -8278,10 +8278,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -8295,16 +8295,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -8329,21 +8329,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -8454,8 +8454,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -8486,11 +8486,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -8510,10 +8510,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -8534,9 +8534,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -8561,21 +8561,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 1,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -8674,7 +8674,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -8686,8 +8686,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -8718,11 +8718,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -8742,10 +8742,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -8762,13 +8762,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -8793,21 +8793,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -8918,8 +8918,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -8950,11 +8950,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -8998,9 +8998,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -9025,21 +9025,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -9150,8 +9150,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -9182,11 +9182,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -9206,10 +9206,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -9230,9 +9230,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -9257,21 +9257,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -9382,8 +9382,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -9414,11 +9414,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -9438,10 +9438,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -9455,16 +9455,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -9489,21 +9489,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -9602,7 +9602,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -9614,8 +9614,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -9646,11 +9646,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -9670,10 +9670,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -9690,13 +9690,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -9721,21 +9721,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -9846,8 +9846,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -9878,11 +9878,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -9902,10 +9902,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -9926,9 +9926,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -9953,21 +9953,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -10078,8 +10078,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -10110,11 +10110,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -10134,10 +10134,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -10158,9 +10158,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -10185,21 +10185,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -10298,7 +10298,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -10310,8 +10310,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -10342,11 +10342,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -10366,10 +10366,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -10386,13 +10386,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -10417,21 +10417,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 1,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -10542,8 +10542,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -10574,11 +10574,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -10598,10 +10598,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -10622,9 +10622,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -10649,21 +10649,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 1,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -10774,8 +10774,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -10806,11 +10806,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -10830,10 +10830,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -10847,16 +10847,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -10881,21 +10881,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -10994,7 +10994,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -11006,8 +11006,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -11038,11 +11038,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -11062,10 +11062,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -11082,13 +11082,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -11113,21 +11113,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 1,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -11226,7 +11226,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -11238,8 +11238,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -11270,11 +11270,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -11294,10 +11294,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -11314,13 +11314,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -11345,21 +11345,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 1,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -11458,7 +11458,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -11470,8 +11470,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -11502,11 +11502,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -11529,7 +11529,7 @@
         "list_items_accessed_dynamically": false,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -11546,13 +11546,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -11577,21 +11577,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
-      "lists": 5,
+      "lists": 4,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -11702,8 +11702,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -11734,11 +11734,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -11758,10 +11758,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -11782,9 +11782,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -11809,21 +11809,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -11934,8 +11934,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -11966,11 +11966,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -11990,10 +11990,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -12007,16 +12007,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -12041,21 +12041,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -12166,8 +12166,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -12198,11 +12198,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -12222,10 +12222,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -12246,9 +12246,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -12273,21 +12273,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -12386,7 +12386,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -12398,8 +12398,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -12430,11 +12430,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -12454,10 +12454,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -12474,13 +12474,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -12505,21 +12505,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -12630,8 +12630,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -12662,11 +12662,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -12686,10 +12686,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -12710,9 +12710,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -12737,21 +12737,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -12894,11 +12894,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -12918,10 +12918,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -12942,9 +12942,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -12969,21 +12969,21 @@
       "problem_decomposition": 3,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 2,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 1,
       "debugging": 0,
       "procedures": 1,
       "coordinates": 4,
       "cloning": 1,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
       "messaging": 1,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -13126,11 +13126,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -13150,10 +13150,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -13167,16 +13167,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -13201,21 +13201,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
       "procedures": 1,
       "coordinates": 4,
       "cloning": 1,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -13314,7 +13314,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -13326,8 +13326,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -13358,11 +13358,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -13382,10 +13382,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -13402,13 +13402,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -13433,21 +13433,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -13558,8 +13558,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -13590,11 +13590,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -13638,9 +13638,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -13665,21 +13665,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 3,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -13778,7 +13778,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -13790,8 +13790,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -13822,11 +13822,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -13846,10 +13846,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -13866,13 +13866,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -13897,21 +13897,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -14010,7 +14010,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -14022,8 +14022,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -14054,11 +14054,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -14081,7 +14081,7 @@
         "list_items_accessed_dynamically": false,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -14098,13 +14098,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -14129,21 +14129,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
-      "lists": 5,
+      "lists": 4,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -14254,8 +14254,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -14286,11 +14286,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -14310,10 +14310,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -14334,9 +14334,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -14361,21 +14361,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -14486,8 +14486,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -14518,11 +14518,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -14566,9 +14566,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -14593,21 +14593,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
-      "lists": 5,
+      "lists": 2,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -14718,8 +14718,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -14750,11 +14750,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -14774,10 +14774,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -14798,9 +14798,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -14825,21 +14825,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -14938,7 +14938,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -14950,8 +14950,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -14982,11 +14982,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -15006,10 +15006,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -15026,13 +15026,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -15057,21 +15057,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 1,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -15170,7 +15170,7 @@
         "handlers_attached_to_correct_sprites": true,
         "event_names_descriptive": true,
         "sprites_react_independently": true,
-        "event_conflicts_avoided": false
+        "event_conflicts_avoided": true
       },
       "debugging": {
         "debugging_comments_present": false,
@@ -15182,9 +15182,9 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
+        "custom_blocks_have_parameters": true,
         "custom_blocks_reused": false,
-        "custom_blocks_reduce_duplication": true,
+        "custom_blocks_reduce_duplication": false,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
       },
@@ -15214,11 +15214,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -15238,7 +15238,7 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
         "lists_updated_during_gameplay": false,
@@ -15258,13 +15258,13 @@
         "sprites_respond_correctly": true,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -15289,21 +15289,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 5,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 3,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
-      "lists": 5,
+      "lists": 3,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 5,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -15414,8 +15414,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -15446,11 +15446,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -15470,10 +15470,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -15487,16 +15487,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -15521,21 +15521,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -15646,8 +15646,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -15678,11 +15678,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -15726,9 +15726,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -15753,21 +15753,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -15878,8 +15878,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -15910,11 +15910,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -15934,10 +15934,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -15951,16 +15951,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -15985,21 +15985,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -16110,8 +16110,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -16142,11 +16142,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -16166,7 +16166,7 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
         "lists_updated_during_gameplay": false,
@@ -16184,15 +16184,15 @@
         "broadcasts_used": true,
         "messages_differently_named": false,
         "sprites_respond_correctly": true,
-        "multi_sprite_interactions_coordinated": true,
+        "multi_sprite_interactions_coordinated": false,
         "messaging_architecture_clear": false,
         "circular_dependencies_avoided": false
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -16217,21 +16217,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 4,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 3,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 2,
-      "lists": 5,
+      "lists": 3,
       "math": 3,
-      "messaging": 3,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -16342,8 +16342,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -16374,11 +16374,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": false,
@@ -16398,10 +16398,10 @@
       },
       "lists": {
         "lists_used": true,
-        "list_items_accessed_dynamically": false,
+        "list_items_accessed_dynamically": true,
         "list_operations_used": true,
         "lists_processed_with_loops": true,
-        "lists_updated_during_gameplay": false,
+        "lists_updated_during_gameplay": true,
         "list_based_systems_designed": true
       },
       "math": {
@@ -16415,16 +16415,16 @@
       "messaging": {
         "broadcasts_used": true,
         "messages_differently_named": true,
-        "sprites_respond_correctly": true,
+        "sprites_respond_correctly": false,
         "multi_sprite_interactions_coordinated": true,
         "messaging_architecture_clear": true,
-        "circular_dependencies_avoided": false
+        "circular_dependencies_avoided": true
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -16449,21 +16449,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 1,
       "ui_feedback": 4,
       "lists": 5,
       "math": 3,
-      "messaging": 4,
-      "algorithms": 2,
+      "messaging": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },
@@ -16574,8 +16574,8 @@
       },
       "procedures": {
         "custom_blocks_used": true,
-        "custom_blocks_have_parameters": false,
-        "custom_blocks_reused": false,
+        "custom_blocks_have_parameters": true,
+        "custom_blocks_reused": true,
         "custom_blocks_reduce_duplication": true,
         "block_names_descriptive": true,
         "complex_behaviors_abstracted": true
@@ -16606,11 +16606,11 @@
       },
       "animation": {
         "costume_changes_used": true,
-        "animation_timing_correct": false,
-        "animations_loop_smoothly": false,
+        "animation_timing_correct": true,
+        "animations_loop_smoothly": true,
         "animations_tied_to_game_events": true,
-        "multiple_animation_states_used": false,
-        "transitions_smooth": false
+        "multiple_animation_states_used": true,
+        "transitions_smooth": true
       },
       "sound": {
         "sounds_used": true,
@@ -16654,9 +16654,9 @@
       },
       "algorithms": {
         "step_by_step_strategy": true,
-        "algorithm_works_for_inputs": false,
-        "edge_cases_handled": false,
-        "efficiency_considered": false,
+        "algorithm_works_for_inputs": true,
+        "edge_cases_handled": true,
+        "efficiency_considered": true,
         "alternative_approaches_evaluated": false,
         "algorithms_documented": false
       },
@@ -16681,21 +16681,21 @@
       "problem_decomposition": 4,
       "sequencing": 4,
       "loops": 3,
-      "conditionals": 5,
-      "variables": 5,
-      "event_handling": 4,
+      "conditionals": 4,
+      "variables": 4,
+      "event_handling": 3,
       "debugging": 0,
-      "procedures": 5,
+      "procedures": 4,
       "coordinates": 4,
       "cloning": 2,
       "collision": 3,
-      "animation": 3,
+      "animation": 4,
       "sound": 3,
       "ui_feedback": 3,
       "lists": 1,
       "math": 3,
       "messaging": 4,
-      "algorithms": 2,
+      "algorithms": 4,
       "nesting": 4,
       "integration": 0
     },

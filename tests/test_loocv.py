@@ -1,10 +1,59 @@
 import unittest
 
 from src.few_shot_prompt import build_prompt_hybrid
-from src.loocv import run_loocv
+from src.loocv import _filter_candidates_by_complexity, run_loocv
 
 
 class LoocvTests(unittest.TestCase):
+    def test_complexity_band_filter_prefers_nearby_candidates(self):
+        test_record = {
+            "id": 100,
+            "features": {
+                "sprite_count": 3,
+                "block_count": 80,
+                "variable_count": 2,
+                "list_count": 0,
+                "uses_loops": True,
+                "uses_conditionals": True,
+                "uses_variables": True,
+                "uses_event_handling": True,
+            },
+        }
+
+        near_a = {"id": 1, "features": {**test_record["features"], "block_count": 70}}
+        near_b = {"id": 2, "features": {**test_record["features"], "block_count": 95}}
+        far_high = {
+            "id": 3,
+            "features": {
+                "sprite_count": 18,
+                "block_count": 1600,
+                "variable_count": 12,
+                "list_count": 6,
+                "uses_loops": True,
+                "uses_conditionals": True,
+                "uses_variables": True,
+                "uses_event_handling": True,
+                "uses_cloning": True,
+                "uses_collision": True,
+                "uses_animation": True,
+                "uses_sound": True,
+                "uses_ui_feedback": True,
+                "uses_lists": True,
+                "uses_math": True,
+                "uses_messaging": True,
+                "uses_algorithms": True,
+                "uses_nesting": True,
+                "uses_integration": True,
+            },
+        }
+
+        filtered = _filter_candidates_by_complexity([near_a, near_b, far_high], test_record, min_required=2)
+        filtered_ids = {record["id"] for record in filtered}
+
+        self.assertIn(1, filtered_ids)
+        self.assertIn(2, filtered_ids)
+        self.assertNotIn(3, filtered_ids)
+
     def test_run_loocv_returns_summary_metrics(self):
         records = []
         for idx in range(3):

@@ -365,10 +365,31 @@ def _collect_project_context(project_json):
     conditional_count = 0
     if_else_count = 0
     nested_control_count = 0
+    procedure_definition_count = 0
+    procedure_call_count = 0
+    costume_switch_count = 0
+    wait_block_count = 0
+    loop_count = 0
+    operator_count = 0
+    broadcast_send_count = 0
+    broadcast_receive_count = 0
+    max_control_nesting_depth = 0
+
+    def _control_ancestor_depth(blocks_by_id, block):
+        depth = 0
+        parent_id = block.get("parent")
+        while parent_id and parent_id in blocks_by_id:
+            parent_block = blocks_by_id.get(parent_id) or {}
+            parent_opcode = parent_block.get("opcode", "")
+            if parent_opcode.startswith(("control_repeat", "control_forever", "control_repeat_until", "control_if", "control_if_else")):
+                depth += 1
+            parent_id = parent_block.get("parent")
+        return depth
+
     for target in targets:
         sprite_name = target.get("name", "")
         blocks = target.get("blocks", {}) or {}
-        for block_id, block in blocks.items():
+        for _, block in blocks.items():
             if isinstance(block, dict):
                 opcode = block.get("opcode", "")
                 opcodes.append(opcode)
@@ -382,10 +403,31 @@ def _collect_project_context(project_json):
                     option = fields.get("BROADCAST_OPTION")
                     if isinstance(option, list) and option:
                         broadcast_names.add(str(option[0]))
+                if opcode.startswith("event_broadcast"):
+                    broadcast_send_count += 1
+                if opcode.startswith("event_whenbroadcastreceived"):
+                    broadcast_receive_count += 1
                 if opcode.startswith("control_if"):
                     conditional_count += 1
                 if opcode.startswith("control_if_else"):
                     if_else_count += 1
+                if opcode.startswith(("control_repeat", "control_forever", "control_repeat_until")):
+                    loop_count += 1
+                if opcode.startswith("procedures_definition"):
+                    procedure_definition_count += 1
+                if opcode.startswith("procedures_call"):
+                    procedure_call_count += 1
+                if opcode.startswith(("looks_switchcostumeto", "looks_nextcostume")):
+                    costume_switch_count += 1
+                if opcode.startswith("control_wait"):
+                    wait_block_count += 1
+                if opcode.startswith("operator_"):
+                    operator_count += 1
+
+                max_control_nesting_depth = max(
+                    max_control_nesting_depth,
+                    _control_ancestor_depth(blocks, block),
+                )
 
                 parent_id = block.get("parent")
                 if parent_id and parent_id in blocks:
@@ -432,6 +474,15 @@ def _collect_project_context(project_json):
         "conditional_count": conditional_count,
         "if_else_count": if_else_count,
         "nested_control_count": nested_control_count,
+        "procedure_definition_count": procedure_definition_count,
+        "procedure_call_count": procedure_call_count,
+        "costume_switch_count": costume_switch_count,
+        "wait_block_count": wait_block_count,
+        "loop_count": loop_count,
+        "operator_count": operator_count,
+        "broadcast_send_count": broadcast_send_count,
+        "broadcast_receive_count": broadcast_receive_count,
+        "max_control_nesting_depth": max_control_nesting_depth,
     }
 
 
@@ -451,6 +502,15 @@ def extract_atomic_features(project_json):
     conditional_count = context["conditional_count"]
     if_else_count = context["if_else_count"]
     nested_control_count = context["nested_control_count"]
+    procedure_definition_count = context["procedure_definition_count"]
+    procedure_call_count = context["procedure_call_count"]
+    costume_switch_count = context["costume_switch_count"]
+    wait_block_count = context["wait_block_count"]
+    loop_count = context["loop_count"]
+    operator_count = context["operator_count"]
+    broadcast_send_count = context["broadcast_send_count"]
+    broadcast_receive_count = context["broadcast_receive_count"]
+    max_control_nesting_depth = context["max_control_nesting_depth"]
 
     block_count = len(opcodes)
     has_event = any(opcode.startswith("event_") for opcode in opcodes)
@@ -481,6 +541,38 @@ def extract_atomic_features(project_json):
     sends_broadcast = any(opcode.startswith("event_broadcast") for opcode in opcodes)
     receives_broadcast = any(opcode.startswith("event_whenbroadcastreceived") for opcode in opcodes)
     has_edge_bounce = any(opcode == "motion_ifonedgebounce" for opcode in opcodes)
+    list_update_opcodes = {
+        "data_addtolist",
+        "data_deleteoflist",
+        "data_deletealloflist",
+        "data_insertatlist",
+        "data_replaceitemoflist",
+    }
+    list_access_opcodes = {
+        "data_itemoflist",
+        "data_itemnumoflist",
+        "data_lengthoflist",
+        "data_listcontainsitem",
+    }
+    has_list_updates = any(opcode in list_update_opcodes for opcode in opcodes)
+    has_dynamic_list_access = any(opcode in list_access_opcodes for opcode in opcodes)
+
+    def _is_descriptive_broadcast_name(name: str) -> bool:
+        lowered = name.strip().lower()
+        if not lowered:
+            return False
+        generic_names = {
+            "message1",
+            "message2",
+            "message3",
+            "message4",
+            "message5",
+            "broadcast",
+            "event",
+        }
+        return lowered not in generic_names
+
+    descriptive_broadcast_names = {name for name in broadcast_names if _is_descriptive_broadcast_name(name)}
 
     atomic = {
         "problem_decomposition": {
@@ -509,7 +601,7 @@ def extract_atomic_features(project_json):
         "conditionals": {
             "if_else_used": if_else_count > 0,
             "boolean_conditions_correct": conditional_count > 0,
-            "compound_conditions_used": compound_conditionals,
+            "compound_conditions_used": compound_conditionals and conditional_count >= 2,
             "redundant_checks_avoided": False,
             "multi_branch_states_handled": if_else_count > 0,
             "conditional_logic_clean": conditional_count >= 2,
@@ -525,10 +617,16 @@ def extract_atomic_features(project_json):
         "event_handling": {
             "events_beyond_green_flag": any(event_type != "event_whenflagclicked" for event_type in event_types),
             "multiple_event_types_handled": len(event_types) >= 2,
-            "handlers_attached_to_correct_sprites": len(handler_sprite_names) >= 1,
-            "event_names_descriptive": len(broadcast_names) >= 1,
+            "handlers_attached_to_correct_sprites": len(handler_sprite_names) >= 2,
+            "event_names_descriptive": len(descriptive_broadcast_names) >= 1,
             "sprites_react_independently": len(handler_sprite_names) >= 2,
-            "event_conflicts_avoided": False,
+            "event_conflicts_avoided": (
+                broadcast_send_count >= 1
+                and broadcast_receive_count >= 1
+                and broadcast_receive_count >= broadcast_send_count
+                and broadcast_receive_count <= (broadcast_send_count * 2)
+                and 2 <= len(event_types) <= 6
+            ),
         },
         "debugging": {
             "debugging_comments_present": any("debug" in comment.lower() for comment in comments),
@@ -540,11 +638,11 @@ def extract_atomic_features(project_json):
         },
         "procedures": {
             "custom_blocks_used": has_procedure,
-            "custom_blocks_have_parameters": False,
-            "custom_blocks_reused": False,
-            "custom_blocks_reduce_duplication": has_procedure,
-            "block_names_descriptive": has_procedure,
-            "complex_behaviors_abstracted": has_procedure,
+            "custom_blocks_have_parameters": procedure_definition_count > 0,
+            "custom_blocks_reused": procedure_call_count >= 2,
+            "custom_blocks_reduce_duplication": procedure_call_count >= 2,
+            "block_names_descriptive": procedure_definition_count > 0,
+            "complex_behaviors_abstracted": procedure_definition_count > 0 and procedure_call_count > 0,
         },
         "coordinates": {
             "x_y_blocks_used": bool(coordinate_ops & {"motion_gotoxy", "motion_glidesecstoxy", "motion_setx", "motion_sety"}),
@@ -572,11 +670,11 @@ def extract_atomic_features(project_json):
         },
         "animation": {
             "costume_changes_used": has_animation,
-            "animation_timing_correct": False,
-            "animations_loop_smoothly": False,
+            "animation_timing_correct": costume_switch_count > 0 and wait_block_count > 0,
+            "animations_loop_smoothly": costume_switch_count >= 2 and loop_count > 0,
             "animations_tied_to_game_events": has_animation and has_event,
-            "multiple_animation_states_used": False,
-            "transitions_smooth": False,
+            "multiple_animation_states_used": costume_switch_count >= 3,
+            "transitions_smooth": costume_switch_count >= 3 and wait_block_count > 0,
         },
         "sound": {
             "sounds_used": has_sound,
@@ -596,10 +694,10 @@ def extract_atomic_features(project_json):
         },
         "lists": {
             "lists_used": has_list,
-            "list_items_accessed_dynamically": False,
+            "list_items_accessed_dynamically": has_dynamic_list_access,
             "list_operations_used": has_list,
             "lists_processed_with_loops": has_list and has_loop,
-            "lists_updated_during_gameplay": False,
+            "lists_updated_during_gameplay": has_list_updates,
             "list_based_systems_designed": list_names_descriptive,
         },
         "math": {
@@ -612,27 +710,49 @@ def extract_atomic_features(project_json):
         },
         "messaging": {
             "broadcasts_used": has_broadcast,
-            "messages_differently_named": len(broadcast_names) >= 2,
-            "sprites_respond_correctly": sends_broadcast and receives_broadcast,
-            "multi_sprite_interactions_coordinated": len(sprites) > 1 and sends_broadcast and receives_broadcast,
-            "messaging_architecture_clear": len(broadcast_names) >= 2 and sends_broadcast and receives_broadcast,
-            "circular_dependencies_avoided": False,
+            "messages_differently_named": len(descriptive_broadcast_names) >= 2,
+            "sprites_respond_correctly": (
+                sends_broadcast and receives_broadcast and broadcast_receive_count >= broadcast_send_count
+            ),
+            "multi_sprite_interactions_coordinated": (
+                len(sprites) > 1
+                and len(handler_sprite_names) >= 2
+                and broadcast_send_count >= 2
+                and broadcast_receive_count >= 2
+            ),
+            "messaging_architecture_clear": (
+                len(descriptive_broadcast_names) >= 2
+                and broadcast_send_count >= 2
+                and broadcast_receive_count >= 2
+            ),
+            "circular_dependencies_avoided": (
+                sends_broadcast
+                and receives_broadcast
+                and broadcast_send_count >= 2
+                and broadcast_receive_count >= 2
+                and broadcast_receive_count <= (broadcast_send_count * 2)
+            ),
         },
         "algorithms": {
-            "step_by_step_strategy": block_count > 0,
-            "algorithm_works_for_inputs": False,
-            "edge_cases_handled": False,
-            "efficiency_considered": False,
+            "step_by_step_strategy": block_count >= 10,
+            "algorithm_works_for_inputs": has_loop and has_conditional,
+            "edge_cases_handled": if_else_count > 0,
+            "efficiency_considered": loop_count > 0 and operator_count > 0,
             "alternative_approaches_evaluated": False,
             "algorithms_documented": False,
         },
         "nesting": {
-            "loops_nested": nested_control_count > 0 and has_loop,
-            "conditionals_nested": nested_control_count > 0 and has_conditional,
-            "nesting_correct": nested_control_count > 0,
-            "nesting_serves_clear_purpose": nested_control_count >= 2,
+            "loops_nested": max_control_nesting_depth >= 2 and has_loop,
+            "conditionals_nested": max_control_nesting_depth >= 2 and has_conditional,
+            "nesting_correct": max_control_nesting_depth >= 2,
+            "nesting_serves_clear_purpose": (
+                max_control_nesting_depth >= 3
+                and nested_control_count >= 5
+                and has_loop
+                and has_conditional
+            ),
             "nested_structures_documented": False,
-            "nested_systems_used": nested_control_count >= 2,
+            "nested_systems_used": max_control_nesting_depth >= 4 and nested_control_count >= 10,
         },
         "integration": {
             "major_systems_work_together": False,
@@ -664,27 +784,52 @@ def map_scores(atomic_dict):
         elif dimension == "conditionals":
             if not answers.get("boolean_conditions_correct"):
                 score = 1
-            elif answers.get("compound_conditions_used"):
-                score = 5
-            elif answers.get("if_else_used") or answers.get("multi_branch_states_handled"):
+            elif not answers.get("if_else_used"):
+                score = 2
+            elif answers.get("compound_conditions_used") and answers.get("conditional_logic_clean"):
                 score = 4
+            elif answers.get("multi_branch_states_handled"):
+                score = 3
             else:
                 score = 3
-        elif dimension == "event_handling":
-            if true_count == 0:
+        elif dimension == "variables":
+            if not answers.get("variables_used"):
                 score = 1
-            elif answers.get("multiple_event_types_handled") and answers.get("sprites_react_independently"):
-                score = 4
-            elif answers.get("multiple_event_types_handled"):
+            elif not answers.get("variables_initialized"):
+                score = 2
+            elif answers.get("multiple_states_tracked") and answers.get("variables_updated_on_events"):
+                if answers.get("coherent_variable_system"):
+                    score = 4
+                else:
+                    score = 3
+            elif answers.get("variable_names_descriptive"):
                 score = 3
             else:
                 score = 2
+        elif dimension == "event_handling":
+            if not answers.get("events_beyond_green_flag") or not answers.get("handlers_attached_to_correct_sprites"):
+                score = 1
+            elif not answers.get("multiple_event_types_handled") or not answers.get("sprites_react_independently"):
+                score = 2
+            elif not answers.get("event_names_descriptive") or not answers.get("event_conflicts_avoided"):
+                score = 3
+            elif true_count == 6:
+                score = 5
+            elif true_count >= 5:
+                score = 4
+            else:
+                score = 3
         elif dimension == "messaging":
             if not answers.get("broadcasts_used"):
                 score = 1
-            elif answers.get("messaging_architecture_clear"):
-                score = 4
-            elif answers.get("sprites_respond_correctly"):
+            elif not answers.get("sprites_respond_correctly"):
+                score = 2
+            elif answers.get("messaging_architecture_clear") and answers.get("multi_sprite_interactions_coordinated"):
+                if answers.get("circular_dependencies_avoided") and answers.get("messages_differently_named") and true_count == 6:
+                    score = 5
+                else:
+                    score = 4
+            elif answers.get("messages_differently_named"):
                 score = 3
             else:
                 score = 2
@@ -714,12 +859,59 @@ def map_scores(atomic_dict):
             else:
                 score = 2
         elif dimension == "nesting":
-            if not answers.get("nesting_correct"):
+            if not answers.get("loops_nested") and not answers.get("conditionals_nested"):
                 score = 1
+            elif not answers.get("nesting_correct") or not answers.get("nesting_serves_clear_purpose"):
+                score = 2
             elif answers.get("nested_systems_used"):
                 score = 4
-            else:
+            elif answers.get("loops_nested") and answers.get("conditionals_nested"):
                 score = 3
+            else:
+                score = 2
+        elif dimension == "procedures":
+            if not answers.get("custom_blocks_used"):
+                score = 1
+            elif answers.get("custom_blocks_reused") and answers.get("complex_behaviors_abstracted"):
+                score = 4
+            elif answers.get("custom_blocks_have_parameters"):
+                score = 3
+            else:
+                score = 2
+        elif dimension == "animation":
+            if not answers.get("costume_changes_used"):
+                score = 1
+            elif answers.get("multiple_animation_states_used") and answers.get("transitions_smooth"):
+                score = 4
+            elif answers.get("animation_timing_correct") or answers.get("animations_loop_smoothly"):
+                score = 3
+            else:
+                score = 2
+        elif dimension == "algorithms":
+            if not answers.get("step_by_step_strategy"):
+                score = 1
+            elif not answers.get("algorithm_works_for_inputs"):
+                score = 2
+            elif answers.get("algorithm_works_for_inputs") and answers.get("efficiency_considered") and answers.get("edge_cases_handled"):
+                score = 4
+            elif answers.get("algorithm_works_for_inputs"):
+                score = 3
+            else:
+                score = 2
+        elif dimension == "lists":
+            if not answers.get("lists_used"):
+                score = 1
+            elif not answers.get("list_operations_used"):
+                score = 2
+            elif answers.get("lists_processed_with_loops") and answers.get("lists_updated_during_gameplay"):
+                if answers.get("list_items_accessed_dynamically") and answers.get("list_based_systems_designed"):
+                    score = 5
+                else:
+                    score = 4
+            elif answers.get("list_items_accessed_dynamically") or answers.get("lists_updated_during_gameplay"):
+                score = 3
+            else:
+                score = 2
         else:
             total = len(answers)
             if true_count == 0:
