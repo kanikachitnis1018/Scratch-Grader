@@ -6,10 +6,10 @@ from pathlib import Path
 
 try:
     from .generate_prompt_from_test_json import write_prompt_for_url
-    from .ollama_grader import query_ollama
+    from .ollama_grader import query_with_provider
 except ImportError:  # pragma: no cover - supports running the file directly
     from generate_prompt_from_test_json import write_prompt_for_url
-    from ollama_grader import query_ollama
+    from ollama_grader import query_with_provider
 
 
 def _extract_grades_from_response(text: str):
@@ -59,6 +59,14 @@ class Handler(BaseHTTPRequestHandler):
 
         url = payload.get("url")
         prompt_style = payload.get("prompt_style", "few_shot")
+        provider = str(payload.get("provider", os.getenv("LOOCV_PROVIDER", "ollama"))).strip().lower()
+        if provider == "qwen_local":
+            default_model = "Qwen/Qwen2.5-1.5B-Instruct"
+        else:
+            default_model = "llama3:latest"
+        model = str(payload.get("model", os.getenv("LOOCV_MODEL", default_model))).strip()
+        qwen_max_new_tokens = int(payload.get("qwen_max_new_tokens", os.getenv("QWEN_MAX_NEW_TOKENS", "256")) or 256)
+        qwen_temperature = float(payload.get("qwen_temperature", os.getenv("QWEN_TEMPERATURE", "0")) or 0)
         if not url:
             self.send_response(400)
             self.send_header("Content-Type", "application/json")
@@ -68,11 +76,17 @@ class Handler(BaseHTTPRequestHandler):
 
         output_path = Path(__file__).resolve().parent.parent / "few_shot_prompt.txt"
         prompt = write_prompt_for_url(url, output_path=output_path, prompt_style=prompt_style)
-        ollama_response = query_ollama(prompt)
+        response_text = query_with_provider(
+            prompt,
+            provider=provider,
+            model=model,
+            qwen_max_new_tokens=qwen_max_new_tokens,
+            qwen_temperature=qwen_temperature,
+        )
 
         grades = None
-        if ollama_response:
-            grades = _extract_grades_from_response(ollama_response)
+        if response_text:
+            grades = _extract_grades_from_response(response_text)
 
         self.send_response(200)
         self.send_header("Content-Type", "application/json")

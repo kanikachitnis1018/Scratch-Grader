@@ -1,10 +1,13 @@
 import json
 import os
+import platform
 import re
 from pathlib import Path
 from typing import Any, Dict, List
 
 import requests
+
+_QWEN_GENERATOR_CACHE: Dict[str, Any] = {}
 
 try:
     from .grader import extract_project_features
@@ -59,6 +62,168 @@ def query_ollama(prompt: str, model: str = "llama3:latest") -> str:
     return payload_json.get("response", "")
 
 
+def _get_qwen_generator(model: str):
+    if model in _QWEN_GENERATOR_CACHE:
+        return _QWEN_GENERATOR_CACHE[model]
+
+    try:
+        import torch
+        from transformers import AutoModelForCausalLM, AutoTokenizer
+    except ImportError as exc:  # pragma: no cover - dependency guard
+        raise RuntimeError(
+            "qwen_local provider requires 'transformers' and 'torch'. "
+            "Install with: pip install transformers torch"
+        ) from exc
+
+    # Safer defaults for local inference:
+    # - macOS defaults to CPU to avoid common MPS/accelerate segfaults while loading larger models
+    # - Linux/Windows defaults to CUDA when available, else CPU
+    requested_device = os.getenv("QWEN_DEVICE", "").strip().lower()
+    if requested_device in {"cpu", "cuda", "mps"}:
+        runtime_device = requested_device
+    else:
+        if platform.system() == "Darwin":
+            runtime_device = "cpu"
+        elif torch.cuda.is_available():
+            runtime_device = "cuda"
+        else:
+            runtime_device = "cpu"
+
+    if runtime_device == "cuda":
+        selected_dtype = torch.float16
+    else:
+        selected_dtype = torch.float32
+
+    tokenizer = AutoTokenizer.from_pretrained(model)
+    load_kwargs = {
+        "dtype": selected_dtype,
+        "low_cpu_mem_usage": True,
+    }
+
+    quantization_mode = os.getenv("QWEN_QUANTIZATION", "none").strip().lower()
+    if quantization_mode in {"4bit", "8bit"}:
+        if runtime_device != "cuda":
+            print(
+                f"QWEN_QUANTIZATION={quantization_mode} ignored because runtime device is '{runtime_device}'. "
+                "4-bit/8-bit quantization in this path is CUDA-only.",
+                flush=True,
+            )
+        else:
+            try:
+                from transformers import BitsAndBytesConfig
+            except ImportError as exc:
+                raise RuntimeError(
+                    "QWEN_QUANTIZATION requires bitsandbytes support. Install with: pip install bitsandbytes"
+                ) from exc
+
+            if quantization_mode == "4bit":
+                load_kwargs["quantization_config"] = BitsAndBytesConfig(
+                    load_in_4bit=True,
+                    bnb_4bit_quant_type="nf4",
+                    bnb_4bit_use_double_quant=True,
+                    bnb_4bit_compute_dtype=selected_dtype,
+                )
+                # Quantized CUDA models are already sharded/placed by HF.
+                load_kwargs["device_map"] = "auto"
+            elif quantization_mode == "8bit":
+                load_kwargs["quantization_config"] = BitsAndBytesConfig(load_in_8bit=True)
+                load_kwargs["device_map"] = "auto"
+    try:
+        qwen_model = AutoModelForCausalLM.from_pretrained(model, **load_kwargs)
+    except TypeError:
+        # Backward compatibility for transformers versions that still expect torch_dtype.
+        legacy_kwargs = {
+            "torch_dtype": selected_dtype,
+            "low_cpu_mem_usage": True,
+        }
+        qwen_model = AutoModelForCausalLM.from_pretrained(model, **legacy_kwargs)
+
+    if runtime_device == "cuda" and torch.cuda.is_available() and "device_map" not in load_kwargs:
+        qwen_model = qwen_model.to("cuda")
+    elif runtime_device == "mps" and getattr(torch.backends, "mps", None) and torch.backends.mps.is_available():
+        qwen_model = qwen_model.to("mps")
+    else:
+        qwen_model = qwen_model.to("cpu")
+
+    # Avoid max_length + max_new_tokens warning from default generation config.
+    qwen_model.generation_config.max_length = None
+
+    cache_entry = {"model": qwen_model, "tokenizer": tokenizer, "device": runtime_device}
+    _QWEN_GENERATOR_CACHE[model] = cache_entry
+    return cache_entry
+
+
+def query_qwen_local(
+    prompt: str,
+    model: str = "Qwen/Qwen2.5-1.5B-Instruct",
+    max_new_tokens: int = 256,
+    temperature: float = 0.0,
+) -> str:
+    import torch
+
+    generator = _get_qwen_generator(model)
+    qwen_model = generator["model"]
+    tokenizer = generator["tokenizer"]
+
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are a strict grading assistant. "
+                "Return only a JSON object with rubric keys and integer scores."
+            ),
+        },
+        {"role": "user", "content": prompt},
+    ]
+    rendered_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    inputs = tokenizer(rendered_prompt, return_tensors="pt")
+    inputs = {key: value.to(qwen_model.device) for key, value in inputs.items()}
+
+    do_sample = temperature > 0.0
+    generation_kwargs = {
+        "max_new_tokens": max_new_tokens,
+        "do_sample": do_sample,
+        "pad_token_id": tokenizer.eos_token_id,
+        "eos_token_id": tokenizer.eos_token_id,
+    }
+    if do_sample:
+        generation_kwargs.update({"temperature": temperature, "top_p": 0.9})
+
+    with torch.no_grad():
+        generated = qwen_model.generate(**inputs, **generation_kwargs)
+
+    if generated is None or generated.shape[0] == 0:
+        return ""
+
+    generated_tokens = generated[0][inputs["input_ids"].shape[1] :]
+    return tokenizer.decode(generated_tokens, skip_special_tokens=True).strip()
+
+
+def query_with_provider(
+    prompt: str,
+    provider: str = "ollama",
+    model: str | None = None,
+    qwen_max_new_tokens: int = 256,
+    qwen_temperature: float = 0.0,
+) -> str:
+    normalized_provider = provider.strip().lower()
+
+    if normalized_provider == "ollama":
+        resolved_model = model or "llama3:latest"
+        return query_ollama(prompt, model=resolved_model)
+
+    if normalized_provider == "qwen_local":
+        resolved_model = model or "Qwen/Qwen2.5-1.5B-Instruct"
+        return query_qwen_local(
+            prompt,
+            model=resolved_model,
+            max_new_tokens=qwen_max_new_tokens,
+            temperature=qwen_temperature,
+        )
+
+    raise ValueError(f"Unsupported provider: {provider}. Use 'ollama' or 'qwen_local'.")
+
+
 def parse_grades_from_response(text: str) -> Dict[str, int]:
     if not text:
         return {}
@@ -86,6 +251,38 @@ def grade_prompt_with_ollama(prompt: str, model: str = "llama3:latest") -> Dict[
     return parse_grades_from_response(response_text)
 
 
+def grade_prompt_with_qwen_local(
+    prompt: str,
+    model: str = "Qwen/Qwen2.5-1.5B-Instruct",
+    max_new_tokens: int = 256,
+    temperature: float = 0.0,
+) -> Dict[str, int]:
+    response_text = query_qwen_local(
+        prompt,
+        model=model,
+        max_new_tokens=max_new_tokens,
+        temperature=temperature,
+    )
+    return parse_grades_from_response(response_text)
+
+
+def grade_prompt_with_provider(
+    prompt: str,
+    provider: str = "ollama",
+    model: str | None = None,
+    qwen_max_new_tokens: int = 256,
+    qwen_temperature: float = 0.0,
+) -> Dict[str, int]:
+    response_text = query_with_provider(
+        prompt,
+        provider=provider,
+        model=model,
+        qwen_max_new_tokens=qwen_max_new_tokens,
+        qwen_temperature=qwen_temperature,
+    )
+    return parse_grades_from_response(response_text)
+
+
 def save_predictions(predictions: Dict[str, Any], output_path: str) -> None:
     output_path = Path(output_path)
     with output_path.open("w", encoding="utf-8") as handle:
@@ -96,6 +293,14 @@ def main():
     base_dir = Path(__file__).resolve().parent.parent
     dataset_path = base_dir / "enriched_dataset.json"
     output_path = base_dir / "ollama_predictions.json"
+    provider = os.getenv("LOOCV_PROVIDER", "ollama").strip().lower()
+    if provider == "qwen_local":
+        default_model = "Qwen/Qwen2.5-1.5B-Instruct"
+    else:
+        default_model = "llama3:latest"
+    model = os.getenv("LOOCV_MODEL", default_model)
+    qwen_max_new_tokens = int(os.getenv("QWEN_MAX_NEW_TOKENS", "256") or 256)
+    qwen_temperature = float(os.getenv("QWEN_TEMPERATURE", "0") or 0)
 
     if not dataset_path.exists():
         raise FileNotFoundError(f"Dataset not found at {dataset_path}")
@@ -106,10 +311,25 @@ def main():
     url = os.getenv("SCRATCH_TEST_URL", "https://scratch.mit.edu/projects/1270822989")
     prompt = build_prompt_for_url(url, records, num_examples=3)
     print(prompt)
-    print("\nCalling Ollama...\n")
-    response = query_ollama(prompt)
+    print(f"\nCalling provider: {provider} ({model})...\n")
+    response = query_with_provider(
+        prompt,
+        provider=provider,
+        model=model,
+        qwen_max_new_tokens=qwen_max_new_tokens,
+        qwen_temperature=qwen_temperature,
+    )
     print(response)
-    save_predictions({"url": url, "prompt": prompt, "response": response}, str(output_path))
+    save_predictions(
+        {
+            "url": url,
+            "provider": provider,
+            "model": model,
+            "prompt": prompt,
+            "response": response,
+        },
+        str(output_path),
+    )
 
 
 if __name__ == "__main__":
