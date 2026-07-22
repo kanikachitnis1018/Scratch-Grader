@@ -60,8 +60,11 @@ Optional environment variables used by the code:
 - `QWEN_QUANTIZATION` optional quantization mode for local Qwen: `none` (default), `8bit`, or `4bit` (CUDA path)
 - `HF_TOKEN` (optional) to avoid Hugging Face unauthenticated rate-limit warnings
 - `LOOCV_BALANCED` to enable balanced example selection
+- `LOOCV_CALIBRATION` optional post-prediction calibration mode (`off` default; set `v1` to enable conservative feature-based caps)
 - `LOOCV_DEBUG` to print extra diagnostics
 - `LOOCV_OUTPUT` to save LOOCV summary JSON
+- `OLLAMA_BASE_URL` to override Ollama endpoint (default `http://localhost:11434`)
+- `OLLAMA_TEMPERATURE`, `OLLAMA_TOP_P`, `OLLAMA_SEED`, `OLLAMA_NUM_PREDICT`, and `OLLAMA_REPEAT_PENALTY` to tune deterministic evaluation behavior
 
 ## How to run
 

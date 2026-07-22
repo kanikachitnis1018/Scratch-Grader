@@ -121,6 +121,53 @@ def _validate_and_clamp_predictions(predicted: Dict[str, int]) -> Dict[str, int]
     return valid_predicted
 
 
+def _apply_prediction_calibration(
+    predicted: Dict[str, int],
+    test_record: Dict[str, Any],
+    calibration_mode: str,
+) -> Dict[str, int]:
+    """Apply optional feature-based post-calibration.
+
+    Calibration is intentionally conservative and only uses test features,
+    avoiding any access to target grades.
+    """
+    if calibration_mode in {"", "off", "none"}:
+        return predicted
+
+    calibrated = dict(predicted)
+    features = test_record.get("features", {}) if isinstance(test_record, dict) else {}
+
+    block_count = int(features.get("block_count", 0) or 0)
+    uses_event_handling = bool(features.get("uses_event_handling"))
+    uses_messaging = bool(features.get("uses_messaging"))
+    uses_nesting = bool(features.get("uses_nesting"))
+    uses_lists = bool(features.get("uses_lists"))
+    uses_sound = bool(features.get("uses_sound"))
+    uses_collision = bool(features.get("uses_collision"))
+
+    # Prevent high scores when core evidence flags are absent.
+    if not uses_event_handling:
+        calibrated["event_handling"] = min(calibrated.get("event_handling", 0), 2)
+    if not uses_messaging:
+        calibrated["messaging"] = min(calibrated.get("messaging", 0), 2)
+    if not uses_nesting:
+        calibrated["nesting"] = min(calibrated.get("nesting", 0), 2)
+    if not uses_lists:
+        calibrated["lists"] = min(calibrated.get("lists", 0), 2)
+    if not uses_sound:
+        calibrated["sound"] = min(calibrated.get("sound", 0), 2)
+    if not uses_collision:
+        calibrated["collision"] = min(calibrated.get("collision", 0), 2)
+
+    # Small projects tend to be over-scored on abstract logic dimensions.
+    if block_count < 80:
+        calibrated["algorithms"] = min(calibrated.get("algorithms", 0), 3)
+        calibrated["conditionals"] = min(calibrated.get("conditionals", 0), 3)
+        calibrated["loops"] = min(calibrated.get("loops", 0), 3)
+
+    return _validate_and_clamp_predictions(calibrated)
+
+
 def _feature_similarity_score(candidate: Dict[str, Any], target: Dict[str, Any]) -> float:
     candidate_features = candidate.get("features", {})
     target_features = target.get("features", {})
@@ -360,6 +407,7 @@ def run_loocv(
     num_examples: int = 3,
     prompt_builder: Callable = None,
     debug: bool = False,
+    calibration_mode: str = "off",
 ) -> Dict[str, Any]:
     if prompt_builder is None:
         prompt_builder = build_few_shot_prompt
@@ -374,6 +422,7 @@ def run_loocv(
         prompt = prompt_builder(example_records + [test_record], num_examples=min(num_examples, len(train_records)))
         predicted_raw = model_fn(prompt)
         predicted = _validate_and_clamp_predictions(predicted_raw)
+        predicted = _apply_prediction_calibration(predicted, test_record, calibration_mode)
         actual = test_record.get("grades", {})
 
         if debug and idx == 0:
@@ -439,8 +488,15 @@ def run_loocv_to_dataframe(
     model_fn: Callable[[str], Dict[str, int]],
     num_examples: int = 3,
     prompt_builder: Callable = None,
+    calibration_mode: str = "off",
 ) -> pd.DataFrame:
-    result = run_loocv(records, model_fn=model_fn, num_examples=num_examples, prompt_builder=prompt_builder)
+    result = run_loocv(
+        records,
+        model_fn=model_fn,
+        num_examples=num_examples,
+        prompt_builder=prompt_builder,
+        calibration_mode=calibration_mode,
+    )
     rows = []
     for item in result["sample_results"]:
         row = {"test_id": item["test_id"], "exact_match_percent": item["exact_match_percent"]}

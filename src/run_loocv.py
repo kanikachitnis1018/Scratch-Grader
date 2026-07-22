@@ -37,6 +37,7 @@ def main() -> None:
     prompt_style = os.getenv("LOOCV_PROMPT", "few_shot")
     use_balanced = os.getenv("LOOCV_BALANCED", "").lower() in ("1", "true", "yes")
     debug = os.getenv("LOOCV_DEBUG", "").lower() in ("1", "true", "yes")
+    calibration_mode = os.getenv("LOOCV_CALIBRATION", "off").strip().lower()
     qwen_max_new_tokens = int(os.getenv("QWEN_MAX_NEW_TOKENS", "256") or 256)
     qwen_temperature = float(os.getenv("QWEN_TEMPERATURE", "0") or 0)
 
@@ -62,6 +63,7 @@ def main() -> None:
     print(f"Using {num_examples} examples", flush=True)
     print(f"Using provider: {provider}", flush=True)
     print(f"Using model: {model_name}", flush=True)
+    print(f"Using calibration: {calibration_mode}", flush=True)
     if debug:
         print(f"Debug mode enabled", flush=True)
 
@@ -74,7 +76,14 @@ def main() -> None:
             qwen_temperature=qwen_temperature,
         )
 
-    result = run_loocv(records, model_fn=model_fn, num_examples=num_examples, prompt_builder=prompt_builder, debug=debug)
+    result = run_loocv(
+        records,
+        model_fn=model_fn,
+        num_examples=num_examples,
+        prompt_builder=prompt_builder,
+        debug=debug,
+        calibration_mode=calibration_mode,
+    )
     print(json.dumps(result["summary"], indent=2))
 
     output_path = os.getenv("LOOCV_OUTPUT", "")

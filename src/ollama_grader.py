@@ -51,12 +51,28 @@ def build_prompt_for_url(url: str, records: List[Dict[str, Any]], num_examples: 
 
 
 def query_ollama(prompt: str, model: str = "llama3:latest") -> str:
+    ollama_base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
     payload = {
         "model": model,
         "prompt": prompt,
         "stream": False,
     }
-    response = requests.post("http://localhost:11434/api/generate", json=payload, timeout=120)
+
+    options: Dict[str, Any] = {}
+    if os.getenv("OLLAMA_TEMPERATURE"):
+        options["temperature"] = float(os.getenv("OLLAMA_TEMPERATURE", "0") or 0)
+    if os.getenv("OLLAMA_TOP_P"):
+        options["top_p"] = float(os.getenv("OLLAMA_TOP_P", "0") or 0)
+    if os.getenv("OLLAMA_SEED"):
+        options["seed"] = int(os.getenv("OLLAMA_SEED", "0") or 0)
+    if os.getenv("OLLAMA_NUM_PREDICT"):
+        options["num_predict"] = int(os.getenv("OLLAMA_NUM_PREDICT", "0") or 0)
+    if os.getenv("OLLAMA_REPEAT_PENALTY"):
+        options["repeat_penalty"] = float(os.getenv("OLLAMA_REPEAT_PENALTY", "0") or 0)
+    if options:
+        payload["options"] = options
+
+    response = requests.post(f"{ollama_base_url}/api/generate", json=payload, timeout=120)
     response.raise_for_status()
     payload_json = response.json()
     return payload_json.get("response", "")
