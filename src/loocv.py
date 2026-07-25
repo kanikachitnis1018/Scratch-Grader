@@ -168,6 +168,48 @@ def _apply_prediction_calibration(
     return _validate_and_clamp_predictions(calibrated)
 
 
+def _blend_with_retrieval_prior(
+    predicted: Dict[str, int],
+    example_records: List[Dict[str, Any]],
+    test_record: Dict[str, Any],
+    blend_weight: float,
+) -> Dict[str, int]:
+    """Blend model output with a similarity-weighted prior from retrieved examples.
+
+    This reduces noisy per-dimension jumps by anchoring predictions to grades from
+    the selected few-shot examples that are most similar to the target features.
+    """
+    if blend_weight <= 0 or not example_records:
+        return _validate_and_clamp_predictions(predicted)
+
+    weight = max(0.0, min(0.5, float(blend_weight)))
+    similarities = [_feature_similarity_score(example, test_record) for example in example_records]
+    if not similarities:
+        return _validate_and_clamp_predictions(predicted)
+
+    min_similarity = min(similarities)
+    shifted_weights = [(similarity - min_similarity) + 1e-6 for similarity in similarities]
+    weight_sum = sum(shifted_weights)
+    if weight_sum <= 0:
+        return _validate_and_clamp_predictions(predicted)
+
+    priors: Dict[str, float] = {dimension: 0.0 for dimension in DEFAULT_RUBRIC_DIMENSIONS}
+    for example, similarity_weight in zip(example_records, shifted_weights):
+        grades = example.get("grades", {})
+        for dimension in DEFAULT_RUBRIC_DIMENSIONS:
+            priors[dimension] += similarity_weight * float(grades.get(dimension, 0) or 0)
+    for dimension in DEFAULT_RUBRIC_DIMENSIONS:
+        priors[dimension] /= weight_sum
+
+    blended: Dict[str, int] = {}
+    for dimension in DEFAULT_RUBRIC_DIMENSIONS:
+        pred_value = float(predicted.get(dimension, 0) or 0)
+        prior_value = priors.get(dimension, pred_value)
+        blended[dimension] = int(round(((1.0 - weight) * pred_value) + (weight * prior_value)))
+
+    return _validate_and_clamp_predictions(blended)
+
+
 def _feature_similarity_score(candidate: Dict[str, Any], target: Dict[str, Any]) -> float:
     candidate_features = candidate.get("features", {})
     target_features = target.get("features", {})
@@ -408,6 +450,7 @@ def run_loocv(
     prompt_builder: Callable = None,
     debug: bool = False,
     calibration_mode: str = "off",
+    retrieval_blend_weight: float = 0.0,
 ) -> Dict[str, Any]:
     if prompt_builder is None:
         prompt_builder = build_few_shot_prompt
@@ -422,6 +465,7 @@ def run_loocv(
         prompt = prompt_builder(example_records + [test_record], num_examples=min(num_examples, len(train_records)))
         predicted_raw = model_fn(prompt)
         predicted = _validate_and_clamp_predictions(predicted_raw)
+        predicted = _blend_with_retrieval_prior(predicted, example_records, test_record, retrieval_blend_weight)
         predicted = _apply_prediction_calibration(predicted, test_record, calibration_mode)
         actual = test_record.get("grades", {})
 
@@ -489,6 +533,7 @@ def run_loocv_to_dataframe(
     num_examples: int = 3,
     prompt_builder: Callable = None,
     calibration_mode: str = "off",
+    retrieval_blend_weight: float = 0.0,
 ) -> pd.DataFrame:
     result = run_loocv(
         records,
@@ -496,6 +541,7 @@ def run_loocv_to_dataframe(
         num_examples=num_examples,
         prompt_builder=prompt_builder,
         calibration_mode=calibration_mode,
+        retrieval_blend_weight=retrieval_blend_weight,
     )
     rows = []
     for item in result["sample_results"]:

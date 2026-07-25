@@ -38,8 +38,11 @@ def main() -> None:
     use_balanced = os.getenv("LOOCV_BALANCED", "").lower() in ("1", "true", "yes")
     debug = os.getenv("LOOCV_DEBUG", "").lower() in ("1", "true", "yes")
     calibration_mode = os.getenv("LOOCV_CALIBRATION", "off").strip().lower()
+    retrieval_blend_weight = float(os.getenv("LOOCV_RETRIEVAL_BLEND", "0") or 0)
     qwen_max_new_tokens = int(os.getenv("QWEN_MAX_NEW_TOKENS", "256") or 256)
     qwen_temperature = float(os.getenv("QWEN_TEMPERATURE", "0") or 0)
+    qwen_top_p = float(os.getenv("QWEN_TOP_P", "0.9") or 0.9)
+    qwen_seed = int(os.getenv("QWEN_SEED")) if os.getenv("QWEN_SEED") else None
 
     records = load_records(dataset_path)
     if limit > 0:
@@ -64,6 +67,7 @@ def main() -> None:
     print(f"Using provider: {provider}", flush=True)
     print(f"Using model: {model_name}", flush=True)
     print(f"Using calibration: {calibration_mode}", flush=True)
+    print(f"Using retrieval blend weight: {retrieval_blend_weight}", flush=True)
     if debug:
         print(f"Debug mode enabled", flush=True)
 
@@ -74,6 +78,8 @@ def main() -> None:
             model=model_name,
             qwen_max_new_tokens=qwen_max_new_tokens,
             qwen_temperature=qwen_temperature,
+            qwen_top_p=qwen_top_p,
+            qwen_seed=qwen_seed,
         )
 
     result = run_loocv(
@@ -83,6 +89,7 @@ def main() -> None:
         prompt_builder=prompt_builder,
         debug=debug,
         calibration_mode=calibration_mode,
+        retrieval_blend_weight=retrieval_blend_weight,
     )
     print(json.dumps(result["summary"], indent=2))
 

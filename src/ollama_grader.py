@@ -174,6 +174,8 @@ def query_qwen_local(
     model: str = "Qwen/Qwen2.5-1.5B-Instruct",
     max_new_tokens: int = 256,
     temperature: float = 0.0,
+    top_p: float = 0.9,
+    seed: int | None = None,
 ) -> str:
     import torch
 
@@ -196,6 +198,12 @@ def query_qwen_local(
     inputs = {key: value.to(qwen_model.device) for key, value in inputs.items()}
 
     do_sample = temperature > 0.0
+
+    if seed is not None:
+        torch.manual_seed(seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(seed)
+
     generation_kwargs = {
         "max_new_tokens": max_new_tokens,
         "do_sample": do_sample,
@@ -203,7 +211,7 @@ def query_qwen_local(
         "eos_token_id": tokenizer.eos_token_id,
     }
     if do_sample:
-        generation_kwargs.update({"temperature": temperature, "top_p": 0.9})
+        generation_kwargs.update({"temperature": temperature, "top_p": top_p})
 
     with torch.no_grad():
         generated = qwen_model.generate(**inputs, **generation_kwargs)
@@ -221,6 +229,8 @@ def query_with_provider(
     model: str | None = None,
     qwen_max_new_tokens: int = 256,
     qwen_temperature: float = 0.0,
+    qwen_top_p: float = 0.9,
+    qwen_seed: int | None = None,
 ) -> str:
     normalized_provider = provider.strip().lower()
 
@@ -235,6 +245,8 @@ def query_with_provider(
             model=resolved_model,
             max_new_tokens=qwen_max_new_tokens,
             temperature=qwen_temperature,
+            top_p=qwen_top_p,
+            seed=qwen_seed,
         )
 
     raise ValueError(f"Unsupported provider: {provider}. Use 'ollama' or 'qwen_local'.")
@@ -272,12 +284,16 @@ def grade_prompt_with_qwen_local(
     model: str = "Qwen/Qwen2.5-1.5B-Instruct",
     max_new_tokens: int = 256,
     temperature: float = 0.0,
+    top_p: float = 0.9,
+    seed: int | None = None,
 ) -> Dict[str, int]:
     response_text = query_qwen_local(
         prompt,
         model=model,
         max_new_tokens=max_new_tokens,
         temperature=temperature,
+        top_p=top_p,
+        seed=seed,
     )
     return parse_grades_from_response(response_text)
 
@@ -288,6 +304,8 @@ def grade_prompt_with_provider(
     model: str | None = None,
     qwen_max_new_tokens: int = 256,
     qwen_temperature: float = 0.0,
+    qwen_top_p: float = 0.9,
+    qwen_seed: int | None = None,
 ) -> Dict[str, int]:
     response_text = query_with_provider(
         prompt,
@@ -295,6 +313,8 @@ def grade_prompt_with_provider(
         model=model,
         qwen_max_new_tokens=qwen_max_new_tokens,
         qwen_temperature=qwen_temperature,
+        qwen_top_p=qwen_top_p,
+        qwen_seed=qwen_seed,
     )
     return parse_grades_from_response(response_text)
 
@@ -317,6 +337,8 @@ def main():
     model = os.getenv("LOOCV_MODEL", default_model)
     qwen_max_new_tokens = int(os.getenv("QWEN_MAX_NEW_TOKENS", "256") or 256)
     qwen_temperature = float(os.getenv("QWEN_TEMPERATURE", "0") or 0)
+    qwen_top_p = float(os.getenv("QWEN_TOP_P", "0.9") or 0.9)
+    qwen_seed = int(os.getenv("QWEN_SEED")) if os.getenv("QWEN_SEED") else None
 
     if not dataset_path.exists():
         raise FileNotFoundError(f"Dataset not found at {dataset_path}")
@@ -334,6 +356,8 @@ def main():
         model=model,
         qwen_max_new_tokens=qwen_max_new_tokens,
         qwen_temperature=qwen_temperature,
+        qwen_top_p=qwen_top_p,
+        qwen_seed=qwen_seed,
     )
     print(response)
     save_predictions(

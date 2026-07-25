@@ -56,11 +56,13 @@ Optional environment variables used by the code:
 - `LOOCV_PROVIDER` to choose `ollama` (default) or `qwen_local`
 - `LOOCV_MODEL` model name for the selected provider (default: `llama3:latest` for Ollama, `Qwen/Qwen2.5-1.5B-Instruct` for qwen_local)
 - `QWEN_MAX_NEW_TOKENS` (default `256`) and `QWEN_TEMPERATURE` when using `LOOCV_PROVIDER=qwen_local`
+- `QWEN_TOP_P` (default `0.9`) and `QWEN_SEED` (optional) for reproducible qwen_local sampling behavior
 - `QWEN_DEVICE` to force local Qwen device: `cpu`, `mps`, or `cuda` (default is safer `cpu` on macOS)
 - `QWEN_QUANTIZATION` optional quantization mode for local Qwen: `none` (default), `8bit`, or `4bit` (CUDA path)
 - `HF_TOKEN` (optional) to avoid Hugging Face unauthenticated rate-limit warnings
 - `LOOCV_BALANCED` to enable balanced example selection
 - `LOOCV_CALIBRATION` optional post-prediction calibration mode (`off` default; set `v1` to enable conservative feature-based caps)
+- `LOOCV_RETRIEVAL_BLEND` optional score blending with retrieved examples (default `0`; keep `0` unless a local sweep shows improvement)
 - `LOOCV_DEBUG` to print extra diagnostics
 - `LOOCV_OUTPUT` to save LOOCV summary JSON
 - `OLLAMA_BASE_URL` to override Ollama endpoint (default `http://localhost:11434`)
@@ -149,6 +151,8 @@ Server `POST` also supports optional model routing fields:
 - `model`: model name for the selected provider
 - `qwen_max_new_tokens`: max generated tokens (qwen_local only, default `256`)
 - `qwen_temperature`: generation temperature (qwen_local only)
+- `qwen_top_p`: nucleus sampling value (qwen_local only, default `0.9`)
+- `qwen_seed`: random seed (qwen_local only, optional)
 
 Example with Ollama:
 
@@ -174,8 +178,45 @@ curl -X POST http://localhost:8000 \
 		"provider": "qwen_local",
 		"model": "Qwen/Qwen2.5-1.5B-Instruct",
 		"qwen_max_new_tokens": 256,
-		"qwen_temperature": 0
+		"qwen_temperature": 0,
+		"qwen_top_p": 0.9,
+		"qwen_seed": 42
 	}'
+```
+
+Recommended hybrid evaluation command parity:
+
+```bash
+# Ollama hybrid + calibration (strongest recent setting)
+LOOCV_PROVIDER=ollama \
+LOOCV_MODEL=llama3:latest \
+LOOCV_PROMPT=hybrid \
+LOOCV_NUM_EXAMPLES=4 \
+LOOCV_LIMIT=72 \
+LOOCV_CALIBRATION=v1 \
+LOOCV_RETRIEVAL_BLEND=0 \
+OLLAMA_TEMPERATURE=0 \
+OLLAMA_TOP_P=1 \
+OLLAMA_SEED=42 \
+OLLAMA_NUM_PREDICT=512 \
+LOOCV_OUTPUT=loocv_ollama_hybrid_calibrated.json \
+python3 src/run_loocv.py
+
+# Qwen hybrid + calibration
+LOOCV_PROVIDER=qwen_local \
+LOOCV_MODEL=Qwen/Qwen2.5-1.5B-Instruct \
+LOOCV_PROMPT=hybrid \
+LOOCV_NUM_EXAMPLES=3 \
+LOOCV_LIMIT=72 \
+LOOCV_CALIBRATION=v1 \
+LOOCV_RETRIEVAL_BLEND=0 \
+QWEN_DEVICE=cpu \
+QWEN_MAX_NEW_TOKENS=256 \
+QWEN_TEMPERATURE=0 \
+QWEN_TOP_P=0.9 \
+QWEN_SEED=42 \
+LOOCV_OUTPUT=loocv_qwen_hybrid_calibrated.json \
+python3 src/run_loocv.py
 ```
 
 ## Outputs

@@ -67,6 +67,8 @@ class Handler(BaseHTTPRequestHandler):
         model = str(payload.get("model", os.getenv("LOOCV_MODEL", default_model))).strip()
         qwen_max_new_tokens = int(payload.get("qwen_max_new_tokens", os.getenv("QWEN_MAX_NEW_TOKENS", "256")) or 256)
         qwen_temperature = float(payload.get("qwen_temperature", os.getenv("QWEN_TEMPERATURE", "0")) or 0)
+        qwen_top_p = float(payload.get("qwen_top_p", os.getenv("QWEN_TOP_P", "0.9")) or 0.9)
+        qwen_seed = int(payload.get("qwen_seed", os.getenv("QWEN_SEED"))) if payload.get("qwen_seed", os.getenv("QWEN_SEED")) else None
         if not url:
             self.send_response(400)
             self.send_header("Content-Type", "application/json")
@@ -82,6 +84,8 @@ class Handler(BaseHTTPRequestHandler):
             model=model,
             qwen_max_new_tokens=qwen_max_new_tokens,
             qwen_temperature=qwen_temperature,
+            qwen_top_p=qwen_top_p,
+            qwen_seed=qwen_seed,
         )
 
         grades = None

@@ -18,6 +18,11 @@ scratch_raw_json/
 # Logs
 *.log
 
+# LOOCV experiment outputs
+tmp_*.json
+loocv_*_calibrated*.json
+loocv_results.json
+
 ScoringGuide.pdf
 
 results_rr.json
