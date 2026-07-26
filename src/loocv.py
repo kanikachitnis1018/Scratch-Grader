@@ -138,12 +138,17 @@ def _apply_prediction_calibration(
     features = test_record.get("features", {}) if isinstance(test_record, dict) else {}
 
     block_count = int(features.get("block_count", 0) or 0)
+    sprite_count = int(features.get("sprite_count", 0) or 0)
     uses_event_handling = bool(features.get("uses_event_handling"))
     uses_messaging = bool(features.get("uses_messaging"))
     uses_nesting = bool(features.get("uses_nesting"))
     uses_lists = bool(features.get("uses_lists"))
     uses_sound = bool(features.get("uses_sound"))
     uses_collision = bool(features.get("uses_collision"))
+    uses_animation = bool(features.get("uses_animation"))
+    uses_math = bool(features.get("uses_math"))
+    uses_algorithms = bool(features.get("uses_algorithms"))
+    uses_variables = bool(features.get("uses_variables"))
 
     # Prevent high scores when core evidence flags are absent.
     if not uses_event_handling:
@@ -164,6 +169,34 @@ def _apply_prediction_calibration(
         calibrated["algorithms"] = min(calibrated.get("algorithms", 0), 3)
         calibrated["conditionals"] = min(calibrated.get("conditionals", 0), 3)
         calibrated["loops"] = min(calibrated.get("loops", 0), 3)
+
+    # v2 applies extra evidence gates for dimensions that are frequently
+    # over-scored in sparse projects.
+    if calibration_mode == "v2":
+        if not uses_animation:
+            calibrated["animation"] = min(calibrated.get("animation", 0), 2)
+        if not uses_math:
+            calibrated["math"] = min(calibrated.get("math", 0), 2)
+        if not uses_algorithms:
+            calibrated["algorithms"] = min(calibrated.get("algorithms", 0), 2)
+        if not uses_variables:
+            calibrated["variables"] = min(calibrated.get("variables", 0), 2)
+
+        if sprite_count <= 1:
+            calibrated["problem_decomposition"] = min(calibrated.get("problem_decomposition", 0), 3)
+            calibrated["integration"] = min(calibrated.get("integration", 0), 2)
+            calibrated["messaging"] = min(calibrated.get("messaging", 0), 1)
+
+        if block_count < 45:
+            calibrated["sequencing"] = min(calibrated.get("sequencing", 0), 3)
+            calibrated["coordinates"] = min(calibrated.get("coordinates", 0), 3)
+            calibrated["procedures"] = min(calibrated.get("procedures", 0), 2)
+            calibrated["nesting"] = min(calibrated.get("nesting", 0), 1)
+
+        if block_count < 25:
+            calibrated["loops"] = min(calibrated.get("loops", 0), 2)
+            calibrated["conditionals"] = min(calibrated.get("conditionals", 0), 2)
+            calibrated["algorithms"] = min(calibrated.get("algorithms", 0), 2)
 
     return _validate_and_clamp_predictions(calibrated)
 
