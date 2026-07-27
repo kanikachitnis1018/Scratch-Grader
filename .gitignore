@@ -19,13 +19,10 @@ scratch_raw_json/
 *.log
 
 # LOOCV experiment outputs
-tmp_*.json
-loocv_*_calibrated*.json
-loocv_results.json
+results/tmp/
+latest_best_run.json
 
 ScoringGuide.pdf
-
-results_rr.json
 
 # Generated stage pipeline artifacts
 dumps/

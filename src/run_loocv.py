@@ -95,9 +95,11 @@ def main() -> None:
 
     output_path = os.getenv("LOOCV_OUTPUT", "")
     if output_path:
-        with open(output_path, "w", encoding="utf-8") as handle:
+        output_file = Path(output_path)
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_file, "w", encoding="utf-8") as handle:
             json.dump(result["summary"], handle, indent=2)
-        print(f"Saved results to {output_path}")
+        print(f"Saved results to {output_file}")
 
 
 if __name__ == "__main__":

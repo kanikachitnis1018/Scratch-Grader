@@ -1,0 +1,52 @@
+{
+  "num_samples": 72,
+  "num_dimensions": 20,
+  "mae_by_dimension": {
+    "problem_decomposition": 3.0833333333333335,
+    "sequencing": 3.125,
+    "loops": 3.513888888888889,
+    "conditionals": 3.8333333333333335,
+    "variables": 3.5555555555555554,
+    "event_handling": 2.4722222222222223,
+    "debugging": 0.0,
+    "procedures": 3.111111111111111,
+    "coordinates": 3.0416666666666665,
+    "cloning": 2.8055555555555554,
+    "collision": 2.2777777777777777,
+    "animation": 2.75,
+    "sound": 2.4583333333333335,
+    "ui_feedback": 2.5555555555555554,
+    "lists": 2.763888888888889,
+    "math": 3.3194444444444446,
+    "messaging": 2.388888888888889,
+    "algorithms": 2.638888888888889,
+    "nesting": 1.9444444444444444,
+    "integration": 0.0
+  },
+  "accuracy": 10.0,
+  "cohens_kappa": 0.0,
+  "precision_by_class": {
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0
+  },
+  "recall_by_class": {
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0
+  },
+  "f1_by_class": {
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0
+  },
+  "macro_precision": 0.0,
+  "macro_recall": 0.0,
+  "macro_f1": 0.0
+}

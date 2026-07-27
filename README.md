@@ -64,7 +64,7 @@ Optional environment variables used by the code:
 - `LOOCV_CALIBRATION` optional post-prediction calibration mode (`off` default; set `v1` to enable conservative feature-based caps)
 - `LOOCV_RETRIEVAL_BLEND` optional score blending with retrieved examples (default `0`; keep `0` unless a local sweep shows improvement)
 - `LOOCV_DEBUG` to print extra diagnostics
-- `LOOCV_OUTPUT` to save LOOCV summary JSON
+- `LOOCV_OUTPUT` to save LOOCV summary JSON (recommended under `results/`)
 - `OLLAMA_BASE_URL` to override Ollama endpoint (default `http://localhost:11434`)
 - `OLLAMA_TEMPERATURE`, `OLLAMA_TOP_P`, `OLLAMA_SEED`, `OLLAMA_NUM_PREDICT`, and `OLLAMA_REPEAT_PENALTY` to tune deterministic evaluation behavior
 
@@ -191,7 +191,7 @@ Recommended hybrid evaluation command parity:
 LOOCV_PROVIDER=ollama \
 LOOCV_MODEL=llama3:latest \
 LOOCV_PROMPT=hybrid \
-LOOCV_NUM_EXAMPLES=4 \
+LOOCV_NUM_EXAMPLES=7 \
 LOOCV_LIMIT=72 \
 LOOCV_CALIBRATION=v1 \
 LOOCV_RETRIEVAL_BLEND=0 \
@@ -199,7 +199,7 @@ OLLAMA_TEMPERATURE=0 \
 OLLAMA_TOP_P=1 \
 OLLAMA_SEED=42 \
 OLLAMA_NUM_PREDICT=512 \
-LOOCV_OUTPUT=loocv_ollama_hybrid_calibrated.json \
+LOOCV_OUTPUT=results/calibration_v1/loocv_ollama_hybrid_calibrated_v1_n7.json \
 python3 src/run_loocv.py
 
 # Qwen hybrid + calibration
@@ -215,18 +215,32 @@ QWEN_MAX_NEW_TOKENS=256 \
 QWEN_TEMPERATURE=0 \
 QWEN_TOP_P=0.9 \
 QWEN_SEED=42 \
-LOOCV_OUTPUT=loocv_qwen_hybrid_calibrated.json \
+LOOCV_OUTPUT=results/calibration_v1/loocv_qwen_local_hybrid_calibrated_v1_n3.json \
 python3 src/run_loocv.py
 ```
 
+Results organization:
+
+- Confirmed runs: `results/calibration_v1/` and `results/calibration_v2/`
+- Temporary experiments: `results/tmp/`
+- Archived/legacy outputs: `results/archive/`
+- Optional quick-access copy of best run at root: `latest_best_run.json`
+
+Suggested naming convention:
+
+- `loocv_<model>_<prompt>_<calibration>_n<examples>.json`
+- Example: `loocv_ollama_hybrid_calibrated_v2_n8.json`
+
 ## Outputs
 
-The scripts write a few files in the project root:
+The scripts write a few files in the project root and `results/`:
 
 - `enriched_dataset.json` from `src/main.py`
 - `few_shot_prompt.txt` from prompt-generation scripts and the HTTP server
 - `ollama_predictions.json` from `src/ollama_grader.py`
-- `loocv_results.json` or another summary file if you set `LOOCV_OUTPUT`
+- `results/calibration_v1/` and `results/calibration_v2/` for confirmed LOOCV summaries
+- `results/tmp/` for exploratory `tmp_*.json` runs
+- `results/archive/` for older run artifacts
 - `dumps/raw_projects.json`, `dumps/atomic_features.json`, and `dumps/model_scores.json` from the Stage pipeline in `src/grader.py`
 
 ## Testing
