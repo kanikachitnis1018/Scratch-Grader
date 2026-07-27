@@ -4,9 +4,19 @@ from typing import Any, Callable, Dict, List, Tuple
 import pandas as pd
 
 try:
-    from .few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_hybrid
-except ImportError:  # pragma: no cover - supports running the file directly
-    from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_hybrid
+    from .few_shot_prompt import (
+        build_few_shot_prompt, 
+        build_prompt_chain_of_thought, 
+        build_prompt_hybrid,
+        build_prompt_category_batch, # <--- ADD HERE
+    )
+except ImportError:
+    from few_shot_prompt import (
+        build_few_shot_prompt, 
+        build_prompt_chain_of_thought, 
+        build_prompt_hybrid,
+        build_prompt_category_batch, # <--- ADD HERE
+    )
 
 
 DEFAULT_RUBRIC_DIMENSIONS = [
@@ -447,7 +457,8 @@ def _select_example_records(
     if example_count <= 0:
         return []
 
-    if prompt_builder is build_prompt_hybrid:
+    # Enable MMR greedy example selection for both hybrid and category batching
+    if prompt_builder in (build_prompt_hybrid, build_prompt_category_batch):
         # Greedy MMR-style selection: keep examples similar to target while
         # increasing grade diversity across selected examples.
         minimum_pool = min(len(train_records), max(example_count * 2, example_count + 2))
@@ -478,7 +489,7 @@ def _select_example_records(
 
 def run_loocv(
     records: List[Dict[str, Any]],
-    model_fn: Callable[[str], Dict[str, int]],
+    model_fn: Callable[[Any], Dict[str, int]],  
     num_examples: int = 3,
     prompt_builder: Callable = None,
     debug: bool = False,
@@ -495,8 +506,15 @@ def run_loocv(
         print(f"LOOCV progress: {idx + 1}/{len(records)}", flush=True)
         train_records = records[:idx] + records[idx + 1 :]
         example_records = _select_example_records(train_records, test_record, num_examples, prompt_builder)
-        prompt = prompt_builder(example_records + [test_record], num_examples=min(num_examples, len(train_records)))
-        predicted_raw = model_fn(prompt)
+
+        prompt_records = example_records + [test_record]
+        if prompt_builder is build_prompt_category_batch:
+            predicted_raw = model_fn(prompt_records)
+        else:
+            prompt = prompt_builder(prompt_records, num_examples=min(num_examples, len(train_records)))
+            predicted_raw = model_fn(prompt)
+
+        # predicted_raw = model_fn(prompt)  # <--- REMOVE THIS LINE, already handled above
         predicted = _validate_and_clamp_predictions(predicted_raw)
         predicted = _blend_with_retrieval_prior(predicted, example_records, test_record, retrieval_blend_weight)
         predicted = _apply_prediction_calibration(predicted, test_record, calibration_mode)

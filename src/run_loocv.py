@@ -17,6 +17,33 @@ except ImportError:  # pragma: no cover - supports running the file directly
     from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid, build_prompt_question_based
     from balanced_selection import select_balanced_examples
 
+try:
+    from .ollama_grader import (
+        grade_prompt_with_provider,
+        grade_prompt_category_batched,
+    )
+    from .few_shot_prompt import (
+        build_few_shot_prompt,
+        build_prompt_chain_of_thought,
+        build_prompt_rubric_reference,
+        build_prompt_hybrid,
+        build_prompt_question_based,
+        build_prompt_category_batch,
+    )
+except ImportError:
+    from ollama_grader import (
+        grade_prompt_with_provider,
+        grade_prompt_category_batched,
+    )
+    from few_shot_prompt import (
+        build_few_shot_prompt,
+        build_prompt_chain_of_thought,
+        build_prompt_rubric_reference,
+        build_prompt_hybrid,
+        build_prompt_question_based,
+        build_prompt_category_batch,
+    )
+
 
 def load_records(path: str) -> list[Dict[str, Any]]:
     with open(path, "r", encoding="utf-8") as handle:
@@ -52,7 +79,11 @@ def main() -> None:
         records = select_balanced_examples(records, num_examples=num_examples)
         print(f"Using balanced selection (grade-uniform across {len(records)} examples)", flush=True)
 
-    if prompt_style == "chain_of_thought":
+    is_batched = os.getenv("LOOCV_BATCHED", "").lower() in ("1", "true", "yes") or "batch" in prompt_style
+
+    if is_batched:
+        prompt_builder = build_prompt_category_batch
+    elif prompt_style == "chain_of_thought":
         prompt_builder = build_prompt_chain_of_thought
     elif prompt_style == "rubric_reference":
         prompt_builder = build_prompt_rubric_reference
@@ -71,26 +102,45 @@ def main() -> None:
     if debug:
         print(f"Debug mode enabled", flush=True)
 
-    def model_fn(prompt: str) -> Dict[str, int]:
-        return grade_prompt_with_provider(
-            prompt,
-            provider=provider,
-            model=model_name,
-            qwen_max_new_tokens=qwen_max_new_tokens,
-            qwen_temperature=qwen_temperature,
-            qwen_top_p=qwen_top_p,
-            qwen_seed=qwen_seed,
-        )
+    is_batched = os.getenv("LOOCV_BATCHED", "").lower() in ("1", "true", "yes") or "batch" in prompt_style
+
+    def model_fn(prompt_or_records: Any) -> Dict[str, int]:
+            if is_batched:
+                # When batched, prompt_or_records receives the raw list of records
+                return grade_prompt_category_batched(
+                    records=prompt_or_records,
+                    provider=provider,
+                    model=model_name,
+                    num_examples=num_examples,
+                    prompt_style=prompt_style,
+                    qwen_max_new_tokens=qwen_max_new_tokens,
+                    qwen_temperature=qwen_temperature,
+                    qwen_top_p=qwen_top_p,
+                    qwen_seed=qwen_seed,
+                )
+            else:
+                # Standard single-prompt flow expects a formatted string prompt
+                return grade_prompt_with_provider(
+                    prompt=prompt_or_records,
+                    provider=provider,
+                    model=model_name,
+                    qwen_max_new_tokens=qwen_max_new_tokens,
+                    qwen_temperature=qwen_temperature,
+                    qwen_top_p=qwen_top_p,
+                    qwen_seed=qwen_seed,
+                )
 
     result = run_loocv(
-        records,
-        model_fn=model_fn,
-        num_examples=num_examples,
-        prompt_builder=prompt_builder,
-        debug=debug,
-        calibration_mode=calibration_mode,
-        retrieval_blend_weight=retrieval_blend_weight,
-    )
+            records,
+            model_fn=model_fn,
+            num_examples=num_examples,
+            prompt_builder=prompt_builder,
+            debug=debug,
+            calibration_mode=calibration_mode,
+            retrieval_blend_weight=retrieval_blend_weight,
+        )
+
+        # 5. Output summary results
     print(json.dumps(result["summary"], indent=2))
 
     output_path = os.getenv("LOOCV_OUTPUT", "")

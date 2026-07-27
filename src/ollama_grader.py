@@ -18,6 +18,27 @@ except ImportError:  # pragma: no cover - supports running the file directly
     from few_shot_prompt import build_few_shot_prompt, build_prompt_chain_of_thought, build_prompt_rubric_reference, build_prompt_hybrid, build_prompt_question_based
     from scratch_loader import fetch_project_json
 
+try:
+    from .few_shot_prompt import (
+        RUBRIC_CATEGORIES,
+        build_few_shot_prompt,
+        build_prompt_category_batch, # <--- ADD HERE
+        build_prompt_chain_of_thought,
+        build_prompt_hybrid,
+        build_prompt_question_based,
+        build_prompt_rubric_reference,
+    )
+except ImportError:
+    from few_shot_prompt import (
+        RUBRIC_CATEGORIES,
+        build_few_shot_prompt,
+        build_prompt_category_batch, # <--- ADD HERE
+        build_prompt_chain_of_thought,
+        build_prompt_hybrid,
+        build_prompt_question_based,
+        build_prompt_rubric_reference,
+    )
+
 
 def extract_project_id_from_url(url: str) -> int:
     match = re.search(r"/projects/(\d+)", url)
@@ -317,6 +338,36 @@ def grade_prompt_with_provider(
         qwen_seed=qwen_seed,
     )
     return parse_grades_from_response(response_text)
+
+def grade_prompt_category_batched(
+    records: List[Dict[str, Any]],
+    provider: str = "ollama",
+    model: str | None = None,
+    num_examples: int = 3,
+    prompt_style: str = "hybrid",  # Pass style along
+    **kwargs
+) -> Dict[str, int]:
+    combined_grades: Dict[str, int] = {}
+
+    for category_name in RUBRIC_CATEGORIES.keys():
+        prompt = build_prompt_category_batch(
+            records=records,
+            category_name=category_name,
+            num_examples=num_examples,
+            prompt_style=prompt_style
+        )
+        
+        response_text = query_with_provider(
+            prompt,
+            provider=provider,
+            model=model,
+            **kwargs
+        )
+        
+        batch_grades = parse_grades_from_response(response_text)
+        combined_grades.update(batch_grades)
+
+    return combined_grades
 
 
 def save_predictions(predictions: Dict[str, Any], output_path: str) -> None:

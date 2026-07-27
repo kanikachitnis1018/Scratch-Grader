@@ -482,6 +482,13 @@ def _format_question_guide() -> str:
     lines.append("Score mapping: 1 = no skill, 2 = partial skill, 3 = correct skill, 4 = efficient skill, 5 = expert skill.")
     return "\n".join(lines)
 
+RUBRIC_CATEGORIES = {
+    "core_logic": ["problem_decomposition", "sequencing", "loops", "conditionals", "algorithms", "nesting"],
+    "state_data": ["variables", "lists", "math"],
+    "interactivity_events": ["event_handling", "messaging", "ui_feedback"],
+    "media_physics": ["coordinates", "cloning", "collision", "animation", "sound"],
+    "engineering_quality": ["debugging", "procedures", "integration"],
+}
 
 RUBRIC_SUMMARY = {
     "problem_decomposition": "1=no decomposition | 2=partial/incomplete | 3=clear manageable parts | 4=systematic with dependencies | 5=hierarchical top-down",
@@ -726,6 +733,67 @@ def build_prompt_question_based(records: List[Dict[str, Any]], num_examples: int
     ])
     blocks.append(target_block)
     blocks.append("Return only the grades as a JSON object with the same rubric keys, using the question guide and the score mapping above.")
+    return "\n\n".join(blocks)
+
+def build_prompt_category_batch(
+    records: List[Dict[str, Any]], 
+    category_name: str, 
+    num_examples: int = 3,
+    prompt_style: str = "hybrid"  # Default or set to hybrid
+) -> str:
+    """Build a prompt evaluating ONLY dimensions within a specific category batch."""
+    if category_name not in RUBRIC_CATEGORIES:
+        raise ValueError(f"Unknown category: {category_name}")
+
+    target_dims = RUBRIC_CATEGORIES[category_name]
+    if not records:
+        raise ValueError("records must not be empty")
+
+    examples = records[:max(1, min(num_examples, len(records) - 1))]
+    target = records[min(len(records) - 1, num_examples)] if len(records) > num_examples else records[-1]
+
+    blocks = [f"CATEGORY: {category_name.upper()}\nFocus ONLY on these dimensions: {', '.join(target_dims)}\n"]
+
+    # Filter compact rubric summaries for current batch dimensions
+    category_summaries = [f"• {dim}: {RUBRIC_SUMMARY[dim]}" for dim in target_dims if dim in RUBRIC_SUMMARY]
+    blocks.append("RUBRIC SUMMARY:\n" + "\n".join(category_summaries))
+
+    # Add few-shot examples
+    for index, record in enumerate(examples, start=1):
+        filtered_grades = {k: v for k, v in record["grades"].items() if k in target_dims}
+        block = "\n".join([
+            f"Example {index}:",
+            "Features:",
+            _format_features(record["features"]),
+            "Grades:",
+            _format_grades(filtered_grades),
+        ])
+        blocks.append(block)
+
+    # Add selective CoT reasoning if prompt_style is hybrid
+    target_block_lines = [
+        "Now grade this new project:",
+        "Features:",
+        _format_features(target["features"]),
+    ]
+    
+    if prompt_style == "hybrid":
+        reasoning = _generate_selective_reasoning(target["features"], target.get("grades", {}))
+        # Keep reasoning lines relevant to target_dims
+        filtered_reasoning = "\n".join([
+            line for line in reasoning.split("\n") 
+            if any(dim in line for dim in target_dims)
+        ])
+        if filtered_reasoning.strip():
+            target_block_lines.extend([
+                "Reasoning (for feature-driven dimensions in this category):",
+                filtered_reasoning
+            ])
+
+    blocks.append("\n".join(target_block_lines))
+    blocks.append(
+        f"Return ONLY a JSON object with integer scores (0–5) for these exact keys: {json.dumps(target_dims)}. Do NOT include reasoning in the JSON."
+    )
     return "\n\n".join(blocks)
 
 
