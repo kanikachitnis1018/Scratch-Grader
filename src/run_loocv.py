@@ -104,43 +104,63 @@ def main() -> None:
 
     is_batched = os.getenv("LOOCV_BATCHED", "").lower() in ("1", "true", "yes") or "batch" in prompt_style
 
+    n_passes = int(os.getenv("LOOCV_SELF_CONSISTENCY_PASSES", "3"))
+
     def model_fn(prompt_or_records: Any) -> Dict[str, int]:
+        all_pass_predictions = []
+        
+        for pass_idx in range(n_passes):
+            # Use a slightly non-zero temperature (0.3) so passes sample variations
+            pass_temp = 0.3 if n_passes > 1 else qwen_temperature
+            
             if is_batched:
-                # When batched, prompt_or_records receives the raw list of records
-                return grade_prompt_category_batched(
+                pred = grade_prompt_category_batched(
                     records=prompt_or_records,
                     provider=provider,
                     model=model_name,
                     num_examples=num_examples,
                     prompt_style=prompt_style,
                     qwen_max_new_tokens=qwen_max_new_tokens,
-                    qwen_temperature=qwen_temperature,
+                    qwen_temperature=pass_temp,
                     qwen_top_p=qwen_top_p,
-                    qwen_seed=qwen_seed,
+                    qwen_seed=None,  # Keep seed None so passes differ slightly
                 )
             else:
-                # Standard single-prompt flow expects a formatted string prompt
-                return grade_prompt_with_provider(
+                pred = grade_prompt_with_provider(
                     prompt=prompt_or_records,
                     provider=provider,
                     model=model_name,
                     qwen_max_new_tokens=qwen_max_new_tokens,
-                    qwen_temperature=qwen_temperature,
+                    qwen_temperature=pass_temp,
                     qwen_top_p=qwen_top_p,
-                    qwen_seed=qwen_seed,
+                    qwen_seed=None,  # Keep seed None so passes differ slightly
                 )
+            all_pass_predictions.append(pred)
+
+        # Average predictions across all passes per dimension and round to nearest integer
+        if not all_pass_predictions:
+            return {}
+
+        averaged_prediction: Dict[str, int] = {}
+        dimensions = all_pass_predictions[0].keys()
+        
+        for dimension in dimensions:
+            dim_sum = sum(p.get(dimension, 0) for p in all_pass_predictions)
+            averaged_prediction[dimension] = int(round(dim_sum / len(all_pass_predictions)))
+            
+        return averaged_prediction
 
     result = run_loocv(
-            records,
-            model_fn=model_fn,
-            num_examples=num_examples,
-            prompt_builder=prompt_builder,
-            debug=debug,
-            calibration_mode=calibration_mode,
-            retrieval_blend_weight=retrieval_blend_weight,
-        )
+        records,
+        model_fn=model_fn,
+        num_examples=num_examples,
+        prompt_builder=prompt_builder,
+        debug=debug,
+        calibration_mode=calibration_mode,
+        retrieval_blend_weight=retrieval_blend_weight,
+    )
 
-        # 5. Output summary results
+    # 5. Output summary results
     print(json.dumps(result["summary"], indent=2))
 
     output_path = os.getenv("LOOCV_OUTPUT", "")
@@ -150,7 +170,6 @@ def main() -> None:
         with open(output_file, "w", encoding="utf-8") as handle:
             json.dump(result["summary"], handle, indent=2)
         print(f"Saved results to {output_file}")
-
 
 if __name__ == "__main__":
     main()

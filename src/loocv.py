@@ -160,53 +160,61 @@ def _apply_prediction_calibration(
     uses_algorithms = bool(features.get("uses_algorithms"))
     uses_variables = bool(features.get("uses_variables"))
 
-    # Prevent high scores when core evidence flags are absent.
+    # Helper function: Only apply a ceiling cap if the raw prediction isn't showing strong mastery (>= 4)
+    def _cap_if_low_raw(dimension: str, cap: int) -> None:
+        raw_val = calibrated.get(dimension, 0)
+        # Protect strong 4s and 5s predicted by the model from being pulled down to 1-3
+        if raw_val < 4:
+            calibrated[dimension] = min(raw_val, cap)
+
+    # Prevent high scores when core evidence flags are absent (relaxed for high predictions)
     if not uses_event_handling:
-        calibrated["event_handling"] = min(calibrated.get("event_handling", 0), 2)
+        _cap_if_low_raw("event_handling", 2)
     if not uses_messaging:
-        calibrated["messaging"] = min(calibrated.get("messaging", 0), 2)
+        _cap_if_low_raw("messaging", 2)
     if not uses_nesting:
-        calibrated["nesting"] = min(calibrated.get("nesting", 0), 2)
+        _cap_if_low_raw("nesting", 2)
     if not uses_lists:
-        calibrated["lists"] = min(calibrated.get("lists", 0), 2)
+        _cap_if_low_raw("lists", 2)
     if not uses_sound:
-        calibrated["sound"] = min(calibrated.get("sound", 0), 2)
+        _cap_if_low_raw("sound", 2)
     if not uses_collision:
-        calibrated["collision"] = min(calibrated.get("collision", 0), 2)
+        _cap_if_low_raw("collision", 2)
 
     # Small projects tend to be over-scored on abstract logic dimensions.
+    # Preserve 4s and 5s if the LLM confidently identifies advanced logic in concise code.
     if block_count < 80:
-        calibrated["algorithms"] = min(calibrated.get("algorithms", 0), 3)
-        calibrated["conditionals"] = min(calibrated.get("conditionals", 0), 3)
-        calibrated["loops"] = min(calibrated.get("loops", 0), 3)
+        _cap_if_low_raw("algorithms", 3)
+        _cap_if_low_raw("conditionals", 3)
+        _cap_if_low_raw("loops", 3)
 
     # v2 applies extra evidence gates for dimensions that are frequently
     # over-scored in sparse projects.
     if calibration_mode == "v2":
         if not uses_animation:
-            calibrated["animation"] = min(calibrated.get("animation", 0), 2)
+            _cap_if_low_raw("animation", 2)
         if not uses_math:
-            calibrated["math"] = min(calibrated.get("math", 0), 2)
+            _cap_if_low_raw("math", 2)
         if not uses_algorithms:
-            calibrated["algorithms"] = min(calibrated.get("algorithms", 0), 2)
+            _cap_if_low_raw("algorithms", 2)
         if not uses_variables:
-            calibrated["variables"] = min(calibrated.get("variables", 0), 2)
+            _cap_if_low_raw("variables", 2)
 
         if sprite_count <= 1:
-            calibrated["problem_decomposition"] = min(calibrated.get("problem_decomposition", 0), 3)
-            calibrated["integration"] = min(calibrated.get("integration", 0), 2)
-            calibrated["messaging"] = min(calibrated.get("messaging", 0), 1)
+            _cap_if_low_raw("problem_decomposition", 3)
+            _cap_if_low_raw("integration", 2)
+            _cap_if_low_raw("messaging", 1)
 
         if block_count < 45:
-            calibrated["sequencing"] = min(calibrated.get("sequencing", 0), 3)
-            calibrated["coordinates"] = min(calibrated.get("coordinates", 0), 3)
-            calibrated["procedures"] = min(calibrated.get("procedures", 0), 2)
-            calibrated["nesting"] = min(calibrated.get("nesting", 0), 1)
+            _cap_if_low_raw("sequencing", 3)
+            _cap_if_low_raw("coordinates", 3)
+            _cap_if_low_raw("procedures", 2)
+            _cap_if_low_raw("nesting", 1)
 
         if block_count < 25:
-            calibrated["loops"] = min(calibrated.get("loops", 0), 2)
-            calibrated["conditionals"] = min(calibrated.get("conditionals", 0), 2)
-            calibrated["algorithms"] = min(calibrated.get("algorithms", 0), 2)
+            _cap_if_low_raw("loops", 2)
+            _cap_if_low_raw("conditionals", 2)
+            _cap_if_low_raw("algorithms", 2)
 
     return _validate_and_clamp_predictions(calibrated)
 
