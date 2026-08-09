@@ -537,7 +537,7 @@ def extract_atomic_features(project_json):
     compound_conditionals = any(opcode in {"operator_and", "operator_or", "operator_not"} for opcode in opcodes)
     ui_variable_names = {"score", "scores", "lives", "life", "timer", "time", "health", "hp"}
     has_ui_state_variable = any(name.lower() in ui_variable_names for name in variable_names)
-    has_start_end_screen_name = any(token in name.lower() for name in sprite_names for token in ["start", "end", "game over", "menu"]) if sprite_names else False
+    has_start_end_screen_name = any(token in name.lower() for token in sprite_names for token in ["start", "end", "game over", "menu"]) if sprite_names else False
     sends_broadcast = any(opcode.startswith("event_broadcast") for opcode in opcodes)
     receives_broadcast = any(opcode.startswith("event_whenbroadcastreceived") for opcode in opcodes)
     has_edge_bounce = any(opcode == "motion_ifonedgebounce" for opcode in opcodes)
@@ -1032,3 +1032,30 @@ def enrich_dataset(df, output_dir=None):
             for record in enriched:
                 record.update(stage_paths)
     return enriched
+
+
+def apply_hard_constraints(features, preds):
+	"""
+	Simple deterministic clamps:
+	- if no clones detected, force clone-related dimensions to 0
+	- if max_nesting_depth low, reduce scores for deep-structure dims (example keys)
+	- features: atomic feature dict added in scratch_loader
+	- preds: dict dim->score (mutated copy returned)
+	"""
+	out = dict(preds or {})
+	clone_flags = features.get("clone_create") or features.get("clone_start") or False
+	if not clone_flags:
+		# example keys to clamp - adapt to your 20-dim keys
+		for k in ("cloning_use", "clone_lifecycle", "clone_complexity"):
+			if k in out:
+				out[k] = 0
+	depth = features.get("max_nesting_depth", 0)
+	if depth <= 1:
+		# clamp dims that require deep nesting (placeholder keys)
+		for k in ("sequencing_complexity", "nesting_usage"):
+			if k in out:
+				out[k] = min(out[k], 1)
+	return out
+
+# Integration hint:
+# Call apply_hard_constraints(project_features, raw_preds) after parsing model output and before final scoring.

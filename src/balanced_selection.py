@@ -2,6 +2,8 @@
 
 from collections import defaultdict
 from typing import List, Dict, Any
+import random
+import math
 
 
 def select_balanced_examples(records: List[Dict[str, Any]], num_examples: int = 15) -> List[Dict[str, Any]]:
@@ -89,6 +91,38 @@ def get_balanced_indices(records: List[Dict[str, Any]], num_examples: int = 15) 
     return sorted(list(selected))
 
 
+def select_contrastive_examples(dataset, dimension, n_examples=6, seed=42):
+	"""
+	Select n_examples for a single dimension mixing low/high scores deterministically.
+	- dataset: iterable of records with 'grades' dict and 'id'
+	- dimension: rubric key to balance on
+	- returns: list of selected records (deterministic order)
+	"""
+	rnd = random.Random(seed)
+	buckets = defaultdict(list)
+	for rec in dataset:
+		score = rec.get('grades', {}).get(dimension)
+		if score is None:
+			continue
+		buckets[score].append(rec)
+	if not buckets:
+		return []
+	all_scores = sorted(buckets.keys())
+	median_idx = len(all_scores) // 2
+	low_scores = [s for s in all_scores[:median_idx+1]]
+	high_scores = [s for s in all_scores[median_idx+1:]] or [all_scores[-1]]
+	low_pool = [r for s in low_scores for r in buckets[s]]
+	high_pool = [r for s in high_scores for r in buckets[s]]
+	n_low = math.ceil(n_examples / 2)
+	n_high = n_examples - n_low
+	rnd.shuffle(low_pool)
+	rnd.shuffle(high_pool)
+	selected = (low_pool[:n_low] if low_pool else []) + (high_pool[:n_high] if high_pool else [])
+	# deterministic stable ordering by id if available
+	selected.sort(key=lambda r: r.get('id', 0))
+	return selected
+
+
 if __name__ == "__main__":
     import json
     
@@ -116,5 +150,7 @@ if __name__ == "__main__":
             complete += 1
         status = "✓" if is_complete else "✗"
         print(f"{status} {dim}: {grades}")
+    
+    print(f"\nDimensions with all 5 grades: {complete}/20")
     
     print(f"\nDimensions with all 5 grades: {complete}/20")

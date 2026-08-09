@@ -18,6 +18,15 @@ except ImportError:
         build_prompt_category_batch, # <--- ADD HERE
     )
 
+try:
+	from src.calibration.confusion_map import build_confusion_map, save_confusion_map
+except Exception:
+	try:
+		from calibration.confusion_map import build_confusion_map, save_confusion_map
+	except Exception:
+		build_confusion_map = None
+		save_confusion_map = None
+
 
 DEFAULT_RUBRIC_DIMENSIONS = [
     "problem_decomposition",
@@ -608,3 +617,22 @@ def run_loocv_to_dataframe(
         row.update(item["mae"])
         rows.append(row)
     return pd.DataFrame(rows)
+
+
+def compute_confusion_from_loocv_results(loocv_results):
+	"""
+	loocv_results: expected JSON structure from existing run; minimal format:
+	{ 'predictions': {sample_id: {dim:pred}}, 'truth': {sample_id:{dim:true}} }
+	Returns confusion_map (call build_confusion_map).
+	"""
+	if not build_confusion_map:
+		return {}
+	true = loocv_results.get("truth", {})
+	pred = loocv_results.get("predictions", {})
+	conf_map = build_confusion_map(true, pred)
+	return conf_map
+
+# Integration hint:
+# After a baseline LOOCV run, call compute_confusion_from_loocv_results(results)
+# then save_confusion_map(conf_map, 'results/confusion_map.json') and pass that path
+# into run_loocv_with_self_consistency(..., calibration_map_path='results/confusion_map.json')

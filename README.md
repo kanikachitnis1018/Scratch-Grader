@@ -259,9 +259,200 @@ The tests cover:
 - prompt file generation
 - the server response payload
 
-## Notes
+## Developer Plan & Patches (concise)
 
-- `src/ollama_grader.py` and `src/server.py` support either Ollama or local Qwen. Use `LOOCV_PROVIDER` or request-level `provider` to switch.
-- `src/main.py` overwrites `enriched_dataset.json` when it runs.
-- `src/generate_prompt_from_test_json.py` and the server overwrite `few_shot_prompt.txt`.
-- The code is designed to be run from the repository root so the `src` imports resolve cleanly.
+This project roadmap lists prioritized, small, deterministic changes to reach the goals described in the project brief (contrastive few-shot selection, calibration v2, selective reasoning, self-consistency averaging, richer features, strict JSON outputs). Apply these changes incrementally and run unit tests after each commit.
+
+High-level steps (apply in order)
+1. Contrastive few-shot selection
+   - Add a routine balanced_selection.select_contrastive_examples(enriched_dataset, n_per_group, seed)
+   - Behavior: for each rubric dimension select ceil(n/2) low-score and floor(n/2) high-score examples; seed-based shuffle for determinism.
+   - Files: balanced_selection.py, tests/test_balanced_selection.py
+
+2. Calibration v2 (confusion-matrix remapping)
+   - Add module calibration/confusion_map.py with build_confusion_map(true_labels, pred_labels) and apply_confusion_remap(pred_probs, confusion_map).
+   - Integrate in loocv.py after raw predictions and before final scoring.
+   - Files: calibration/confusion_map.py, loocv.py, tests/test_calibration_v2.py
+
+3. Selective reasoning expansions
+   - In few_shot_prompt.py, add optional reasoning blocks for "algorithms", "sequencing", "integration".
+   - Expose prompt builder param selective_reasoning=['algorithms','sequencing'].
+   - Ensure few_shot prompt asks the model to return strict JSON and to label sections explicitly.
+
+4. Self-consistency averaging
+   - Modify run_loocv.py to accept LOOCV_SELF_CONSISTENCY_PASSES (default 1). If >1, run the provider multiple times with different deterministic seeds and average scores per rubric (mean then round or use MAE-tuned mapping).
+   - Keep seeds reproducible: use base_seed + pass_index.
+
+5. Richer feature preprocessing
+   - In scratch_loader.py add compute_max_nesting_depth(ast), detect_clone_events(ast), detect_var_initializations(ast) helpers.
+   - Save computed features into atomic_features.json and enriched_dataset.json.
+
+6. Strict JSON output enforcement
+   - Enforce strict JSON response format in prompt templates and add a sanitizer in ollama_grader.py that:
+     - extracts the JSON block, tries json.loads, and fails fast with parse diagnostics in debug mode.
+     - If provider returns non-JSON, return a structured error object and save raw output to ollama_predictions.json for debugging.
+
+7. Category batching and deterministic decoding
+   - Ensure graders run category-by-category (4 groups of 5) when LOOCV_BATCH_BY_CATEGORY=true.
+   - For Ollama, always pass OLLAMA_SEED/OLLAMA_NUM_PREDICT and temperature=0 for deterministic runs.
+
+Per-file actionable summaries (minimal hints)
+
+- src/balanced_selection.py
+  - Summary: Add select_contrastive_examples(dataset, n_examples, seed=42, balanced=True)
+  - Hint: group by dimension score, sample deterministic low/high stratified examples.
+  - Tests: assert equal counts and reproducible selection with same seed.
+
+- src/calibration/confusion_map.py (new)
+  - Summary: compute per-dimension confusion matrices from LOOCV outputs and expose mapping functions to remap predicted scores -> calibrated scores.
+  - Hint: store mapping as JSON mapping from predicted->remapped (or probability adjustment).
+
+- src/few_shot_prompt.py
+  - Summary: add selective_reasoning blocks and explicit "RETURN ONLY JSON" suffix; include example-driven reasoning snippets.
+  - Hint: append a strict schema and "If you cannot produce valid JSON, return {'error': 'parse_failed', 'raw': <raw_text>}".
+
+- src/run_loocv.py
+  - Summary: add LOOCV_SELF_CONSISTENCY_PASSES env var handling and averaging logic.
+  - Hint: for averaging use arithmetic mean across passes, then keep both mean (float) and rounded score.
+
+- src/scratch_loader.py
+  - Summary: add compute_max_nesting_depth, detect_clone_events, detect_var_initializations; integrate into atomic feature extraction pipeline.
+  - Hint: small AST recursion with a max depth accumulator; mark variables seen in first several blocks as initialized.
+
+- src/ollama_grader.py
+  - Summary: add JSON extraction/sanitizer, deterministic seeding, and better error diagnostics; save raw responses to ollama_predictions.json with timestamps.
+  - Hint: try to locate final { ... } block in text using rfind('{')/rfind('}') heuristics before json.loads.
+
+- src/loocv.py
+  - Summary: integrate calibration v2 hooks and optional self-consistency averaging; accept LOOCV_BATCH_BY_CATEGORY.
+  - Hint: calibration hook signature: calibrated = calibration.apply(preds, mode='v2', confusion_map=cm)
+
+- tests/*
+  - Add unit tests verifying deterministic behavior (same seed → same outputs), JSON parsing for edge cases, contrastive selection reproducibility, confusion map application.
+
+## Exact commands — run LOOCV and read accuracy
+
+Recommended deterministic (Ollama) full run — writes summary JSON to LOOCV_OUTPUT:
+
+```bash
+# deterministic Ollama LOOCV (recommended)
+LOOCV_PROVIDER=ollama \
+LOOCV_MODEL=llama3:latest \
+LOOCV_PROMPT=hybrid \
+LOOCV_NUM_EXAMPLES=7 \
+LOOCV_LIMIT=72 \
+LOOCV_SELF_CONSISTENCY_PASSES=3 \
+LOOCV_CALIBRATION=v2 \
+OLLAMA_TEMPERATURE=0 \
+OLLAMA_TOP_P=1 \
+OLLAMA_SEED=42 \
+OLLAMA_NUM_PREDICT=512 \
+LOOCV_OUTPUT=results/loocv_ollama_accuracy.json \
+python3 src/run_loocv.py
+```
+
+Quick iterative run (smaller, faster):
+
+```bash
+LOOCV_PROVIDER=ollama LOOCV_MODEL=llama3:latest LOOCV_PROMPT=hybrid LOOCV_NUM_EXAMPLES=5 LOOCV_LIMIT=20 OLLAMA_TEMPERATURE=0 OLLAMA_SEED=42 LOOCV_OUTPUT=results/loocv_quick.json python3 src/run_loocv.py
+```
+
+Inspect results (use jq):
+
+```bash
+# show overall summary
+jq '.summary' results/loocv_ollama_accuracy.json
+
+# show overall accuracy value only
+jq '.summary.accuracy' results/loocv_ollama_accuracy.json
+
+# show per-dimension accuracies
+jq '.per_dimension | to_entries[] | {dimension: .key, accuracy: .value.accuracy}' results/loocv_ollama_accuracy.json
+```
+
+Notes
+- Always fix OLLAMA_TEMPERATURE=0 and OLLAMA_SEED for reproducible comparisons.
+- Use LOOCV_LIMIT during prompt/hyperparameter iteration to run on a subset.
+- Increase LOOCV_SELF_CONSISTENCY_PASSES for more stable average predictions (slower).
+
+Recommended deterministic commands (examples)
+- LOOCV deterministic Ollama run:
+  LOOCV_PROVIDER=ollama LOOCV_MODEL=llama3:latest LOOCV_PROMPT=hybrid LOOCV_NUM_EXAMPLES=7 LOOCV_SELF_CONSISTENCY_PASSES=3 LOOCV_CALIBRATION=v2 OLLAMA_SEED=42 OLLAMA_TEMPERATURE=0 OLLAMA_NUM_PREDICT=512 python3 src/run_loocv.py
+
+Testing checklist
+- run: python -m unittest discover -s tests -p "test_*.py"
+- verify: results/ contains deterministic outputs; small diff allowed only when changing LOOCV_SELF_CONSISTENCY_PASSES or calibration mode.
+
+Developer notes
+- Keep changes small per commit. Each file change described above should be implemented in its own commit with test updates.
+
+## Additional strategies to improve accuracy (actionable)
+
+If current LOOCV accuracy is below expectations, apply the following prioritized interventions. Run small, controlled experiments (use LOOCV_LIMIT) and change one variable at a time.
+
+1) Diagnose error modes
+- Compute per-dimension confusion matrices from a baseline run to identify common confusions.
+- Files: src/loocv.py, (new) src/calibration/confusion_map.py
+- Quick command: run a small LOOCV then:
+  jq '.per_dimension | to_entries[] | {dim:.key, confusions:.value.confusion}' results/loocv_ollama_accuracy.json
+
+2) Contrastive few-shot & edge-case examples
+- Ensure few-shot pools include low, mid, high scores and rare/edge behaviours (cloning, deep nesting).
+- Files: src/balanced_selection.py, src/few_shot_prompt.py
+- Tip: set LOOCV_BALANCED=true and LOOCV_NUM_EXAMPLES to an odd number (e.g., 7) to preserve majority contrast.
+
+3) Enrich features and surface them to the prompt
+- Add max nesting depth, clone lifecycle flags, variable-init counts, and custom-block signatures to atomic features.
+- Files: src/scratch_loader.py, src/grader.py
+- Include a one-line “Facts:” summary before the examples in the prompt (helps the model anchor).
+
+4) Self-consistency & deterministic ensembling
+- Run multiple deterministic passes (LOOCV_SELF_CONSISTENCY_PASSES=3–5) with seeds base_seed + pass_idx; average per-dimension then round.
+- Files: src/run_loocv.py, src/ollama_grader.py
+- Command example:
+  LOOCV_SELF_CONSISTENCY_PASSES=3 OLLAMA_SEED=42 OLLAMA_TEMPERATURE=0 LOOCV_LIMIT=20 ... python3 src/run_loocv.py
+
+5) Calibration v2: confusion-matrix remapping
+- Build a per-dimension map from predicted->most-likely-true using LOOCV history; apply remap to raw preds.
+- Files: src/calibration/confusion_map.py, src/loocv.py
+- Use holdout folds to avoid overfitting the confusion map.
+
+6) Reranking using parse-confidence / log-prob
+- If provider exposes token-prob or log-prob, score candidate JSON parses and pick highest-confidence answer; otherwise use heuristic confidence (complete JSON + no error keys).
+- Files: src/ollama_grader.py
+- Save both parse and confidence in results for analysis.
+
+7) Multi-prompt ensembled voting
+- Create 3 small prompt variants (different instructions, different reasoning blocks) and aggregate via majority/average.
+- Files: src/few_shot_prompt.py, src/run_loocv.py
+- Deterministic seeds + temp=0 still apply to keep runs comparable.
+
+8) Hard constraints / post-processing caps
+- Apply rule-based clamps: e.g., if feature indicates "no cloning" then set cloning-related rubric dims to 0; prevent impossible high scores when features contradict them.
+- Files: src/grader.py, src/loocv.py
+
+9) Data augmentation / synthetic contrastive examples
+- Create synthetic minimal projects that exemplify extreme rubric scores and include them as few-shot examples.
+- Files: data/ or scripts that append to enriched_dataset.json used by prompt builders.
+
+10) Targeted fine-tuning (last resort)
+- If budget allows, fine-tune or LoRA-adapt a smaller instruction model on 1–2k labeled examples with the strict JSON output format.
+- Files: new scripts for fine-tuning (outside this repo), then integrate as a provider.
+
+Experiment recipe (small-step loop)
+1. Baseline: run LOOCV_LIMIT=20 with deterministic seed and temp=0, save LOOCV_OUTPUT.
+2. Add one change (e.g., contrastive examples), rerun same LOOCV_LIMIT and compare summary.accuracy.
+3. Track per-dimension deltas to see where gains occur.
+4. If no improvement after 3 orthogonal changes, try ensembling or calibration remap.
+
+Quick commands (examples)
+- Baseline deterministic quick run:
+  LOOCV_PROVIDER=ollama LOOCV_MODEL=llama3:latest LOOCV_PROMPT=hybrid LOOCV_NUM_EXAMPLES=7 LOOCV_LIMIT=20 OLLAMA_TEMPERATURE=0 OLLAMA_SEED=42 LOOCV_OUTPUT=results/loocv_quick.json python3 src/run_loocv.py
+
+- Self-consistency + ensembling quick trial:
+  LOOCV_SELF_CONSISTENCY_PASSES=3 LOOCV_PROVIDER=ollama LOOCV_NUM_EXAMPLES=7 LOOCV_LIMIT=20 OLLAMA_TEMPERATURE=0 OLLAMA_SEED=42 LOOCV_OUTPUT=results/loocv_selfcons.json python3 src/run_loocv.py
+
+Monitoring & prioritization
+- Prioritize changes that fix high-frequency confusions first (use confusion matrix).
+- Use LOOCV_LIMIT to iterate quickly.
+- Keep detailed raw outputs (ollama_predictions.json) and a small CSV of failure cases to drive manual inspection and targeted few-shot construction.

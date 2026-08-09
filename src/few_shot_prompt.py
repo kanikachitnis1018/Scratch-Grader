@@ -802,3 +802,91 @@ def save_prompt_to_file(records: List[Dict[str, Any]], output_path: str, num_exa
     with open(output_path, "w", encoding="utf-8") as handle:
         handle.write(prompt)
     return prompt
+
+def build_prompt(example_list, rubric_schema, selective_reasoning=None, enforce_json=True):
+	"""
+	- example_list: few-shot examples (contrastive preferred)
+	- rubric_schema: dict describing keys and allowed values
+	- selective_reasoning: list e.g. ['algorithms','sequencing','integration']
+	- enforce_json: append strict schema + 'RETURN ONLY JSON' suffix
+	"""
+	prompt_sections = []
+	# header
+	prompt_sections.append("You are an expert in grading student projects. Carefully evaluate the features and provide grades.")
+
+	# few-shot examples
+	for index, example in enumerate(example_list, start=1):
+		example_features = example["features"]
+		example_grades = example["grades"]
+
+		# format features and grades
+		formatted_features = _format_features(example_features)
+		formatted_grades = _format_grades(example_grades)
+
+		# example block
+		example_block = f"Example {index}:\nFeatures:\n{formatted_features}\nGrades:\n{formatted_grades}"
+		prompt_sections.append(example_block)
+
+	# selective reasoning snippets
+	if selective_reasoning:
+		for block in selective_reasoning:
+			if block == "algorithms":
+				prompt_sections.append("Selective reasoning (algorithms): If relevant, briefly identify core algorithmic patterns (e.g., loops, conditionals, event flow) in one line.")
+			elif block == "sequencing":
+				prompt_sections.append("Selective reasoning (sequencing): If relevant, list key ordered steps the project executes (1-3 bullets).")
+			elif block == "integration":
+				prompt_sections.append("Selective reasoning (integration): If relevant, note how sprites/variables communicate or reuse code.")
+	# strict JSON enforcement
+	if enforce_json:
+		# concise schema reminder
+		prompt_sections.append("RETURN ONLY JSON matching this schema: " + str(rubric_schema))
+		prompt_sections.append("If you cannot produce valid JSON, return {\"error\":\"parse_failed\",\"raw\":<full_response>}")
+
+	return "\n\n".join(prompt_sections)
+
+def _selective_reasoning_snippets(selective_reasoning):
+	parts = []
+	if not selective_reasoning:
+		return parts
+	for block in selective_reasoning:
+		if block == "algorithms":
+			parts.append("Selective reasoning (algorithms): briefly identify core algorithmic patterns (loops, conditionals, event flow).")
+		elif block == "sequencing":
+			parts.append("Selective reasoning (sequencing): list key ordered steps the project executes (1-3 bullets).")
+		elif block == "integration":
+			parts.append("Selective reasoning (integration): note sprite/variable communication or code reuse.")
+	return parts
+
+def build_prompt_variant(examples, rubric_schema, facts=None, selective_reasoning=None, enforce_json=True, variant_id=0):
+	"""
+	Build one prompt variant. Use variant_id to slightly change wording for ensembling.
+	- examples: list of few-shot examples (strings)
+	- rubric_schema: dict schema for JSON output
+	- facts: optional list of short "Fact: ..." strings to anchor model
+	- selective_reasoning: list of reasoning blocks to include
+	"""
+	parts = []
+	if facts:
+		parts.append("Facts: " + " | ".join(facts))
+	# small wording variants encourage diverse but focused responses
+	if variant_id == 0:
+		parts.append("You are a careful rubric grader. Use the examples to infer scores.")
+	elif variant_id == 1:
+		parts.append("Act as an objective grader. Rely on the examples and the facts above.")
+	else:
+		parts.append("Follow the rubric; prefer conservative judgments when uncertain.")
+	# examples
+	parts.append("Examples:\n" + "\n\n".join(examples))
+	# selective reasoning
+	parts.extend(_selective_reasoning_snippets(selective_reasoning))
+	# strict JSON enforcement
+	if enforce_json:
+		parts.append("RETURN ONLY JSON matching this schema:\n" + str(rubric_schema))
+		parts.append("If you cannot produce valid JSON, return {\"error\":\"parse_failed\",\"raw\":<full_response>}")
+	return "\n\n".join(parts)
+
+def build_prompt_ensemble(examples, rubric_schema, facts=None, selective_reasoning=None, n_variants=3):
+	"""
+	Return list of prompt strings (n_variants) for ensembling/majority voting.
+	"""
+	return [build_prompt_variant(examples, rubric_schema, facts=facts, selective_reasoning=selective_reasoning, variant_id=i) for i in range(n_variants)]

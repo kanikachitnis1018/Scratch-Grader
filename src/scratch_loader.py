@@ -63,6 +63,68 @@ def fetch_project_json(project_id: int) -> dict | None:
         print(f"Warning: could not fetch project {project_id}: {exc}")
         return None
 
+def compute_max_nesting_depth(blocks):
+	"""
+	Compute max nesting depth of block dicts/lists.
+	Blocks expected as list of dicts (AST-like); this is heuristic.
+	"""
+	max_depth = 0
+	def visit(node, depth):
+		nonlocal max_depth
+		if depth > max_depth:
+			max_depth = depth
+		if isinstance(node, dict):
+			for v in node.values():
+				if isinstance(v, (dict, list)):
+					visit(v, depth + 1)
+		elif isinstance(node, list):
+			for item in node:
+				if isinstance(item, (dict, list)):
+					visit(item, depth + 1)
+	for b in (blocks or []):
+		visit(b, 1)
+	return max_depth
+
+def detect_clone_events(blocks):
+	"""
+	Detect presence of clone create/start handlers.
+	Returns dict with booleans.
+	"""
+	found_create = False
+	found_start = False
+	for b in (blocks or []):
+		if isinstance(b, dict):
+			op = b.get('opcode', '') or ''
+			op_text = str(b.get('text','')).lower()
+			if 'clone' in op_text or 'clone' in op:
+				if 'create' in op_text or 'create' in op:
+					found_create = True
+				if 'start' in op_text or 'start_as_clone' in op:
+					found_start = True
+	return {"clone_create": found_create, "clone_start": found_start}
+
+def detect_var_initializations(blocks, sample_limit=50):
+	"""
+	Look at early blocks for variable 'set'/'create' ops and count unique variables initialized.
+	"""
+	inited = set()
+	count = 0
+	for b in (blocks or []):
+		if count >= sample_limit:
+			break
+		count += 1
+		if isinstance(b, dict):
+			op = (b.get('opcode','') or '').lower()
+			if 'set' in op or 'create_variable' in op or 'init' in op:
+				fields = b.get('fields', {})
+				if isinstance(fields, dict):
+					varname = fields.get('VAR') or fields.get('var') or None
+					if varname:
+						inited.add(varname)
+	return {"num_var_inited": len(inited), "var_names_sample": list(inited)[:5]}
+
+# integrate these into the atomic features pipeline where features are collected
+
 # Optional: quick test mode
 if __name__ == "__main__":
     test_id = 815  # replace with a real Scratch project ID

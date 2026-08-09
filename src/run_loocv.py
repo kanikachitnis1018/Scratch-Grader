@@ -1,10 +1,27 @@
+# Add a small sys.path bootstrap so `from calibration...` works when running the script directly.
+import sys
+import pathlib
+
+# Ensure the 'src' directory is on sys.path when running this file directly
+_SRC_DIR = pathlib.Path(__file__).resolve().parent
+if str(_SRC_DIR) not in sys.path:
+	sys.path.insert(0, str(_SRC_DIR))
+
 import json
 import os
-import sys
+import statistics
 from pathlib import Path
 from typing import Any, Dict
 
-sys.path.append(str(Path(__file__).resolve().parent))
+# Import calibration helpers using the local package path (calibration.*).
+# Fall back gracefully if the module is not available.
+try:
+	from calibration.confusion_map import apply_confusion_remap, load_confusion_map, build_confusion_map, save_confusion_map
+except Exception:
+	apply_confusion_remap = None
+	load_confusion_map = lambda p: {}
+	build_confusion_map = None
+	save_confusion_map = None
 
 try:
     from .loocv import run_loocv
@@ -48,6 +65,91 @@ except ImportError:
 def load_records(path: str) -> list[Dict[str, Any]]:
     with open(path, "r", encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def _run_single_pass(item, provider_args, pass_index):
+    # set deterministic seed per pass
+    base_seed = int(os.getenv("OLLAMA_SEED", "42"))
+    seed = base_seed + pass_index
+    provider_args['seed'] = seed
+    # ...existing code to call grader/provider...
+    # should return dict of dimension->score (floats or ints)
+    return {"dim1": 3, "dim2": 2}  # placeholder
+
+
+def evaluate_with_self_consistency(items, provider_args):
+    passes = int(os.getenv("LOOCV_SELF_CONSISTENCY_PASSES", "1"))
+    results = {}
+    for item in items:
+        all_preds = []
+        for p in range(passes):
+            pred = _run_single_pass(item, provider_args.copy(), p)
+            all_preds.append(pred)
+        # average per-dimension
+        avg = {}
+        for dim in all_preds[0].keys():
+            values = [pred[dim] for pred in all_preds]
+            avg_val = statistics.mean(values)
+            avg[dim] = {"mean": avg_val, "rounded": round(avg_val)}
+        results[item.get("id")] = avg
+    return results
+
+
+def _aggregate_self_consistency(pred_list):
+    """
+    pred_list: list of dicts sample_id -> {dim:score}
+    returns aggregated: sample_id -> {dim: {'mean':float,'rounded':int}}
+    """
+    agg = {}
+    sids = set()
+    for preds in pred_list:
+        sids.update(preds.keys())
+    for sid in sids:
+        by_dim = {}
+        # collect values per-dim across passes
+        dims = {}
+        for preds in pred_list:
+            p = preds.get(sid, {})
+            for dim, val in p.items():
+                dims.setdefault(dim, []).append(val)
+        for dim, vals in dims.items():
+            meanv = statistics.mean(vals)
+            by_dim[dim] = {"mean": meanv, "rounded": int(round(meanv))}
+        agg[sid] = by_dim
+    return agg
+
+
+def run_loocv_with_self_consistency(items, provider_args, calibration_map_path=None):
+    """
+    High-level helper: runs LOOCV passes (calls existing evaluation per-pass),
+    aggregates predictions and applies optional confusion remap.
+    - items: list of items to grade
+    - provider_args: dict to pass into per-pass grader (must accept 'seed')
+    - calibration_map_path: optional JSON path to confusion_map to apply
+    """
+    passes = int(os.getenv("LOOCV_SELF_CONSISTENCY_PASSES", "1"))
+    base_seed = int(os.getenv("OLLAMA_SEED", "42"))
+    all_pass_preds = []
+    for p in range(passes):
+        seed = base_seed + p
+        provider_args['seed'] = seed
+        # Call existing per-run LOOCV function (placeholder name: single_pass_loocv)
+        # single_pass_loocv should return dict sample_id -> {dim:pred_score}
+        # ...existing code calls into single_pass_loocv(...)
+        # Example placeholder (replace integration point):
+        # pass_preds = single_pass_loocv(items, provider_args)
+        pass_preds = {}  # <-- integrate your existing single-pass loocv call here
+        all_pass_preds.append(pass_preds)
+    # aggregate
+    aggregated = _aggregate_self_consistency(all_pass_preds)
+    # convert aggregated to same structure as preds for remapping: sample_id -> {dim:rounded}
+    raw_preds_for_remap = {sid: {dim: v['rounded'] for dim, v in dims.items()} for sid, dims in aggregated.items()}
+    # apply confusion remap if available
+    if calibration_map_path and apply_confusion_remap:
+        conf_map = load_confusion_map(calibration_map_path)
+        raw_preds_for_remap = apply_confusion_remap(raw_preds_for_remap, conf_map)
+    # return final per-sample aggregated structure
+    return {"aggregated": aggregated, "final_rounded": raw_preds_for_remap}
 
 
 def main() -> None:

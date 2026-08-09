@@ -2,6 +2,7 @@ import json
 import os
 import platform
 import re
+import time
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -425,3 +426,73 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+import json
+import time
+import re
+from pathlib import Path
+
+RAW_LOG = Path("ollama_predictions.json")
+
+def _append_raw_log(entry):
+	try:
+		if RAW_LOG.exists():
+			arr = json.loads(RAW_LOG.read_text())
+		else:
+			arr = []
+		arr.append(entry)
+		RAW_LOG.write_text(json.dumps(arr, indent=2))
+	except Exception:
+		pass
+
+def sanitize_model_output(text, debug=False):
+	"""
+	Try direct json.loads, else heuristically extract last {...} block.
+	Returns dict or {'error':...}.
+	"""
+	if not isinstance(text, str):
+		return {"error": "no_text"}
+	try:
+		return json.loads(text)
+	except Exception:
+		start = text.rfind("{")
+		end = text.rfind("}")
+		if start != -1 and end != -1 and end > start:
+			candidate = text[start:end+1]
+			try:
+				parsed = json.loads(candidate)
+				_append_raw_log({"timestamp": time.time(), "raw": text, "extracted": candidate})
+				return parsed
+			except Exception as e:
+				_append_raw_log({"timestamp": time.time(), "raw": text, "error": str(e)})
+				if debug:
+					return {"error": "parse_failed", "diagnostic": str(e), "raw": text}
+				return {"error": "parse_failed"}
+		_append_raw_log({"timestamp": time.time(), "raw": text, "error": "no_json_found"})
+		return {"error": "no_json_found", "raw": text}
+
+def extract_confidence_from_response(response):
+	"""
+	If response provides token/log-probs include them as 'confidence' float.
+	Fallback: simple heuristic (no error and keys present -> 1.0).
+	"""
+	if not isinstance(response, dict):
+		return 0.0
+	if response.get("error"):
+		return 0.0
+	# provider-specific: look for 'confidence', 'logprob', 'prob' fields
+	for k in ("confidence", "logprob", "prob", "score"):
+		if k in response:
+			try:
+				return float(response[k])
+			except Exception:
+				continue
+	# heuristic
+	return 1.0
+
+# Integration hint:
+# In the existing function that sends prompt to Ollama, pass seed/temperature/top_p from env,
+# call Ollama API, receive raw_text, then:
+# parsed = sanitize_model_output(raw_text, debug=DEBUG)
+# confidence = extract_confidence_from_response(parsed)
+# save raw_text + parsed + confidence via _append_raw_log
