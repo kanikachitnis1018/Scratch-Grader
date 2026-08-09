@@ -1035,27 +1035,159 @@ def enrich_dataset(df, output_dir=None):
 
 
 def apply_hard_constraints(features, preds):
-	"""
-	Simple deterministic clamps:
-	- if no clones detected, force clone-related dimensions to 0
-	- if max_nesting_depth low, reduce scores for deep-structure dims (example keys)
-	- features: atomic feature dict added in scratch_loader
-	- preds: dict dim->score (mutated copy returned)
-	"""
-	out = dict(preds or {})
-	clone_flags = features.get("clone_create") or features.get("clone_start") or False
-	if not clone_flags:
-		# example keys to clamp - adapt to your 20-dim keys
-		for k in ("cloning_use", "clone_lifecycle", "clone_complexity"):
-			if k in out:
-				out[k] = 0
-	depth = features.get("max_nesting_depth", 0)
-	if depth <= 1:
-		# clamp dims that require deep nesting (placeholder keys)
-		for k in ("sequencing_complexity", "nesting_usage"):
-			if k in out:
-				out[k] = min(out[k], 1)
-	return out
+    """
+    Deterministic post-processing clamps for model predictions.
+
+    - features: compact feature dict returned by extract_project_features OR
+      a dict that also contains an "atomic_features" key (the atomic map).
+    - preds: dict mapping rubric-dimension -> numeric score (ints or floats).
+    Returns a new dict (does not mutate input preds).
+    """
+    out = dict(preds or {})
+
+    # Accept either the compact features dict or a record that embeds atomic_features
+    atomic = None
+    if isinstance(features, dict):
+        atomic = features.get("atomic_features") if isinstance(features.get("atomic_features"), dict) else None
+
+    # convenience getters
+    def feat(key, default=None):
+        try:
+            return features.get(key, default) if isinstance(features, dict) else default
+        except Exception:
+            return default
+
+    def atomic_bool(dim, key):
+        try:
+            return bool(atomic.get(dim, {}).get(key))
+        except Exception:
+            return False
+
+    # basic signals
+    block_count = int(feat("block_count") or 0)
+    uses_animation = bool(feat("uses_animation")) or atomic_bool("animation", "costume_changes_used")
+    uses_cloning = bool(feat("uses_cloning")) or atomic_bool("cloning", "clones_created")
+    uses_event = bool(feat("uses_event_handling")) or atomic_bool("sequencing", "clear_start_to_finish_flow") or atomic_bool("event_handling", "events_beyond_green_flag")
+    uses_variables = bool(feat("uses_variables")) or atomic_bool("variables", "variables_used")
+    uses_nesting = bool(feat("uses_nesting")) or atomic_bool("nesting", "nesting_correct")
+    max_nesting = feat("max_control_nesting_depth") if feat("max_control_nesting_depth") is not None else None
+    if max_nesting is None and atomic:
+        # try to infer from nesting atomic flags
+        max_nesting = 4 if atomic_bool("nesting", "nested_systems_used") else (2 if (atomic_bool("nesting", "loops_nested") or atomic_bool("nesting", "conditionals_nested")) else 0)
+
+    # 1) force obvious zeros / lows
+    if not uses_cloning and "cloning" in out:
+        out["cloning"] = 0
+
+    if not uses_animation and "animation" in out:
+        out["animation"] = 0
+
+    if not uses_event and "event_handling" in out:
+        out["event_handling"] = 0
+
+    if not uses_variables and "variables" in out:
+        out["variables"] = 1
+
+    if not feat("uses_integration", False) and atomic:
+        integration_atomic = atomic.get("integration", {})
+        if integration_atomic and not any(bool(v) for v in integration_atomic.values()) and "integration" in out:
+            out["integration"] = 0
+
+    # 2) small-project downgrades for algorithms/sequencing
+    if block_count < 3:
+        if "algorithms" in out:
+            out["algorithms"] = min(int(out.get("algorithms", 1)), 1)
+        if "sequencing" in out:
+            out["sequencing"] = min(int(out.get("sequencing", 1)), 1)
+    elif block_count < 7:
+        # unlikely to be full 5-level algorithm project
+        if "algorithms" in out and int(round(float(out.get("algorithms", 1)))) == 5:
+            out["algorithms"] = 4
+        if "sequencing" in out and int(round(float(out.get("sequencing", 1)))) == 5:
+            out["sequencing"] = 4
+
+    # 3) sequencing: require logical_order or event-based flow to be high
+    if "sequencing" in out:
+        seq_score = int(round(float(out.get("sequencing", 1))))
+        if seq_score >= 4:
+            has_logical = atomic_bool("sequencing", "logical_order")
+            has_flow = atomic_bool("sequencing", "clear_start_to_finish_flow")
+            if not (has_logical or has_flow):
+                out["sequencing"] = 3
+
+        if seq_score == 1 and (has_flow := (uses_event or atomic_bool("sequencing", "clear_start_to_finish_flow"))):
+            out["sequencing"] = 2
+
+    # 4) problem_decomposition: demote if no subproblems or hierarchy evidence
+    if "problem_decomposition" in out:
+        pd_score = int(round(float(out.get("problem_decomposition", 1))))
+        has_sub = atomic_bool("problem_decomposition", "has_subproblems")
+        has_hier = atomic_bool("problem_decomposition", "has_hierarchy")
+        if not has_sub:
+            out["problem_decomposition"] = min(pd_score, 2)
+        elif pd_score >= 4 and not (has_hier and atomic_bool("problem_decomposition", "dependencies_explicit")):
+            out["problem_decomposition"] = max(3, min(pd_score, 4))
+
+    # 5) nesting: use explicit max_nesting or atomic nesting booleans
+    if "nesting" in out:
+        nest_score = int(round(float(out.get("nesting", 1))))
+        depth = int(max_nesting or 0)
+        if depth <= 1:
+            out["nesting"] = min(nest_score, 1)
+        elif depth == 2:
+            out["nesting"] = min(nest_score, 3)
+        # if nesting atomic indicates purpose absent, lower high scores
+        if nest_score >= 4 and not atomic_bool("nesting", "nesting_serves_clear_purpose"):
+            out["nesting"] = min(out["nesting"], 3)
+
+    # 6) animation: require multiple animation signals for top scores
+    if "animation" in out:
+        anim_score = int(round(float(out.get("animation", 1))))
+        has_costume = atomic_bool("animation", "costume_changes_used")
+        smooth = atomic_bool("animation", "animations_loop_smoothly")
+        tied = atomic_bool("animation", "animations_tied_to_game_events")
+        if not has_costume:
+            out["animation"] = 0
+        elif anim_score == 5 and not (smooth and tied):
+            out["animation"] = 4
+        elif anim_score == 4 and not (smooth or tied):
+            out["animation"] = 3
+
+    # 7) algorithms: require multiple atomic signals for very high scores
+    if "algorithms" in out:
+        alg_score = int(round(float(out.get("algorithms", 1))))
+        step = atomic_bool("algorithms", "step_by_step_strategy")
+        works = atomic_bool("algorithms", "algorithm_works_for_inputs")
+        eff = atomic_bool("algorithms", "efficiency_considered")
+        edge = atomic_bool("algorithms", "edge_cases_handled")
+        true_support = sum([step, works, eff, edge])
+        if block_count < 10 and alg_score >= 5:
+            out["algorithms"] = 4
+        if alg_score >= 4 and true_support < 3:
+            out["algorithms"] = max(3, min(out["algorithms"], 4))
+        if not step and alg_score >= 3:
+            out["algorithms"] = min(out["algorithms"], 2)
+
+    # 8) guard against implausible 5s across several weak dims
+    for dim in ("algorithms", "animation", "sequencing", "problem_decomposition", "nesting"):
+        if dim in out and int(round(float(out.get(dim, 0)))) == 5:
+            # count supporting atomic truths (if available)
+            support = 0
+            if atomic and isinstance(atomic.get(dim), dict):
+                support = sum(1 for v in atomic.get(dim).values() if bool(v))
+            # if few supports, demote to 4 (or 3 if very few)
+            if support <= 2:
+                out[dim] = 4 if support == 2 else 3
+
+    # Normalize and ensure integer 0-5
+    for k, v in list(out.items()):
+        try:
+            iv = int(round(float(v)))
+        except Exception:
+            iv = 0
+        out[k] = max(0, min(5, iv))
+
+    return out
 
 # Integration hint:
 # Call apply_hard_constraints(project_features, raw_preds) after parsing model output and before final scoring.
