@@ -462,6 +462,47 @@ QUESTION_GUIDE = {
 }
 
 
+SELECTIVE_COT_DIMENSIONS = {
+    "variables",
+    "math",
+    "lists",
+    "sound",
+    "collision",
+    "event_handling",
+    "messaging",
+    "procedures",
+    "nesting",
+    "ui_feedback",
+}
+
+HYBRID_EVIDENCE_RULES = """
+EVIDENCE-FIRST GRADING PROCESS (must follow):
+1) Infer evidence from features first.
+2) Then assign scores 0-5 from evidence.
+3) Be conservative when evidence is missing.
+
+Weak dimensions to evaluate carefully:
+- problem_decomposition
+- sequencing
+- animation
+- algorithms
+- nesting
+
+High-score gates:
+- algorithms=5 only if ALL are evidenced: step-by-step strategy, works across inputs, edge-case handling, efficiency awareness.
+- animation=5 only if ALL are evidenced: costume/sprite changes, smooth looping, event-linked transitions.
+- sequencing>=4 only if logical order and clear start-to-finish flow are evidenced.
+- problem_decomposition>=4 only if clear subproblems plus hierarchy/dependencies are evidenced.
+- nesting>=4 only if nesting is purposeful and not incidental.
+"""
+
+FINAL_ONLY_INSTRUCTION = """
+Return ONLY valid JSON.
+No markdown. No prose. No explanation.
+Include all 20 rubric keys with integer values 0-5 only.
+"""
+
+
 def _format_rubric_guide() -> str:
     """Format the complete rubric guide for inclusion in the prompt."""
     lines = ["SCORING GUIDE - Rubric Dimensions (1=Novice to 5=Expert):\n"]
@@ -525,6 +566,33 @@ SELECTIVE_COT_DIMENSIONS = {
     "nesting",
     "ui_feedback",
 }
+
+HYBRID_EVIDENCE_RULES = """
+EVIDENCE-FIRST GRADING PROCESS (must follow):
+1) Infer evidence from features first.
+2) Then assign scores 0-5 from evidence.
+3) Be conservative when evidence is missing.
+
+Weak dimensions to evaluate carefully:
+- problem_decomposition
+- sequencing
+- animation
+- algorithms
+- nesting
+
+High-score gates:
+- algorithms=5 only if ALL are evidenced: step-by-step strategy, works across inputs, edge-case handling, efficiency awareness.
+- animation=5 only if ALL are evidenced: costume/sprite changes, smooth looping, event-linked transitions.
+- sequencing>=4 only if logical order and clear start-to-finish flow are evidenced.
+- problem_decomposition>=4 only if clear subproblems plus hierarchy/dependencies are evidenced.
+- nesting>=4 only if nesting is purposeful and not incidental.
+"""
+
+FINAL_ONLY_INSTRUCTION = """
+Return ONLY valid JSON.
+No markdown. No prose. No explanation.
+Include all 20 rubric keys with integer values 0-5 only.
+"""
 
 
 def _format_rubric_summary() -> str:
@@ -632,21 +700,19 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
 
 
 def build_prompt_hybrid(records: List[Dict[str, Any]], num_examples: int = 3) -> str:
-    """Build hybrid prompt: rubric summaries + few-shot examples + selective COT reasoning.
-    
-    Combines:
-    1. Compact rubric summaries (all 20 dimensions, levels 1–5)
-    2. Few-shot examples chosen externally for relevance
-    3. Selective chain-of-thought reasoning for the dimensions where the model most often drifts
-    4. Test sample with reasoning
-    """
+    """Build hybrid prompt: evidence-first + rubric summaries + examples + selective COT."""
     if not records:
         raise ValueError("records must not be empty")
 
     examples = records[:max(1, min(num_examples, len(records) - 1))]
     target = records[min(len(records) - 1, num_examples)] if len(records) > num_examples else records[-1]
 
-    blocks = [_format_rubric_summary()]
+    required_keys = list(RUBRIC_SUMMARY.keys())
+    blocks = [
+        _format_rubric_summary(),
+        HYBRID_EVIDENCE_RULES.strip(),
+        f"Required JSON keys (exact, all must be present): {json.dumps(required_keys)}",
+    ]
 
     for index, record in enumerate(examples, start=1):
         block = "\n".join([
@@ -665,9 +731,10 @@ def build_prompt_hybrid(records: List[Dict[str, Any]], num_examples: int = 3) ->
         _format_features(target["features"]),
         "Reasoning (for feature-driven dimensions):",
         reasoning,
+        "For weak/missing evidence, assign conservative scores.",
     ])
     blocks.append(target_block)
-    blocks.append("Output ONLY the final grades as a JSON object with all 20 dimensions (integers 0–5). Do NOT include reasoning in the JSON.")
+    blocks.append(FINAL_ONLY_INSTRUCTION.strip())
     return "\n\n".join(blocks)
 
 

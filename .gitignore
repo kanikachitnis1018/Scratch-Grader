@@ -19,7 +19,13 @@ scratch_raw_json/
 *.log
 
 # LOOCV experiment outputs
-results/tmp/
+results/*
+!results/archive/
+!results/archive/**
+!results/calibration_v1/
+!results/calibration_v1/**
+!results/calibration_v2/
+!results/calibration_v2/**
 latest_best_run.json
 
 ScoringGuide.pdf
