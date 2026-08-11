@@ -603,8 +603,8 @@ def _format_rubric_summary() -> str:
     return "\n".join(lines)
 
 
-def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, Any]) -> str:
-    """Generate chain-of-thought reasoning ONLY for feature-driven dimensions."""
+def _generate_selective_reasoning(features: Dict[str, Any]) -> str:
+    """Generate reasoning hints for feature-driven dimensions without score leakage."""
     steps = []
     
     sprite_count = features.get("sprite_count", 0)
@@ -614,7 +614,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
 
     if "variables" in SELECTIVE_COT_DIMENSIONS:
         var_reasoning = (
-            f"variables ({grades.get('variables', '?')}): "
+            "variables: "
             f"{variable_count} variable(s) defined. "
         )
         if variable_count > 0:
@@ -625,7 +625,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
         steps.append(f"  - {var_reasoning}")
 
     if "math" in SELECTIVE_COT_DIMENSIONS:
-        math_reasoning = f"math ({grades.get('math', '?')}): "
+        math_reasoning = "math: "
         if features.get("uses_math"):
             math_reasoning += "Math operators detected. Score based on complexity (simple arithmetic→3, division/modulo→4, physics models→5)."
         else:
@@ -633,7 +633,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
         steps.append(f"  - {math_reasoning}")
 
     if "lists" in SELECTIVE_COT_DIMENSIONS:
-        lists_reasoning = f"lists ({grades.get('lists', '?')}): "
+        lists_reasoning = "lists: "
         if list_count > 0:
             lists_reasoning += f"{list_count} list(s) present. Score based on: hardcoded indices→2, add/delete operations→3, dynamic loops→4, inventory systems→5."
         else:
@@ -641,7 +641,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
         steps.append(f"  - {lists_reasoning}")
 
     if "sound" in SELECTIVE_COT_DIMENSIONS:
-        sound_reasoning = f"sound ({grades.get('sound', '?')}): "
+        sound_reasoning = "sound: "
         if features.get("uses_sound"):
             sound_reasoning += "Sound blocks detected. Score based on timing, context (event-triggered→3), music vs effects separation→4, layering→5."
         else:
@@ -649,7 +649,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
         steps.append(f"  - {sound_reasoning}")
 
     if "collision" in SELECTIVE_COT_DIMENSIONS:
-        collision_reasoning = f"collision ({grades.get('collision', '?')}): "
+        collision_reasoning = "collision: "
         if features.get("uses_collision"):
             collision_reasoning += "Collision blocks detected. Score based on: out-of-loop→2, reliable in loops→3, sprite/edge/color checks→4, size/timing accounting→5."
         else:
@@ -657,7 +657,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
         steps.append(f"  - {collision_reasoning}")
 
     if "event_handling" in SELECTIVE_COT_DIMENSIONS:
-        event_reasoning = f"event_handling ({grades.get('event_handling', '?')}): "
+        event_reasoning = "event_handling: "
         if features.get("uses_event_handling"):
             event_reasoning += "Event blocks detected. Score should reflect whether the project goes beyond green flag, coordinates multiple triggers, and assigns events across sprites rather than centralising all control."
         else:
@@ -665,7 +665,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
         steps.append(f"  - {event_reasoning}")
 
     if "messaging" in SELECTIVE_COT_DIMENSIONS:
-        messaging_reasoning = f"messaging ({grades.get('messaging', '?')}): "
+        messaging_reasoning = "messaging: "
         if features.get("uses_messaging"):
             messaging_reasoning += "Broadcast blocks detected. Score based on whether messages seem distinct, support sprite coordination, and avoid a single generic broadcast for all state changes."
         else:
@@ -673,7 +673,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
         steps.append(f"  - {messaging_reasoning}")
 
     if "procedures" in SELECTIVE_COT_DIMENSIONS:
-        procedures_reasoning = f"procedures ({grades.get('procedures', '?')}): "
+        procedures_reasoning = "procedures: "
         if features.get("uses_algorithms") and features.get("block_count", 0) >= 30:
             procedures_reasoning += "Larger projects should only score highly here if custom reusable blocks are truly present and reduce duplication; project size alone should not inflate the score."
         else:
@@ -681,7 +681,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
         steps.append(f"  - {procedures_reasoning}")
 
     if "nesting" in SELECTIVE_COT_DIMENSIONS:
-        nesting_reasoning = f"nesting ({grades.get('nesting', '?')}): "
+        nesting_reasoning = "nesting: "
         if features.get("uses_nesting"):
             nesting_reasoning += "Loops and conditionals both appear. Only assign high scores if control structures are meaningfully nested rather than merely coexisting in separate scripts."
         else:
@@ -689,7 +689,7 @@ def _generate_selective_reasoning(features: Dict[str, Any], grades: Dict[str, An
         steps.append(f"  - {nesting_reasoning}")
 
     if "ui_feedback" in SELECTIVE_COT_DIMENSIONS:
-        ui_reasoning = f"ui_feedback ({grades.get('ui_feedback', '?')}): "
+        ui_reasoning = "ui_feedback: "
         if features.get("uses_ui_feedback"):
             ui_reasoning += "Say/think/visual feedback exists. Score should distinguish simple feedback from a maintained score/lives/timer UI and proper start/end states."
         else:
@@ -724,14 +724,14 @@ def build_prompt_hybrid(records: List[Dict[str, Any]], num_examples: int = 3) ->
         ])
         blocks.append(block)
 
-    reasoning = _generate_selective_reasoning(target["features"], target.get("grades", {}))
+    reasoning = _generate_selective_reasoning(target["features"])
     target_block = "\n".join([
         "Now grade this new project:",
         "Features:",
         _format_features(target["features"]),
         "Reasoning (for feature-driven dimensions):",
         reasoning,
-        "For weak/missing evidence, assign conservative scores.",
+        "Use balanced scoring: low only when evidence is absent, mid when partial, high when multiple signals agree.",
     ])
     blocks.append(target_block)
     blocks.append(FINAL_ONLY_INSTRUCTION.strip())
@@ -845,7 +845,7 @@ def build_prompt_category_batch(
     ]
     
     if prompt_style == "hybrid":
-        reasoning = _generate_selective_reasoning(target["features"], target.get("grades", {}))
+        reasoning = _generate_selective_reasoning(target["features"])
         # Keep reasoning lines relevant to target_dims
         filtered_reasoning = "\n".join([
             line for line in reasoning.split("\n") 

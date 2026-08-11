@@ -10,6 +10,7 @@ if str(_SRC_DIR) not in sys.path:
 import json
 import os
 import statistics
+from collections import Counter
 from pathlib import Path
 from typing import Any, Dict
 
@@ -207,6 +208,7 @@ def main() -> None:
     is_batched = os.getenv("LOOCV_BATCHED", "").lower() in ("1", "true", "yes") or "batch" in prompt_style
 
     n_passes = int(os.getenv("LOOCV_SELF_CONSISTENCY_PASSES", "3"))
+    consistency_agg = os.getenv("LOOCV_SELF_CONSISTENCY_AGG", "vote").strip().lower()
 
     def model_fn(prompt_or_records: Any) -> Dict[str, int]:
         all_pass_predictions = []
@@ -243,14 +245,30 @@ def main() -> None:
         if not all_pass_predictions:
             return {}
 
-        averaged_prediction: Dict[str, int] = {}
+        aggregated_prediction: Dict[str, int] = {}
         dimensions = all_pass_predictions[0].keys()
         
         for dimension in dimensions:
-            dim_sum = sum(p.get(dimension, 0) for p in all_pass_predictions)
-            averaged_prediction[dimension] = int(round(dim_sum / len(all_pass_predictions)))
+            values = [int(p.get(dimension, 0)) for p in all_pass_predictions]
+            if consistency_agg == "median":
+                aggregated_prediction[dimension] = int(round(statistics.median(values)))
+                continue
+
+            if consistency_agg == "mean":
+                aggregated_prediction[dimension] = int(round(statistics.mean(values)))
+                continue
+
+            # Default: majority vote for discrete rubric labels.
+            counts = Counter(values)
+            max_count = max(counts.values())
+            top_values = sorted([value for value, count in counts.items() if count == max_count])
+            if len(top_values) == 1:
+                aggregated_prediction[dimension] = top_values[0]
+            else:
+                mean_value = statistics.mean(values)
+                aggregated_prediction[dimension] = min(top_values, key=lambda value: (abs(value - mean_value), value))
             
-        return averaged_prediction
+        return aggregated_prediction
 
     result = run_loocv(
         records,
